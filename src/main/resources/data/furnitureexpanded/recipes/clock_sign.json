@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "iii",
+        "rcr",
+        "iii"
+    ],
+    "key": {
+        "c": {
+            "item": "minecraft:clock"
+        },
+        "r": {
+            "item": "minecraft:redstone_block"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:clock_sign",
+        "count": 1
+    }
+}

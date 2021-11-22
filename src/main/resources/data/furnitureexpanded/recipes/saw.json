@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "ssp",
+        "iip",
+        "   "
+    ],
+    "key": {
+        "s": {
+            "item": "minecraft:stick"
+        },
+        "p": {
+            "tag": "minecraft:planks"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:saw",
+        "count": 1
+    }
+}

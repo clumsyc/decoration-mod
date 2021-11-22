@@ -1,0 +1,8 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "furnitureexpanded:blocks/cardbox_top",
+    "front": "furnitureexpanded:blocks/cardbox_side_arrows",
+    "side": "furnitureexpanded:blocks/cardbox_side"
+  }
+}

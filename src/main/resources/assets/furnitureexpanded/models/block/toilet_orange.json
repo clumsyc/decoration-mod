@@ -1,0 +1,6 @@
+{
+	"parent": "furnitureexpanded:block/toilet",
+	"textures": {
+		"5": "block/orange_wool"
+	}
+}

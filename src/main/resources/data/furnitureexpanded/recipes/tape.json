@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " h ",
+        "ppp",
+        "   "
+    ],
+    "key": {
+        "h": {
+            "item": "minecraft:honey_bottle"
+        },
+        "p": {
+            "item": "minecraft:paper"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:tape",
+        "count": 1
+    }
+}

@@ -1,0 +1,18 @@
+{
+  "variants": {
+    "facing=north,height=normal": { "model": "furnitureexpanded:block/towel_bar" },
+    "facing=south,height=normal": { "model": "furnitureexpanded:block/towel_bar", "y":  180},
+    "facing=west,height=normal": { "model": "furnitureexpanded:block/towel_bar", "y":  270},
+    "facing=east,height=normal": { "model": "furnitureexpanded:block/towel_bar", "y":  90},
+
+    "facing=north,height=higher": { "model": "furnitureexpanded:block/towel_bar_higher" },
+    "facing=south,height=higher": { "model": "furnitureexpanded:block/towel_bar_higher", "y":  180},
+    "facing=west,height=higher": { "model": "furnitureexpanded:block/towel_bar_higher", "y":  270},
+    "facing=east,height=higher": { "model": "furnitureexpanded:block/towel_bar_higher", "y":  90},
+
+    "facing=north,height=lower": { "model": "furnitureexpanded:block/towel_bar_lower" },
+    "facing=south,height=lower": { "model": "furnitureexpanded:block/towel_bar_lower", "y":  180},
+    "facing=west,height=lower": { "model": "furnitureexpanded:block/towel_bar_lower", "y":  270},
+    "facing=east,height=lower": { "model": "furnitureexpanded:block/towel_bar_lower", "y":  90}
+  }
+}

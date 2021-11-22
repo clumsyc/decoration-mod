@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "sss",
+        "sgs",
+        "sss"
+    ],
+    "key": {
+        "s": {
+            "tag": "forge:stone"
+        },
+        "g": {
+            "tag": "forge:glass"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:mirror",
+        "count": 1
+    }
+}

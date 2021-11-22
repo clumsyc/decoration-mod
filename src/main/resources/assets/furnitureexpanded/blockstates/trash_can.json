@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "facing=north,type=0": { "model": "furnitureexpanded:block/trash_can" },
+    "facing=south,type=0": { "model": "furnitureexpanded:block/trash_can", "y":  180},
+    "facing=west,type=0": { "model": "furnitureexpanded:block/trash_can", "y":  270},
+    "facing=east,type=0": { "model": "furnitureexpanded:block/trash_can", "y":  90},
+
+    "facing=north,type=1": { "model": "furnitureexpanded:block/trash_can_open" },
+    "facing=south,type=1": { "model": "furnitureexpanded:block/trash_can_open", "y":  180},
+    "facing=west,type=1": { "model": "furnitureexpanded:block/trash_can_open", "y":  270},
+    "facing=east,type=1": { "model": "furnitureexpanded:block/trash_can_open", "y":  90}
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "parent": "block/orientable",
+  "textures": {
+    "top": "furnitureexpanded:blocks/cardbox_top_sealed",
+    "front": "furnitureexpanded:blocks/cardbox_side_arrows",
+    "west": "furnitureexpanded:blocks/cardbox_side_sealed",
+    "east": "furnitureexpanded:blocks/cardbox_side_sealed",
+    "side": "furnitureexpanded:blocks/cardbox_side"
+  }
+}

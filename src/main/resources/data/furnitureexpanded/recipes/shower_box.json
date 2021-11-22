@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "igi",
+        "igi",
+        "igi"
+    ],
+    "key": {
+        "g": {
+            "tag": "forge:glass"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:shower_box",
+        "count": 1
+    }
+}

@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        " i ",
+        "pcp",
+        "ppp"
+    ],
+    "key": {
+        "c": {
+            "tag": "forge:chests"
+        },
+        "p": {
+            "item": "minecraft:paper"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:basket",
+        "count": 1
+    }
+}

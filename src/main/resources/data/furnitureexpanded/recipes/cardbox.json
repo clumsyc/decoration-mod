@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "sss",
+        "scs",
+        "sss"
+    ],
+    "key": {
+        "s": {
+            "item": "furnitureexpanded:sawdust"
+        },
+        "c": {
+            "tag": "forge:chests"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:cardbox",
+        "count": 1
+    }
+}

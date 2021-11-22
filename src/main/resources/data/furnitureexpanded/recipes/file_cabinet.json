@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "i i",
+        "ici",
+        "ibi"
+    ],
+    "key": {
+        "c": {
+            "tag": "forge:chests"
+        },
+        "b": {
+            "item": "minecraft:iron_block"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:file_cabinet",
+        "count": 1
+    }
+}

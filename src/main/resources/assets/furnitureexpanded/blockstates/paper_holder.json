@@ -1,0 +1,49 @@
+{
+  "variants": {
+    "facing=north,height=normal,side=normal": { "model": "furnitureexpanded:block/paper_holder" },
+    "facing=south,height=normal,side=normal": { "model": "furnitureexpanded:block/paper_holder", "y":  180},
+    "facing=west,height=normal,side=normal": { "model": "furnitureexpanded:block/paper_holder", "y":  270},
+    "facing=east,height=normal,side=normal": { "model": "furnitureexpanded:block/paper_holder", "y":  90},
+
+    "facing=north,height=higher,side=normal": { "model": "furnitureexpanded:block/paper_holder_higher_normal" },
+    "facing=south,height=higher,side=normal": { "model": "furnitureexpanded:block/paper_holder_higher_normal", "y":  180},
+    "facing=west,height=higher,side=normal": { "model": "furnitureexpanded:block/paper_holder_higher_normal", "y":  270},
+    "facing=east,height=higher,side=normal": { "model": "furnitureexpanded:block/paper_holder_higher_normal", "y":  90},
+
+    "facing=north,height=lower,side=normal": { "model": "furnitureexpanded:block/paper_holder_lower_normal" },
+    "facing=south,height=lower,side=normal": { "model": "furnitureexpanded:block/paper_holder_lower_normal", "y":  180},
+    "facing=west,height=lower,side=normal": { "model": "furnitureexpanded:block/paper_holder_lower_normal", "y":  270},
+    "facing=east,height=lower,side=normal": { "model": "furnitureexpanded:block/paper_holder_lower_normal", "y":  90},
+
+    "facing=north,height=normal,side=left": { "model": "furnitureexpanded:block/paper_holder_normal_left" },
+    "facing=south,height=normal,side=left": { "model": "furnitureexpanded:block/paper_holder_normal_left", "y":  180},
+    "facing=west,height=normal,side=left": { "model": "furnitureexpanded:block/paper_holder_normal_left", "y":  270},
+    "facing=east,height=normal,side=left": { "model": "furnitureexpanded:block/paper_holder_normal_left", "y":  90},
+
+    "facing=north,height=higher,side=left": { "model": "furnitureexpanded:block/paper_holder_higher_left" },
+    "facing=south,height=higher,side=left": { "model": "furnitureexpanded:block/paper_holder_higher_left", "y":  180},
+    "facing=west,height=higher,side=left": { "model": "furnitureexpanded:block/paper_holder_higher_left", "y":  270},
+    "facing=east,height=higher,side=left": { "model": "furnitureexpanded:block/paper_holder_higher_left", "y":  90},
+
+    "facing=north,height=lower,side=left": { "model": "furnitureexpanded:block/paper_holder_lower_left" },
+    "facing=south,height=lower,side=left": { "model": "furnitureexpanded:block/paper_holder_lower_left", "y":  180},
+    "facing=west,height=lower,side=left": { "model": "furnitureexpanded:block/paper_holder_lower_left", "y":  270},
+    "facing=east,height=lower,side=left": { "model": "furnitureexpanded:block/paper_holder_lower_left", "y":  90},
+
+    "facing=north,height=normal,side=right": { "model": "furnitureexpanded:block/paper_holder_normal_right" },
+    "facing=south,height=normal,side=right": { "model": "furnitureexpanded:block/paper_holder_normal_right", "y":  180},
+    "facing=west,height=normal,side=right": { "model": "furnitureexpanded:block/paper_holder_normal_right", "y":  270},
+    "facing=east,height=normal,side=right": { "model": "furnitureexpanded:block/paper_holder_normal_right", "y":  90},
+
+    "facing=north,height=higher,side=right": { "model": "furnitureexpanded:block/paper_holder_higher_right" },
+    "facing=south,height=higher,side=right": { "model": "furnitureexpanded:block/paper_holder_higher_right", "y":  180},
+    "facing=west,height=higher,side=right": { "model": "furnitureexpanded:block/paper_holder_higher_right", "y":  270},
+    "facing=east,height=higher,side=right": { "model": "furnitureexpanded:block/paper_holder_higher_right", "y":  90},
+
+    "facing=north,height=lower,side=right": { "model": "furnitureexpanded:block/paper_holder_lower_right" },
+    "facing=south,height=lower,side=right": { "model": "furnitureexpanded:block/paper_holder_lower_right", "y":  180},
+    "facing=west,height=lower,side=right": { "model": "furnitureexpanded:block/paper_holder_lower_right", "y":  270},
+    "facing=east,height=lower,side=right": { "model": "furnitureexpanded:block/paper_holder_lower_right", "y":  90}
+
+  }
+}

@@ -1,0 +1,14 @@
+{
+	"loader": "forge:multi-layer",
+	"layers": {
+		"solid": {
+			"parent": "furnitureexpanded:block/toilet_up_solid_model",
+			"textures": {
+				"5": "block/oak_log"
+			}
+		},
+		"translucent": {
+			"parent": "furnitureexpanded:block/toilet_up_translucent_model"
+		}
+	}
+}

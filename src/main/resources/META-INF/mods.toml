@@ -1,0 +1,25 @@
+modLoader="javafml"
+loaderVersion="[32,)"
+license="All rights reserved"
+
+[[mods]]
+modId="furnitureexpanded"
+version="1.16-1.0.0" #${file.jarVersion}
+displayName="Furniture Expanded"
+logoFile="expanded.png"
+authors="clumsycat"
+description='''
+Just a collection of furniture.
+'''
+[[dependencies.furnitureexpanded]] #optional
+    modId="forge"
+    mandatory=true
+    versionRange="[32,)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.furnitureexpanded]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16,1.17)"
+    ordering="NONE"
+    side="BOTH"

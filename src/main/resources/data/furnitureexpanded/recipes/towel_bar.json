@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "isi",
+        "www",
+        "   "
+    ],
+    "key": {
+        "s": {
+            "item": "minecraft:stick"
+        },
+        "w": {
+            "tag": "minecraft:wool"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:towel_bar",
+        "count": 1
+    }
+}

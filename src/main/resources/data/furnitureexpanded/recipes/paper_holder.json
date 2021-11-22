@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "wsi",
+        "   ",
+        "   "
+    ],
+    "key": {
+        "s": {
+            "item": "minecraft:stick"
+        },
+        "w": {
+            "tag": "minecraft:wool"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:paper_holder",
+        "count": 1
+    }
+}

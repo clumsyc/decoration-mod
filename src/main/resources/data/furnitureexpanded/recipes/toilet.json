@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "b  ",
+        "sc ",
+        "ss "
+    ],
+    "key": {
+        "b": {
+            "tag": "minecraft:buttons"
+        },
+        "s": {
+            "tag": "forge:stone"
+        },
+        "c": {
+            "tag": "minecraft:carpets"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:toilet",
+        "count": 1
+    }
+}
