@@ -24,11 +24,9 @@ import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
-import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
-import java.util.Random;
 
 public class TrashCan extends ContainerBlock {
     private static final DirectionProperty face = HorizontalBlock.FACING;
@@ -72,47 +70,38 @@ public class TrashCan extends ContainerBlock {
     }
 
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity tileentity, ItemStack stack) {
-        dropInventory(worldIn, pos);
-        super.playerDestroy(worldIn, player, pos, state, tileentity, stack);
+    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        dropContents(worldIn, pos, worldIn.getBlockEntity(pos), !player.isCreative());
+        super.playerWillDestroy(worldIn, pos, state, player);
     }
 
     @Override
     public void onBlockExploded(BlockState state, World worldIn, BlockPos pos, Explosion explosion) {
-        dropInventory(worldIn, pos);
+        dropContents(worldIn, pos, worldIn.getBlockEntity(pos), true);
         super.onBlockExploded(state, worldIn, pos, explosion);
     }
 
-    private void dropInventory(World worldIn, BlockPos pos) {
-        TrashCanTileEntity te = (TrashCanTileEntity) worldIn.getBlockEntity(pos);
-        assert te != null;
+    private void dropContents(World worldIn, BlockPos pos, TileEntity tileentity, boolean shouldDrop) {
+        TrashCanTileEntity te = (TrashCanTileEntity) tileentity;
         if (!te.isEmpty()) {
             CompoundNBT compoundnbt = te.saveToNbt(new CompoundNBT());
             NonNullList<ItemStack> invdrop = NonNullList.withSize(9, ItemStack.EMPTY);
             ItemStackHelper.loadAllItems(compoundnbt, invdrop);
             InventoryHelper.dropContents(worldIn, pos, invdrop);
         }
-        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+        if (shouldDrop) InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
     }
 
     @Override
     public void entityInside(BlockState state, World worldIn, BlockPos pos, Entity entity) {
         if (!worldIn.isClientSide) {
-            if ((entity.getY()-pos.getY()) == .046875) {
-                if (state.getValue(type) == 0) updateTrashCan(worldIn, pos, state);
+            if (entity instanceof PlayerEntity) {
+                if ((entity.getY()-pos.getY()) == .046875) {
+                    TrashCanTileEntity te = (TrashCanTileEntity) worldIn.getBlockEntity(pos);
+                    te.resetCountdown();
+                }
             }
         }
-    }
-
-    @Override
-    public void tick(BlockState state, ServerWorld serverworld, BlockPos pos, Random rand) {
-        if (state.getValue(type) == 1) serverworld.setBlockAndUpdate(pos, state.setValue(type, 0));
-        super.tick(state, serverworld, pos, rand);
-    }
-
-    private void updateTrashCan(World worldIn, BlockPos pos, BlockState state) {
-        if (state.getValue(type) != 1) worldIn.setBlockAndUpdate(pos, state.setValue(type, 1));
-        if (!worldIn.getBlockTicks().hasScheduledTick(pos, this)) worldIn.getBlockTicks().scheduleTick(pos, this, 5);
     }
 
     @Override

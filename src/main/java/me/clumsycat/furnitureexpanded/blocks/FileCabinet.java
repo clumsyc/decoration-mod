@@ -23,10 +23,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.world.*;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.common.ToolType;
 
@@ -89,43 +86,37 @@ public class FileCabinet extends ContainerBlock {
 
     @Override
     public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (worldIn.getBlockState(state.getValue(type) == 0 ? pos.above() : pos.below()).getBlock() == this.getBlock())
-            worldIn.removeBlock(state.getValue(type) == 0 ? pos.above() : pos.below(), false);
+        BlockPos finalPos = state.getValue(type) == 0 ? pos : pos.below();
+        boolean isValid = worldIn.getBlockState(finalPos).is(this) && worldIn.getBlockState(finalPos).hasTileEntity();
+        if (isValid) dropContents(worldIn, state, finalPos, worldIn.getBlockEntity(finalPos), !player.isCreative());
         super.playerWillDestroy(worldIn, pos, state, player);
     }
 
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity tileentity, ItemStack stack) {
-        dropContents(worldIn, state, pos);
-        super.playerDestroy(worldIn, player, pos, state, tileentity, stack);
-    }
-
-    @Override
     public void onBlockExploded(BlockState state, World worldIn, BlockPos pos, Explosion explosion) {
-        dropContents(worldIn, state, pos);
+        BlockPos finalPos = state.getValue(type) == 0 ? pos : pos.below();
+        boolean isValid = worldIn.getBlockState(finalPos).is(this) && worldIn.getBlockState(finalPos).hasTileEntity();
+        if (isValid) dropContents(worldIn, state, finalPos, worldIn.getBlockEntity(finalPos), true);
         super.onBlockExploded(state, worldIn, pos, explosion);
     }
 
-    private void dropContents(World worldIn, BlockState state, BlockPos pos) {
-        FileCabinetTileEntity te = (FileCabinetTileEntity) worldIn.getBlockEntity(pos);
-        if (state.getValue(type) != 0)
-            if (worldIn.getBlockState(pos.below()).getBlock().is(this))
-                if (worldIn.getBlockState(pos.below()).getValue(type) == 0)
-                    te = (FileCabinetTileEntity) worldIn.getBlockEntity(pos.below());
-        assert te != null;
-        if (!te.isEmpty()) {
-            CompoundNBT compoundnbt = te.saveToNbt(new CompoundNBT());
-            NonNullList<ItemStack> invdrop = NonNullList.withSize(54, ItemStack.EMPTY);
-            ItemStackHelper.loadAllItems(compoundnbt, invdrop);
-            InventoryHelper.dropContents(worldIn, pos, invdrop);
+    private void dropContents(World worldIn, BlockState state, BlockPos pos, TileEntity tileentity, boolean dropBlock) {
+        if (worldIn.getBlockState(pos).is(this)) {
+            FileCabinetTileEntity te = (FileCabinetTileEntity) tileentity;
+            if (!te.isEmpty()) {
+                CompoundNBT compoundnbt = te.saveToNbt(new CompoundNBT());
+                NonNullList<ItemStack> invdrop = NonNullList.withSize(54, ItemStack.EMPTY);
+                ItemStackHelper.loadAllItems(compoundnbt, invdrop);
+                InventoryHelper.dropContents(worldIn, pos, invdrop);
+            }
         }
-        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
-        if (worldIn.getBlockState(state.getValue(type) == 0 ? pos.above() : pos.below()).getBlock() == this.getBlock())
-            worldIn.removeBlock(state.getValue(type) == 0 ? pos.above() : pos.below(), false);
+        if (dropBlock) InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+        if (worldIn.getBlockState(state.getValue(type) == 0 ? pos : pos.above()).getBlock() == this.getBlock())
+            worldIn.removeBlock(state.getValue(type) == 0 ? pos : pos.above(), false);
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) { // onBlockPlacedBy
+    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         if (stack.hasCustomHoverName()) {
             TileEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof FileCabinetTileEntity) {
@@ -137,7 +128,7 @@ public class FileCabinet extends ContainerBlock {
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) { //isValidPosition
+    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
         return worldIn.getBlockState(pos.above()).is(Blocks.AIR);
     }
 

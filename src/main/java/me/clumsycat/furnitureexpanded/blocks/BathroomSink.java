@@ -32,7 +32,8 @@ public class BathroomSink extends Block {
         super(AbstractBlock.Properties.of(Material.CLAY)
                 .strength(1f, 2f)
                 .harvestTool(ToolType.PICKAXE)
-                .sound(SoundType.STONE));
+                .sound(SoundType.STONE)
+        );
         this.registerDefaultState(this.stateDefinition.any().setValue(face, Direction.NORTH).setValue(type, 0));
     }
 
@@ -91,6 +92,5 @@ public class BathroomSink extends Block {
     }
 
     @Override
-    public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) { return 0.2f; }
-
+    public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) { return 0.5f; }
 }

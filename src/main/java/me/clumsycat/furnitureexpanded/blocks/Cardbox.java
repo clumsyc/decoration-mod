@@ -151,13 +151,11 @@ public class Cardbox extends ContainerBlock {
     }
 
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity tileEntity, ItemStack stack) {
-        ItemStack is = getDrop((CardboxTileEntity) tileEntity, state.getValue(sealed));
-        worldIn.removeBlockEntity(pos);
-        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), is);
+    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        CardboxTileEntity te = (CardboxTileEntity) worldIn.getBlockEntity(pos);
+        ItemStack is = getDrop(te, state.getValue(sealed));
+        if (!player.isCreative()) InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), is);
         if (!state.getValue(sealed)) {
-            CardboxTileEntity te = (CardboxTileEntity) tileEntity;
-            assert te != null;
             if (!te.isEmpty()) {
                 CompoundNBT compoundnbt = te.saveToNbt(new CompoundNBT());
                 NonNullList<ItemStack> invdrop = NonNullList.withSize(27, ItemStack.EMPTY);
@@ -165,7 +163,7 @@ public class Cardbox extends ContainerBlock {
                 InventoryHelper.dropContents(worldIn, pos, invdrop);
             }
         }
-        super.playerDestroy(worldIn, player, pos, state, tileEntity, stack);
+        super.playerWillDestroy(worldIn, pos, state, player);
     }
 
     protected ItemStack getDrop(CardboxTileEntity tileentity, boolean sealed) {
