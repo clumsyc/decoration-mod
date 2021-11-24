@@ -4,6 +4,7 @@ import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -26,7 +27,7 @@ import net.minecraftforge.common.ToolType;
 
 import javax.annotation.Nullable;
 
-public class ShowerBox extends Block {
+public class ShowerBox extends Block { // DoublePlantBlock
     private static final DirectionProperty face = HorizontalBlock.FACING;
     public static final EnumProperty<DoubleBlockHalf> half = BlockStateProperties.DOUBLE_BLOCK_HALF;
     DoubleBlockHalf _lower = DoubleBlockHalf.LOWER;
@@ -75,6 +76,11 @@ public class ShowerBox extends Block {
     @Override
     public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
         return worldIn.isEmptyBlock(pos.above());
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction(BlockState p_149656_1_) {
+        return PushReaction.BLOCK;
     }
 
     @Nullable

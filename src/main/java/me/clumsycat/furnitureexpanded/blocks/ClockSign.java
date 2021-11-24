@@ -5,6 +5,7 @@ import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -99,6 +100,11 @@ public class ClockSign extends ContainerBlock {
     @Override
     public TileEntity newBlockEntity(IBlockReader worldIn) {
         return new ClockSignTileEntity();
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction(BlockState p_149656_1_) {
+        return PushReaction.BLOCK;
     }
 
     @Nullable

@@ -5,6 +5,7 @@ import me.clumsycat.furnitureexpanded.util.DyeHandler;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.item.BlockItemUseContext;
@@ -80,6 +81,11 @@ public class Toilet extends Block {
     public void onBlockExploded(BlockState state, World worldIn, BlockPos pos, Explosion explosion) {
         InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.onBlockExploded(state, worldIn, pos, explosion);
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction(BlockState p_149656_1_) {
+        return PushReaction.BLOCK;
     }
 
     @Nullable

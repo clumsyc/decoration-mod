@@ -5,6 +5,7 @@ import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -102,6 +103,11 @@ public class TrashCan extends ContainerBlock {
                 }
             }
         }
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction(BlockState p_149656_1_) {
+        return PushReaction.BLOCK;
     }
 
     @Override

@@ -88,7 +88,7 @@ public class FileCabinet extends ContainerBlock {
     public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         BlockPos finalPos = state.getValue(type) == 0 ? pos : pos.below();
         boolean isValid = worldIn.getBlockState(finalPos).is(this) && worldIn.getBlockState(finalPos).hasTileEntity();
-        if (isValid) dropContents(worldIn, state, finalPos, worldIn.getBlockEntity(finalPos), !player.isCreative());
+        if (isValid) dropContents(worldIn, state, pos, finalPos, worldIn.getBlockEntity(finalPos), !player.isCreative());
         super.playerWillDestroy(worldIn, pos, state, player);
     }
 
@@ -96,23 +96,23 @@ public class FileCabinet extends ContainerBlock {
     public void onBlockExploded(BlockState state, World worldIn, BlockPos pos, Explosion explosion) {
         BlockPos finalPos = state.getValue(type) == 0 ? pos : pos.below();
         boolean isValid = worldIn.getBlockState(finalPos).is(this) && worldIn.getBlockState(finalPos).hasTileEntity();
-        if (isValid) dropContents(worldIn, state, finalPos, worldIn.getBlockEntity(finalPos), true);
+        if (isValid) dropContents(worldIn, state, pos, finalPos, worldIn.getBlockEntity(finalPos), true);
         super.onBlockExploded(state, worldIn, pos, explosion);
     }
 
-    private void dropContents(World worldIn, BlockState state, BlockPos pos, TileEntity tileentity, boolean dropBlock) {
-        if (worldIn.getBlockState(pos).is(this)) {
+    private void dropContents(World worldIn, BlockState state, BlockPos pos, BlockPos finalPos, TileEntity tileentity, boolean dropBlock) {
+        if (worldIn.getBlockState(finalPos).is(this)) {
             FileCabinetTileEntity te = (FileCabinetTileEntity) tileentity;
             if (!te.isEmpty()) {
                 CompoundNBT compoundnbt = te.saveToNbt(new CompoundNBT());
                 NonNullList<ItemStack> invdrop = NonNullList.withSize(54, ItemStack.EMPTY);
                 ItemStackHelper.loadAllItems(compoundnbt, invdrop);
-                InventoryHelper.dropContents(worldIn, pos, invdrop);
+                InventoryHelper.dropContents(worldIn, finalPos, invdrop);
             }
         }
         if (dropBlock) InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
-        if (worldIn.getBlockState(state.getValue(type) == 0 ? pos : pos.above()).getBlock() == this.getBlock())
-            worldIn.removeBlock(state.getValue(type) == 0 ? pos : pos.above(), false);
+        if (worldIn.getBlockState(state.getValue(type) == 0 ? pos.above() : pos.below()).getBlock() == this.getBlock())
+            worldIn.removeBlock(state.getValue(type) == 0 ? pos.above() : pos.below(), true);
     }
 
     @Override
@@ -134,7 +134,7 @@ public class FileCabinet extends ContainerBlock {
 
     @Override
     public PushReaction getPistonPushReaction(BlockState state) {
-        return PushReaction.DESTROY;
+        return PushReaction.BLOCK;
     }
 
     @Nullable

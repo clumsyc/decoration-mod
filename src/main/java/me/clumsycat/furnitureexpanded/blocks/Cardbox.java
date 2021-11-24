@@ -5,6 +5,7 @@ import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.material.PushReaction;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.InventoryHelper;
@@ -177,6 +178,11 @@ public class Cardbox extends ContainerBlock {
             if (itemstack.getTag() != null) itemstack.getTag().putBoolean("sealed", true);
         }
         return itemstack;
+    }
+
+    @Override
+    public PushReaction getPistonPushReaction(BlockState p_149656_1_) {
+        return PushReaction.BLOCK;
     }
 
     @Override
