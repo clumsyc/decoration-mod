@@ -1,11 +1,5 @@
 {
 	"credit": "Made with Blockbench",
-	"textures": {
-		"0": "block/gray_stained_glass",
-		"3": "block/black_concrete",
-		"4": "block/polished_andesite",
-		"particle": "block/gray_stained_glass"
-	},
 	"loader": "forge:multi-layer",
 	"layers": {
 		"solid": {
@@ -17,7 +11,6 @@
 			},
 			"elements": [
 				{
-					"name": "bottom",
 					"from": [1, 0, 1],
 					"to": [15, 1, 15],
 					"faces": {
@@ -30,7 +23,6 @@
 					}
 				},
 				{
-					"name": "drain",
 					"from": [2, 0.25, 11],
 					"to": [5, 1.25, 14],
 					"rotation": {"angle": 0, "axis": "y", "origin": [3, -6.75, 7]},
@@ -44,7 +36,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [1, 0, 0],
 					"to": [15, 2, 1],
 					"rotation": {"angle": 0, "axis": "y", "origin": [8, -6, -6]},
@@ -58,7 +49,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [0, 15, 1],
 					"to": [1, 16, 15],
 					"faces": {
@@ -71,7 +61,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [0, 0, 1],
 					"to": [1, 2, 15],
 					"rotation": {"angle": 0, "axis": "y", "origin": [8, -6, 8]},
@@ -85,7 +74,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [1, 15, 15],
 					"to": [15, 16, 16],
 					"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 9]},
@@ -99,7 +87,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [1, 0, 15],
 					"to": [15, 2, 16],
 					"rotation": {"angle": 0, "axis": "y", "origin": [8, -6, 9]},
@@ -113,7 +100,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [15, 0, 15],
 					"to": [16, 16, 16],
 					"rotation": {"angle": 0, "axis": "y", "origin": [9, 8, 9]},
@@ -127,7 +113,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [15, 0, 0],
 					"to": [16, 16, 1],
 					"rotation": {"angle": 0, "axis": "y", "origin": [9, 8, -6]},
@@ -141,7 +126,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [0, 0, 0],
 					"to": [1, 16, 1],
 					"rotation": {"angle": 0, "axis": "y", "origin": [-6, 8, -6]},
@@ -155,7 +139,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [0, 0, 15],
 					"to": [1, 16, 16],
 					"rotation": {"angle": 0, "axis": "y", "origin": [-6, 8, 9]},
@@ -169,7 +152,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [15, 15, 1],
 					"to": [16, 16, 15],
 					"rotation": {"angle": 0, "axis": "y", "origin": [23, 8, 8]},
@@ -183,7 +165,6 @@
 					}
 				},
 				{
-					"name": "bottom_frame",
 					"from": [15, 0, 1],
 					"to": [16, 2, 15],
 					"rotation": {"angle": 0, "axis": "y", "origin": [23, -6, 8]},
@@ -200,14 +181,10 @@
 		},
 		"translucent": {
 			"textures": {
-				"0": "block/gray_stained_glass",
-				"3": "block/black_concrete",
-				"4": "block/polished_andesite",
-				"particle": "block/gray_stained_glass"
+				"0": "block/gray_stained_glass"
 			},
 			"elements": [
 				{
-					"name": "glass",
 					"from": [15.25, 2, 1],
 					"to": [15.75, 15, 15],
 					"rotation": {"angle": 0, "axis": "y", "origin": [8.75, 8, 8]},
@@ -221,7 +198,6 @@
 					}
 				},
 				{
-					"name": "glass",
 					"from": [0.25, 2, 1],
 					"to": [0.75, 15, 15],
 					"rotation": {"angle": 0, "axis": "y", "origin": [-5.75, 8, 8]},
@@ -235,7 +211,6 @@
 					}
 				},
 				{
-					"name": "glass",
 					"from": [1, 2, 15.25],
 					"to": [15, 15, 15.75],
 					"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8.75]},

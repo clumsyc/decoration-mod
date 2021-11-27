@@ -19,9 +19,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
 import javax.annotation.Nullable;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ItemCardbox extends BlockItem {
     public ItemCardbox(Block block) {
@@ -40,23 +38,14 @@ public class ItemCardbox extends BlockItem {
                     NonNullList<ItemStack> nonnulllist = NonNullList.withSize(27, ItemStack.EMPTY);
                     ItemStackHelper.loadAllItems(compoundnbt, nonnulllist);
                     int i = 0;
-
-                    HashMap<ITextComponent, Integer> sorted = new HashMap<>();
-                    for (ItemStack is : nonnulllist) {
+                    for (ItemStack is : nonnulllist) { //TODO: Sort list
                         if (!is.isEmpty()) {
-                            if (sorted.containsKey(is.getDisplayName())) {
-                                sorted.replace(is.getDisplayName(), sorted.get(is.getDisplayName())+is.getCount());
-                            } else {
-                                sorted.put(is.getDisplayName(), is.getCount());
+                            if (i <= 6) {
+                                ++i;
+                                IFormattableTextComponent iftc = is.getDisplayName().copy();
+                                iftc.append(" x").append(String.valueOf(is.getCount()));
+                                tooltip.add(iftc);
                             }
-                        }
-                    }
-                    for (Map.Entry<ITextComponent, Integer> hashMap : sorted.entrySet()) {
-                        if (i <= 6) {
-                            ++i;
-                            IFormattableTextComponent iftc = hashMap.getKey().copy();
-                            iftc.append(" x").append(String.valueOf(hashMap.getValue()));
-                            tooltip.add(iftc);
                         }
                     }
                     if (i > 6) {

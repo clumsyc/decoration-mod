@@ -3,6 +3,7 @@ package me.clumsycat.furnitureexpanded.blocks;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.DyeHandler;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
+import me.clumsycat.furnitureexpanded.util.SeatHandler;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.material.PushReaction;
@@ -38,37 +39,36 @@ public class Toilet extends Block {
         super(AbstractBlock.Properties.of(Material.CLAY)
                 .strength(1f, 2f)
                 .harvestTool(ToolType.PICKAXE)
-                .sound(SoundType.STONE)
-                .noOcclusion());
+                .sound(SoundType.STONE));
         this.registerDefaultState(this.getStateDefinition().any().setValue(face, Direction.NORTH).setValue(type, 0).setValue(dye, 16));
     }
 
     @Override
     public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+        if (worldIn.isClientSide) return ActionResultType.SUCCESS;
         ItemStack stack = player.getMainHandItem();
-        if (ItemTags.CARPETS.contains(stack.getItem())) {
-            int j = DyeHandler.carpetResolver(16, stack);
-            if (state.getValue(dye) != j && j < 16) {
-                if (!player.isCreative()) {
-                    stack.setCount(stack.getCount() - 1);
-                    if (state.getValue(dye) != 16) InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY()+.5, pos.getZ(), new ItemStack(DyeHandler.CARPET_DYES.get(DyeColor.byId(state.getValue(dye)))));
+        if (!SeatHandler.isOccupied(worldIn, pos)) {
+            if (ItemTags.CARPETS.contains(stack.getItem())) {
+                int j = DyeHandler.carpetResolver(16, stack);
+                if (state.getValue(dye) != j && j < 16) {
+                    if (!player.isCreative()) {
+                        stack.setCount(stack.getCount() - 1);
+                        if (state.getValue(dye) != 16)
+                            InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY() + .5, pos.getZ(), new ItemStack(DyeHandler.CARPET_DYES.get(DyeColor.byId(state.getValue(dye)))));
+                    }
+                    worldIn.setBlockAndUpdate(pos, state.setValue(dye, j));
                 }
-                worldIn.setBlockAndUpdate(pos, state.setValue(dye, j));
+            } else if (stack.isEmpty()) {
+                if (state.getValue(type) == 0) worldIn.setBlockAndUpdate(pos, state.setValue(type, 1));
+                else {
+                    int y = hit.getBlockPos().getY();
+                    if (hit.getDirection() == Direction.UP && hit.getLocation().y == (y + .625) && !player.isCrouching()) SeatHandler.create(worldIn, pos, player, 0);
+                    else worldIn.setBlockAndUpdate(pos, state.setValue(type, 0));
+                }
+                worldIn.playSound(null, pos, SoundType.WOOD.getBreakSound(), SoundCategory.BLOCKS, 0.5f, 0.5f);
             }
         }
-        else if(stack.isEmpty()) {
-            if (state.getValue(type) == 0) worldIn.setBlockAndUpdate(pos, state.setValue(type, 1));
-            else {
-                /*
-                int y = hit.getBlockPos().getY();
-                if (hit.getDirection() == Direction.UP && hit.getLocation().y == (y+.625)) seat(); //TODO: Re-add seat function
-                else worldIn.setBlockAndUpdate(pos, state.setValue(type, 0));
-                */
-                worldIn.setBlockAndUpdate(pos, state.setValue(type, 0));
-            }
-            worldIn.playSound(player, pos, SoundType.WOOD.getBreakSound(), SoundCategory.BLOCKS, 0.5f, 0.5f);
-        }
-        return worldIn.isClientSide ? ActionResultType.SUCCESS : ActionResultType.CONSUME;
+        return ActionResultType.CONSUME;
     }
 
     @Override
@@ -107,6 +107,11 @@ public class Toilet extends Block {
     @Override
     public BlockState mirror(BlockState state, Mirror mirrorIn) {
         return state.rotate(mirrorIn.getRotation(state.getValue(face)));
+    }
+
+    @Override
+    public float getShadeBrightness(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
+        return 0.5f;
     }
 
     @Override

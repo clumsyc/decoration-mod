@@ -6,7 +6,7 @@
 	"loader": "forge:multi-layer",
 	"layers": {
 		"solid": {
-			"parent": "furnitureexpanded:block/bathroom_sink"
+			"parent": "furnitureexpanded:block/bathroom_sink_model"
 		},
 		"translucent": {
 			"textures": {

@@ -6,13 +6,17 @@ import me.clumsycat.furnitureexpanded.blocks.tileentities.CardboxTileEntity;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.ClockSignTileEntity;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.FileCabinetTileEntity;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.TrashCanTileEntity;
+import me.clumsycat.furnitureexpanded.entities.SeatEntity;
 import me.clumsycat.furnitureexpanded.items.BlockItemBase;
 import me.clumsycat.furnitureexpanded.items.ItemBase;
 import me.clumsycat.furnitureexpanded.items.ItemBaseFinite;
 import me.clumsycat.furnitureexpanded.items.ItemCardbox;
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityClassification;
+import net.minecraft.entity.EntityType;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntityType;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -24,6 +28,7 @@ public class RegistryHandler {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Expanded.MOD_ID);
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Expanded.MOD_ID);
     public static final DeferredRegister<TileEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.TILE_ENTITIES, Expanded.MOD_ID);
+    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Expanded.MOD_ID);
     //public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Expanded.MOD_ID);
     //public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Expanded.MOD_ID);
     //public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Expanded.MOD_ID);
@@ -36,6 +41,7 @@ public class RegistryHandler {
         ITEMS.register(modEventBus);
         BLOCKS.register(modEventBus);
         TILES.register(modEventBus);
+        ENTITIES.register(modEventBus);
         //CONTAINERS.register(modEventBus);
         //RECIPE_SERIALIZERS.register(modEventBus);
         //SOUND_EVENTS.register(modEventBus);
@@ -100,4 +106,15 @@ public class RegistryHandler {
     public static final RegistryObject<TileEntityType<FileCabinetTileEntity>> FILE_CABINET_TE = TILES.register("file_cabinet", () -> TileEntityType.Builder.of(FileCabinetTileEntity::new, FILE_CABINET.get()).build(null));
     public static final RegistryObject<TileEntityType<ClockSignTileEntity>> CLOCK_SIGN_TE = TILES.register("clock_sign", () -> TileEntityType.Builder.of(ClockSignTileEntity::new, CLOCK_SIGN.get()).build(null));
     public static final RegistryObject<TileEntityType<TrashCanTileEntity>> TRASH_CAN_TE = TILES.register("trash_can", () -> TileEntityType.Builder.of(TrashCanTileEntity::new, TRASH_CAN.get()).build(null));
+
+
+    /**
+     *
+     * ENTITIES
+     *
+     */
+
+    public static final RegistryObject<EntityType<SeatEntity>> SEAT = ENTITIES.register("seat",
+            () -> EntityType.Builder.<SeatEntity>of(SeatEntity::new, EntityClassification.MISC)
+                    .build(String.valueOf(new ResourceLocation(Expanded.MOD_ID, "seat"))));
 }

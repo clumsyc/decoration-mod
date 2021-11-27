@@ -22,6 +22,7 @@ public class ItemBaseFinite extends Item {
     public ItemStack getContainerItem(ItemStack itemStack) {
         ItemStack is = itemStack.copy();
         is.setDamageValue(itemStack.getDamageValue()+1);
+        if (is.getDamageValue() >= is.getMaxDamage()) is.setCount(is.getCount()-1);
         return is;
     }
 }

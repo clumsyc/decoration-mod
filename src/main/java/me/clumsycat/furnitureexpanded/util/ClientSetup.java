@@ -1,15 +1,17 @@
 package me.clumsycat.furnitureexpanded.util;
 
 import me.clumsycat.furnitureexpanded.Expanded;
-import me.clumsycat.furnitureexpanded.blocks.tileentities.renderer.ClockSignTileEntityRenderer;
+import me.clumsycat.furnitureexpanded.renderer.ClockSignTileEntityRenderer;
 import me.clumsycat.furnitureexpanded.items.ItemCardbox;
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
+import me.clumsycat.furnitureexpanded.renderer.SeatRenderer;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.ItemModelsProperties;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -17,6 +19,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class ClientSetup {
 
     public static void init(final FMLClientSetupEvent event) {
+        RenderingRegistry.registerEntityRenderingHandler(RegistryHandler.SEAT.get(), SeatRenderer::new);
         ClientRegistry.bindTileEntityRenderer(RegistryHandler.CLOCK_SIGN_TE.get(), ClockSignTileEntityRenderer::new);
 
         RenderTypeLookup.setRenderLayer(RegistryHandler.SHOWER_BOX.get(), (layer) -> layer == RenderType.solid() || layer == RenderType.translucent());

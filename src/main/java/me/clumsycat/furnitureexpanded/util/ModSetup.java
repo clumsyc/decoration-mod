@@ -14,6 +14,7 @@ public class ModSetup {
 
     public static void init(final FMLCommonSetupEvent event) {
         MinecraftForge.EVENT_BUS.addListener(LeftClickEvent::eventHandler);
+        MinecraftForge.EVENT_BUS.addListener(SeatHandler::onBreak);
     }
 
 

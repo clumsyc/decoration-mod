@@ -1,4 +1,4 @@
-package me.clumsycat.furnitureexpanded.blocks.tileentities.renderer;
+package me.clumsycat.furnitureexpanded.renderer;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.ClockSignTileEntity;
