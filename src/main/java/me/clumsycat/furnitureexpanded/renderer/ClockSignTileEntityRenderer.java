@@ -1,60 +1,66 @@
 package me.clumsycat.furnitureexpanded.renderer;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.ClockSignTileEntity;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.util.Direction;
-import net.minecraft.util.IReorderingProcessor;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.client.gui.Font;
+import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.util.FormattedCharSequence;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
+@SuppressWarnings("NullableProblems")
 @OnlyIn(Dist.CLIENT)
-public class ClockSignTileEntityRenderer extends TileEntityRenderer<ClockSignTileEntity> {
-    public ClockSignTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
-        super(rendererDispatcherIn);
+public class ClockSignTileEntityRenderer implements BlockEntityRenderer<ClockSignTileEntity> {
+    private final Font font;
+
+    public ClockSignTileEntityRenderer(BlockEntityRendererProvider.Context rendererDispatcherIn) {
+        super();
+        this.font = rendererDispatcherIn.getFont();
     }
 
     @Override
-    public void render(ClockSignTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int combinedLightIn, int combinedOverlayIn) {
+    public void render(ClockSignTileEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         BlockState state = tileEntityIn.getBlockState();
-
-        //int i = DyeColor.BLUE.getTextColor();
-        //double d0 = 0.4D;
-        //int j = (int)((double) NativeImage.getR(i) * 0.4D);
-        //int k = (int)((double) NativeImage.getG(i) * 0.4D);
-        //int l = (int)((double) NativeImage.getB(i) * 0.4D);
-        //int i1 = NativeImage.combine(0, l, k, j);
-        int i1 = 98255; // TODO: Add support to custom colors
-
-        FontRenderer fontRenderer = this.renderer.font;
-        IReorderingProcessor irp = new StringTextComponent((tileEntityIn.hour < 10 ? "0" + tileEntityIn.hour : tileEntityIn.hour) +" : "
-                + (tileEntityIn.minutes < 10 ? "0" + tileEntityIn.minutes : tileEntityIn.minutes)).getVisualOrderText();
+        int i1 = 98255;
+        FormattedCharSequence irp = new TextComponent(getTime(tileEntityIn.getLevel() != null ? tileEntityIn.getLevel().getDayTime() : 0)).getVisualOrderText();
 
         float f4 = -state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot();
-        matrixStackIn.pushPose();
-        matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f4));
-        matrixStackIn.mulPose(Direction.DOWN.getRotation());
-        matrixStackIn.translate(-.925, .27, -.13);
-        matrixStackIn.scale(0.05f, 0.05f, 0.05f);
-        fontRenderer.drawInBatch(irp, -8, -8, i1, false, matrixStackIn.last().pose(), bufferIn, false, 0, 225);
-        matrixStackIn.popPose();
+        renderTask(f4, -.925D, irp, i1, matrixStackIn, bufferIn);
 
         float f5 = -state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite().toYRot();
+        renderTask(f5, .075D, irp, i1, matrixStackIn, bufferIn);
+    }
+
+    private void renderTask(float rotation, double startingPoint, FormattedCharSequence irp, int i1, PoseStack matrixStackIn, MultiBufferSource bufferIn) {
         matrixStackIn.pushPose();
         matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f5));
+        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(rotation));
         matrixStackIn.mulPose(Direction.DOWN.getRotation());
-        matrixStackIn.translate(.075D, .27D, -.13D);
+        matrixStackIn.translate(startingPoint, .27D, -.13D);
         matrixStackIn.scale(0.05f, 0.05f, 0.05f);
-        fontRenderer.drawInBatch(irp, -8, -8, i1, false, matrixStackIn.last().pose(), bufferIn, false, 0, 225 /*combinedLightIn*/);
+        this.font.drawInBatch(irp, -8, -8, i1, false, matrixStackIn.last().pose(), bufferIn, false, 0, 225 /*combinedLightIn*/);
         matrixStackIn.popPose();
+    }
+
+    private String getTime(long dayTime) {
+        Calendar c = Calendar.getInstance();
+        double ftime = (dayTime+6000)%24000;
+        double ftd = ftime/1000;
+        double mnt = ((ftd-Math.floor(ftd))*60);
+        c.set(Calendar.HOUR_OF_DAY, (int) ftd);
+        c.set(Calendar.MINUTE, (int) mnt);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("HH : mm");
+        return sdf.format(c.getTime());
     }
 }

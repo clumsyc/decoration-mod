@@ -2,22 +2,23 @@ package me.clumsycat.furnitureexpanded.entities;
 
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
 import me.clumsycat.furnitureexpanded.util.SeatHandler;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.network.IPacket;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.World;
-import net.minecraftforge.fml.network.NetworkHooks;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.network.NetworkHooks;
 
+@SuppressWarnings("NullableProblems")
 public class SeatEntity extends Entity {
     private BlockPos bpos;
-    private Vector3d previousPos;
-    public SeatEntity(EntityType<SeatEntity> type, World worldIn) { super(type, worldIn); }
+    private Vec3 previousPos;
+    public SeatEntity(EntityType<SeatEntity> type, Level worldIn) { super(type, worldIn); }
 
-    public SeatEntity(World world, BlockPos pos, Vector3d playerPos, double offsetY) {
+    public SeatEntity(Level world, BlockPos pos, Vec3 playerPos, double offsetY) {
         super(RegistryHandler.SEAT.get(), world);
         setPos(pos.getX() + 0.5D, pos.getY()-1D + offsetY, pos.getZ() + 0.5D);
         noPhysics = true;
@@ -26,19 +27,19 @@ public class SeatEntity extends Entity {
     }
 
     @Override
-    public IPacket<?> getAddEntityPacket() {
+    public Packet<?> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
     @Override
-    public void remove() {
-        super.remove();
+    public void remove(RemovalReason pReason) {
+        super.remove(pReason);
         SeatHandler.removeSeatEntity(level, bpos);
         if (this.isAlive()) this.kill();
     }
 
     @Override
-    public Vector3d getDismountLocationForPassenger(LivingEntity p_230268_1_) {
+    public Vec3 getDismountLocationForPassenger(LivingEntity p_230268_1_) {
         return previousPos != null ? previousPos : p_230268_1_.position();
     }
 
@@ -46,19 +47,16 @@ public class SeatEntity extends Entity {
     protected void defineSynchedData() { }
 
     @Override
-    protected void readAdditionalSaveData(CompoundNBT p_70037_1_) { }
+    protected void readAdditionalSaveData(CompoundTag p_70037_1_) { }
 
     @Override
-    protected void addAdditionalSaveData(CompoundNBT p_213281_1_) { }
+    protected void addAdditionalSaveData(CompoundTag p_213281_1_) { }
 
     @Override
     public void tick() {
         super.tick();
         if (this.getPassengers().isEmpty())
             if (!level.isClientSide)
-                this.remove();
+                this.remove(RemovalReason.DISCARDED);
     }
-
-    //TODO: improve previous position to find a good spot.
-    //TODO: Limit body/head turning too much when sitting.
 }

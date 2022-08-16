@@ -4,34 +4,31 @@ import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import me.clumsycat.furnitureexpanded.util.enums.WallHeight;
 import me.clumsycat.furnitureexpanded.util.enums.WallSide;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.HorizontalBlock;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
-import net.minecraft.world.World;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("NullableProblems")
 public class PaperHolder extends Block {
-    private static final DirectionProperty face = HorizontalBlock.FACING;
+    private static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
     private static final EnumProperty<WallHeight> height = BSProperties.WALL_HEIGHT;
     private static final EnumProperty<WallSide> side = BSProperties.WALL_SIDE;
 
@@ -43,20 +40,20 @@ public class PaperHolder extends Block {
     }
 
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity tileentity, ItemStack stack) {
-        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity tileentity, ItemStack stack) {
+        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.playerDestroy(worldIn, player, pos, state, tileentity, stack);
     }
 
     @Override
-    public void onBlockExploded(BlockState state, World worldIn, BlockPos pos, Explosion explosion) {
-        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+    public void onBlockExploded(BlockState state, Level worldIn, BlockPos pos, Explosion explosion) {
+        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.onBlockExploded(state, worldIn, pos, explosion);
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         WallHeight _height = WallHeight.NORMAL;
         WallSide _side = WallSide.NORMAL;
         Direction nearest = context.getNearestLookingDirection();
@@ -67,12 +64,10 @@ public class PaperHolder extends Block {
             int pointer = direction.getNormal().get(direction.getAxis());
             if (pointer < 0) posX = context.getClickedPos().get(direction.getAxis()) - axis;
 
-            if (posX >= 0 && posX <= 0.33 || posX <= -0.66) _side = WallSide.LEFT;
-            else if (posX >= 0.33 && posX <= 0.66 || posX <= -0.33 && posX >= -0.66) _side = WallSide.NORMAL;
-            else _side = WallSide.RIGHT;
+            if (posX >= 0 && posX <= 0.33 || posX <= -0.67) _side = WallSide.LEFT;
+            else if (posX >= 0.67 || posX >= -0.33 && posX <= 0) _side = WallSide.RIGHT;
 
             double posY = context.getClickLocation().y - context.getClickedPos().getY();
-            //if (posY < 0) posY =+ 1; //TODO: test 1.17 y map
             if (posY <= 0.33) _height = WallHeight.LOWER;
             else if (posY > 0.66) _height = WallHeight.HIGHER;
         }
@@ -80,14 +75,14 @@ public class PaperHolder extends Block {
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader reader, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
         Direction direction = state.getValue(face).getOpposite();
         BlockPos relative = pos.relative(direction);
         return !reader.isEmptyBlock(relative);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(face, height, side);
     }
 
@@ -102,12 +97,12 @@ public class PaperHolder extends Block {
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        switch (state.getValue(face)) {
-            case NORTH: return ModShapes.PAPER_HOLDER_N(state.getValue(height), state.getValue(side));
-            case EAST: return ModShapes.PAPER_HOLDER_E(state.getValue(height), state.getValue(side));
-            case SOUTH: return ModShapes.PAPER_HOLDER_S(state.getValue(height), state.getValue(side));
-            default: return ModShapes.PAPER_HOLDER_W(state.getValue(height), state.getValue(side));
-        }
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        return switch (state.getValue(face)) {
+            case NORTH -> ModShapes.PAPER_HOLDER_N(state.getValue(height), state.getValue(side));
+            case EAST -> ModShapes.PAPER_HOLDER_E(state.getValue(height), state.getValue(side));
+            case SOUTH -> ModShapes.PAPER_HOLDER_S(state.getValue(height), state.getValue(side));
+            default -> ModShapes.PAPER_HOLDER_W(state.getValue(height), state.getValue(side));
+        };
     }
 }

@@ -1,0 +1,12 @@
+{
+  "replace": false,
+  "values": [
+    "furnitureexpanded:toilet",
+    "furnitureexpanded:bathroom_sink",
+    "furnitureexpanded:shower_box",
+    "furnitureexpanded:towel_bar",
+    "furnitureexpanded:trash_can",
+    "furnitureexpanded:file_cabinet",
+    "furnitureexpanded:clock_sign"
+  ]
+}

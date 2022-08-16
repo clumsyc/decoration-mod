@@ -2,41 +2,42 @@ package me.clumsycat.furnitureexpanded.blocks;
 
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.EnumProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.state.properties.BlockStateProperties;
-import net.minecraft.state.properties.DoubleBlockHalf;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Mirror;
-import net.minecraft.util.Rotation;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.*;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.Containers;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
-public class ShowerBox extends Block { // DoublePlantBlock
-    private static final DirectionProperty face = HorizontalBlock.FACING;
+@SuppressWarnings("NullableProblems")
+public class ShowerBox extends Block {
+    private static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
     public static final EnumProperty<DoubleBlockHalf> half = BlockStateProperties.DOUBLE_BLOCK_HALF;
     DoubleBlockHalf _lower = DoubleBlockHalf.LOWER;
     DoubleBlockHalf _upper = DoubleBlockHalf.UPPER;
 
-    public ShowerBox() { //TODO: Import new model
+    public ShowerBox() {
         super(Properties.of(Material.METAL)
                 .strength(1f, 1f)
-                .harvestTool(ToolType.PICKAXE)
                 .sound(SoundType.BASALT)
                 .noOcclusion()
         );
@@ -44,37 +45,37 @@ public class ShowerBox extends Block { // DoublePlantBlock
     }
 
     @Override
-    public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.setPlacedBy(worldIn, pos, state, placer, stack);
-        worldIn.setBlockAndUpdate(pos.above(), RegistryHandler.SHOWER_BOX.get().defaultBlockState().setValue(half, _upper).setValue(face, worldIn.getBlockState(pos).getBlockState().getValue(face)));
+        worldIn.setBlockAndUpdate(pos.above(), RegistryHandler.SHOWER_BOX.get().defaultBlockState().setValue(half, _upper).setValue(face, worldIn.getBlockState(pos).getValue(face)));
     }
 
     @Override
-    public void playerWillDestroy(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
         destroy(worldIn, state, pos, false);
         super.playerWillDestroy(worldIn, pos, state, player);
     }
 
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity tileEntity, ItemStack stack) {
+    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity tileEntity, ItemStack stack) {
         destroy(worldIn, state, pos, true);
         super.playerDestroy(worldIn, player, pos, state, tileEntity, stack);
     }
 
     @Override
-    public void onBlockExploded(BlockState state, World worldIn, BlockPos pos, Explosion explosion) {
+    public void onBlockExploded(BlockState state, Level worldIn, BlockPos pos, Explosion explosion) {
         destroy(worldIn, state, pos, true);
         super.onBlockExploded(state, worldIn, pos, explosion);
     }
 
-    private void destroy(World worldIn, BlockState state, BlockPos pos, boolean shouldDrop) {
+    private void destroy(Level worldIn, BlockState state, BlockPos pos, boolean shouldDrop) {
         if (worldIn.getBlockState(state.getValue(half) == _lower ? pos.above() : pos.below()).getBlock() == this)
             worldIn.removeBlock(state.getValue(half) == _lower ? pos.above() : pos.below(), false);
-        if (shouldDrop) InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+        if (shouldDrop) Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
     }
 
     @Override
-    public boolean canSurvive(BlockState state, IWorldReader worldIn, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
         return worldIn.isEmptyBlock(pos.above());
     }
 
@@ -85,7 +86,7 @@ public class ShowerBox extends Block { // DoublePlantBlock
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(half, _lower).setValue(face, context.getHorizontalDirection().getOpposite());
     }
 
@@ -100,37 +101,36 @@ public class ShowerBox extends Block { // DoublePlantBlock
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(half, face);
     }
 
     @Override
-    public BlockRenderType getRenderShape(BlockState p_149645_1_) {
-        return BlockRenderType.MODEL;
+    public RenderShape getRenderShape(BlockState p_149645_1_) {
+        return RenderShape.MODEL;
     }
 
-
     @Override
-    public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) {
+    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
         return 0.2f;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
         if (state.getValue(half) == _upper) {
-            switch (state.getValue(face)) {
-                case NORTH: return ModShapes.SHOWER_BOX_TOP_N;
-                case EAST: return ModShapes.SHOWER_BOX_TOP_E;
-                case SOUTH: return ModShapes.SHOWER_BOX_TOP_S;
-                default: return ModShapes.SHOWER_BOX_TOP_W;
-            }
+            return switch (state.getValue(face)) {
+                case NORTH -> ModShapes.SHOWER_BOX_TOP_N;
+                case EAST -> ModShapes.SHOWER_BOX_TOP_E;
+                case SOUTH -> ModShapes.SHOWER_BOX_TOP_S;
+                default -> ModShapes.SHOWER_BOX_TOP_W;
+            };
         } else {
-            switch (state.getValue(face)) {
-                case NORTH: return ModShapes.SHOWER_BOX_BOTTOM_N;
-                case EAST: return ModShapes.SHOWER_BOX_BOTTOM_E;
-                case SOUTH: return ModShapes.SHOWER_BOX_BOTTOM_S;
-                default: return ModShapes.SHOWER_BOX_BOTTOM_W;
-            }
+            return switch (state.getValue(face)) {
+                case NORTH -> ModShapes.SHOWER_BOX_BOTTOM_N;
+                case EAST -> ModShapes.SHOWER_BOX_BOTTOM_E;
+                case SOUTH -> ModShapes.SHOWER_BOX_BOTTOM_S;
+                default -> ModShapes.SHOWER_BOX_BOTTOM_W;
+            };
         }
     }
 }

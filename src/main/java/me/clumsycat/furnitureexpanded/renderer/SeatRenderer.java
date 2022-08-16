@@ -2,14 +2,15 @@ package me.clumsycat.furnitureexpanded.renderer;
 
 import me.clumsycat.furnitureexpanded.Expanded;
 import me.clumsycat.furnitureexpanded.entities.SeatEntity;
-import net.minecraft.client.renderer.culling.ClippingHelper;
+import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererManager;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.resources.ResourceLocation;
 
+@SuppressWarnings("NullableProblems")
 public class SeatRenderer extends EntityRenderer<SeatEntity> {
     private static final ResourceLocation _texture = new ResourceLocation(Expanded.MOD_ID, "");
-    public SeatRenderer(EntityRendererManager p_i46179_1_) {
+    public SeatRenderer(EntityRendererProvider.Context p_i46179_1_) {
         super(p_i46179_1_);
     }
 
@@ -19,7 +20,7 @@ public class SeatRenderer extends EntityRenderer<SeatEntity> {
     }
 
     @Override
-    public boolean shouldRender(SeatEntity p_225626_1_, ClippingHelper p_225626_2_, double p_225626_3_, double p_225626_5_, double p_225626_7_) {
+    public boolean shouldRender(SeatEntity p_225626_1_, Frustum p_225626_2_, double p_225626_3_, double p_225626_5_, double p_225626_7_) {
         return false;
     }
 

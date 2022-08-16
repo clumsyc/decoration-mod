@@ -1,7 +1,6 @@
 package me.clumsycat.furnitureexpanded;
 
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
-import me.clumsycat.furnitureexpanded.util.ClientSetup;
 import me.clumsycat.furnitureexpanded.util.ModSetup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -13,12 +12,7 @@ public class Expanded {
 
     public Expanded() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(ModSetup::init);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(ClientSetup::init);
-
         RegistryHandler.init();
-
         MinecraftForge.EVENT_BUS.register(this);
-
     }
-
 }

@@ -1,6 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"loader": "forge:multi-layer",
+	"textures": {
+		"particle": "block/gray_stained_glass"
+	},
 	"layers": {
 		"solid": {
 			"textures": {

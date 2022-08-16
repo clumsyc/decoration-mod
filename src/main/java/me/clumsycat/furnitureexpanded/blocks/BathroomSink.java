@@ -2,36 +2,39 @@ package me.clumsycat.furnitureexpanded.blocks;
 
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("NullableProblems")
 public class BathroomSink extends Block {
-    private static final DirectionProperty face = HorizontalBlock.FACING;
+    private static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
     public static final IntegerProperty type = BSProperties.TYPE_0_1;
 
     public BathroomSink() {
-        super(AbstractBlock.Properties.of(Material.CLAY)
+        super(Block.Properties.of(Material.CLAY)
                 .strength(1f, 2f)
-                .harvestTool(ToolType.PICKAXE)
                 .sound(SoundType.STONE)
         );
         this.registerDefaultState(this.stateDefinition.any().setValue(face, Direction.NORTH).setValue(type, 0));
@@ -40,39 +43,39 @@ public class BathroomSink extends Block {
 
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if(player.getMainHandItem().isEmpty()) {
             worldIn.setBlockAndUpdate(pos, state.setValue(type, state.getValue(type) == 0 ? 1 : 0));
-            worldIn.playSound(player, pos, SoundType.LANTERN.getBreakSound(), SoundCategory.BLOCKS, 0.5f, 0.5f);
+            worldIn.playSound(player, pos, SoundType.LANTERN.getBreakSound(), SoundSource.BLOCKS, 0.5f, 0.5f);
         }
-        return worldIn.isClientSide ? ActionResultType.SUCCESS : ActionResultType.CONSUME;
+        return worldIn.isClientSide ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
     }
 
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity tileentity, ItemStack stack) {
-        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity tileentity, ItemStack stack) {
+        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.playerDestroy(worldIn, player, pos, state, tileentity, stack);
     }
 
     @Override
-    public void onBlockExploded(BlockState state, World worldIn, BlockPos pos, Explosion explosion) {
-        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+    public void onBlockExploded(BlockState state, Level worldIn, BlockPos pos, Explosion explosion) {
+        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.onBlockExploded(state, worldIn, pos, explosion);
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        switch (state.getValue(face)) {
-            case NORTH: return ModShapes.BATHROOM_SINK_N;
-            case EAST: return ModShapes.BATHROOM_SINK_E;
-            case SOUTH: return ModShapes.BATHROOM_SINK_S;
-            default: return ModShapes.BATHROOM_SINK_W;
-        }
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        return switch (state.getValue(face)) {
+            case NORTH -> ModShapes.BATHROOM_SINK_N;
+            case EAST -> ModShapes.BATHROOM_SINK_E;
+            case SOUTH -> ModShapes.BATHROOM_SINK_S;
+            default -> ModShapes.BATHROOM_SINK_W;
+        };
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(face, context.getHorizontalDirection().getOpposite());
     }
 
@@ -87,10 +90,10 @@ public class BathroomSink extends Block {
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(face, type);
     }
 
     @Override
-    public float getShadeBrightness(BlockState state, IBlockReader worldIn, BlockPos pos) { return 0.5f; }
+    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) { return 0.5f; }
 }

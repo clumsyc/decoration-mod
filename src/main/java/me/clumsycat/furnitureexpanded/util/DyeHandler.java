@@ -1,16 +1,16 @@
 package me.clumsycat.furnitureexpanded.util;
 
 import com.google.common.collect.Maps;
-import net.minecraft.block.Blocks;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IItemProvider;
-import net.minecraft.util.Util;
+import net.minecraft.Util;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 
 import java.util.Map;
 
 public class DyeHandler {
-    public static final Map<DyeColor, IItemProvider> CARPET_DYES = Util.make(Maps.newEnumMap(DyeColor.class), (p_203402_0_) -> {
+    public static final Map<DyeColor, Block> CARPET_DYES = Util.make(Maps.newEnumMap(DyeColor.class), (p_203402_0_) -> {
         p_203402_0_.put(DyeColor.WHITE, Blocks.WHITE_CARPET);
         p_203402_0_.put(DyeColor.ORANGE, Blocks.ORANGE_CARPET);
         p_203402_0_.put(DyeColor.MAGENTA, Blocks.MAGENTA_CARPET);

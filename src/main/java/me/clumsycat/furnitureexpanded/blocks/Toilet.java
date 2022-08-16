@@ -4,57 +4,61 @@ import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.DyeHandler;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import me.clumsycat.furnitureexpanded.util.SeatHandler;
-import net.minecraft.block.*;
-import net.minecraft.block.material.Material;
-import net.minecraft.block.material.PushReaction;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.inventory.InventoryHelper;
-import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.DyeColor;
-import net.minecraft.item.ItemStack;
-import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IntegerProperty;
-import net.minecraft.state.StateContainer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.ItemTags;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.shapes.ISelectionContext;
-import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ToolType;
+import net.minecraft.world.Containers;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.DyeColor;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Explosion;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.Material;
+import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.VoxelShape;
 
 import javax.annotation.Nullable;
 
+
+@SuppressWarnings("NullableProblems")
 public class Toilet extends Block {
     private static final IntegerProperty type = BSProperties.TYPE_0_1;
-    private static final DirectionProperty face = HorizontalBlock.FACING;
-    private static final IntegerProperty dye = BSProperties.TYPE_17;
+    private static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
+    private static final IntegerProperty dye = BSProperties.DYE_17;
 
 
     public Toilet() {
-        super(AbstractBlock.Properties.of(Material.CLAY)
+        super(Block.Properties.of(Material.CLAY)
                 .strength(1f, 2f)
-                .harvestTool(ToolType.PICKAXE)
                 .sound(SoundType.STONE));
         this.registerDefaultState(this.getStateDefinition().any().setValue(face, Direction.NORTH).setValue(type, 0).setValue(dye, 16));
     }
 
     @Override
-    public ActionResultType use(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockRayTraceResult hit) {
-        if (worldIn.isClientSide) return ActionResultType.SUCCESS;
+    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+        if (worldIn.isClientSide) return InteractionResult.SUCCESS;
         ItemStack stack = player.getMainHandItem();
         if (!SeatHandler.isOccupied(worldIn, pos)) {
-            if (ItemTags.CARPETS.contains(stack.getItem())) {
+            if (stack.is(ItemTags.CARPETS)) {
                 int j = DyeHandler.carpetResolver(16, stack);
                 if (state.getValue(dye) != j && j < 16) {
                     if (!player.isCreative()) {
                         stack.setCount(stack.getCount() - 1);
                         if (state.getValue(dye) != 16)
-                            InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY() + .5, pos.getZ(), new ItemStack(DyeHandler.CARPET_DYES.get(DyeColor.byId(state.getValue(dye)))));
+                            Containers.dropItemStack(worldIn, pos.getX(), pos.getY() + .5, pos.getZ(), new ItemStack(DyeHandler.CARPET_DYES.get(DyeColor.byId(state.getValue(dye)))));
                     }
                     worldIn.setBlockAndUpdate(pos, state.setValue(dye, j));
                 }
@@ -65,21 +69,21 @@ public class Toilet extends Block {
                     if (hit.getDirection() == Direction.UP && hit.getLocation().y == (y + .625) && !player.isCrouching()) SeatHandler.create(worldIn, pos, player, 0);
                     else worldIn.setBlockAndUpdate(pos, state.setValue(type, 0));
                 }
-                worldIn.playSound(null, pos, SoundType.WOOD.getBreakSound(), SoundCategory.BLOCKS, 0.5f, 0.5f);
+                worldIn.playSound(null, pos, SoundType.WOOD.getBreakSound(), SoundSource.BLOCKS, 0.5f, 0.5f);
             }
         }
-        return ActionResultType.CONSUME;
+        return InteractionResult.CONSUME;
     }
 
     @Override
-    public void playerDestroy(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable TileEntity tileentity, ItemStack stack) {
-        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity tileentity, ItemStack stack) {
+        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.playerDestroy(worldIn, player, pos, state, tileentity, stack);
     }
 
     @Override
-    public void onBlockExploded(BlockState state, World worldIn, BlockPos pos, Explosion explosion) {
-        InventoryHelper.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+    public void onBlockExploded(BlockState state, Level worldIn, BlockPos pos, Explosion explosion) {
+        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.onBlockExploded(state, worldIn, pos, explosion);
     }
 
@@ -90,12 +94,12 @@ public class Toilet extends Block {
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockItemUseContext context) {
+    public BlockState getStateForPlacement(BlockPlaceContext context) {
         return this.defaultBlockState().setValue(face, context.getHorizontalDirection().getOpposite());
     }
 
     @Override
-    protected void createBlockStateDefinition(StateContainer.Builder<Block, BlockState> builder) {
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         builder.add(face, type, dye);
     }
 
@@ -110,17 +114,17 @@ public class Toilet extends Block {
     }
 
     @Override
-    public float getShadeBrightness(BlockState p_220080_1_, IBlockReader p_220080_2_, BlockPos p_220080_3_) {
+    public float getShadeBrightness(BlockState p_220080_1_, BlockGetter p_220080_2_, BlockPos p_220080_3_) {
         return 0.5f;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        switch (state.getValue(face)) {
-            case NORTH: return ModShapes.TOILET_N;
-            case EAST: return ModShapes.TOILET_E;
-            case SOUTH: return ModShapes.TOILET_S;
-            default: return ModShapes.TOILET_W;
-        }
+    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
+        return switch (state.getValue(face)) {
+            case NORTH -> ModShapes.TOILET_N;
+            case EAST -> ModShapes.TOILET_E;
+            case SOUTH -> ModShapes.TOILET_S;
+            default -> ModShapes.TOILET_W;
+        };
     }
 }
