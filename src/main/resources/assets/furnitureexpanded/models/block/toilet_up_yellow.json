@@ -1,6 +1,6 @@
 {
-	"loader": "forge:multi-layer",
-	"layers": {
+	"loader": "forge:composite",
+	"children": {
 		"solid": {
 			"parent": "furnitureexpanded:block/toilet_up_solid_model",
 			"textures": {

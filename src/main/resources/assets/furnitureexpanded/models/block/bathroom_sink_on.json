@@ -3,12 +3,13 @@
 		"particle": "block/white_concrete"
 	},
 	"credit": "Made with Blockbench",
-	"loader": "forge:multi-layer",
-	"layers": {
+	"loader": "forge:composite",
+	"children": {
 		"solid": {
 			"parent": "furnitureexpanded:block/bathroom_sink_model"
 		},
 		"translucent": {
+			"render_type": "translucent",
 			"textures": {
 				"3": "furnitureexpanded:blocks/water_still"
 			},

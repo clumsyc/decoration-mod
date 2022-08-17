@@ -1,14 +1,8 @@
 {
-	"textures": {
-		"particle": "block/quartz_block_bottom"
-	},
-	"loader": "forge:multi-layer",
-	"layers": {
+	"loader": "forge:composite",
+	"children": {
 		"solid": {
-			"parent": "furnitureexpanded:block/toilet_up_solid_model",
-			"textures": {
-				"5": "block/oak_log"
-			}
+			"parent": "furnitureexpanded:block/toilet_up_solid_model"
 		},
 		"translucent": {
 			"parent": "furnitureexpanded:block/toilet_up_translucent_model"

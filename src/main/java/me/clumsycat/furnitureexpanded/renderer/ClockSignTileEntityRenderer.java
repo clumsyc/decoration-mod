@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TextComponent;
+import net.minecraft.network.chat.Component;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -32,7 +32,7 @@ public class ClockSignTileEntityRenderer implements BlockEntityRenderer<ClockSig
     public void render(ClockSignTileEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
         BlockState state = tileEntityIn.getBlockState();
         int i1 = 98255;
-        FormattedCharSequence irp = new TextComponent(getTime(tileEntityIn.getLevel() != null ? tileEntityIn.getLevel().getDayTime() : 0)).getVisualOrderText();
+        FormattedCharSequence irp = Component.literal(getTime(tileEntityIn.getLevel() != null ? tileEntityIn.getLevel().getDayTime() : 0)).getVisualOrderText();
 
         float f4 = -state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot();
         renderTask(f4, -.925D, irp, i1, matrixStackIn, bufferIn);

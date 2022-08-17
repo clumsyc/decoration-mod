@@ -1,5 +1,6 @@
 {
 	"credit": "Made with Blockbench",
+	"render_type": "solid",
 	"textures": {
 		"0": "block/oak_log",
 		"2": "block/polished_andesite",

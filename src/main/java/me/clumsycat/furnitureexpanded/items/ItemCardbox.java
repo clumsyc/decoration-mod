@@ -8,7 +8,6 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.BlockItem;
@@ -51,7 +50,7 @@ public class ItemCardbox extends BlockItem {
                         }
                     }
                     if (i > 6) {
-                        tooltip.add((new TranslatableComponent("container.shulkerBox.more", i)).withStyle(ChatFormatting.ITALIC));
+                        tooltip.add((Component.translatable("container.shulkerBox.more", i)).withStyle(ChatFormatting.ITALIC));
                     }
                 }
             }

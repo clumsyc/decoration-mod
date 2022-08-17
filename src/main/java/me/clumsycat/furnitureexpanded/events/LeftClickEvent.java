@@ -13,11 +13,11 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 public class LeftClickEvent {
     public static void eventHandler(PlayerInteractEvent.LeftClickBlock event) {
         BlockPos pos = event.getPos();
-        BlockState state = event.getWorld().getBlockState(pos);
-        if (event.getWorld().getBlockState(event.getPos()).is(RegistryHandler.TOILET.get())) {
+        BlockState state = event.getLevel().getBlockState(pos);
+        if (event.getLevel().getBlockState(event.getPos()).is(RegistryHandler.TOILET.get())) {
             if (state.getValue(BSProperties.DYE_17) != 16) {
-                if (!event.getPlayer().isCreative()) Containers.dropItemStack(event.getWorld(), pos.getX(), pos.getY()+.5, pos.getZ(), new ItemStack(DyeHandler.CARPET_DYES.get(DyeColor.byId(state.getValue(BSProperties.DYE_17)))));
-                event.getWorld().setBlockAndUpdate(pos, state.setValue(BSProperties.DYE_17, 16));
+                if (!event.getEntity().isCreative()) Containers.dropItemStack(event.getLevel(), pos.getX(), pos.getY()+.5, pos.getZ(), new ItemStack(DyeHandler.CARPET_DYES.get(DyeColor.byId(state.getValue(BSProperties.DYE_17)))));
+                event.getLevel().setBlockAndUpdate(pos, state.setValue(BSProperties.DYE_17, 16));
                 event.setCanceled(true);
             }
         }

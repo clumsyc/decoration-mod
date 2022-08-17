@@ -6,7 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.level.BlockEvent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -65,10 +65,10 @@ public class SeatHandler {
     }
 
     public static void onBreak(BlockEvent.BreakEvent event) {
-        if(!event.getWorld().isClientSide()) {
-            SeatEntity entity = getSeatEntity((Level) event.getWorld(), event.getPos());
+        if(!event.getLevel().isClientSide()) {
+            SeatEntity entity = getSeatEntity((Level) event.getLevel(), event.getPos());
             if(entity != null) {
-                removeSeatEntity((Level) event.getWorld(), event.getPos());
+                removeSeatEntity((Level) event.getLevel(), event.getPos());
                 entity.ejectPassengers();
             }
         }

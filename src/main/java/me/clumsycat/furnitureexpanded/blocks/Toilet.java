@@ -52,7 +52,7 @@ public class Toilet extends Block {
         if (worldIn.isClientSide) return InteractionResult.SUCCESS;
         ItemStack stack = player.getMainHandItem();
         if (!SeatHandler.isOccupied(worldIn, pos)) {
-            if (stack.is(ItemTags.CARPETS)) {
+            if (stack.is(ItemTags.WOOL_CARPETS)) {
                 int j = DyeHandler.carpetResolver(16, stack);
                 if (state.getValue(dye) != j && j < 16) {
                     if (!player.isCreative()) {

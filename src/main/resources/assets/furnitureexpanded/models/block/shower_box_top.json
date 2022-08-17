@@ -1,11 +1,12 @@
 {
 	"credit": "Made with Blockbench",
-	"loader": "forge:multi-layer",
+	"loader": "forge:composite",
 	"textures": {
 		"particle": "block/gray_stained_glass"
 	},
-	"layers": {
+	"children": {
 		"solid": {
+			"render_type": "solid",
 			"textures": {
 				"0": "block/gray_stained_glass",
 				"3": "block/black_concrete",
@@ -158,6 +159,7 @@
 			]
 		},
 		"translucent": {
+			"render_type": "translucent",
 			"textures": {
 				"0": "block/gray_stained_glass"
 			},
