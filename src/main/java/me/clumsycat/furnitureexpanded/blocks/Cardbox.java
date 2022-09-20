@@ -30,8 +30,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import javax.annotation.Nullable;
-
 public class Cardbox extends BlockWithEntity {
     public static final DirectionProperty face = HorizontalFacingBlock.FACING;
     public static final BooleanProperty sealed = BSProperties.SEALED;
@@ -97,7 +95,6 @@ public class Cardbox extends BlockWithEntity {
         return worldIn.isClient ? ActionResult.SUCCESS : ActionResult.CONSUME;
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite());
@@ -113,7 +110,7 @@ public class Cardbox extends BlockWithEntity {
     }
 
     @Override
-    public void onPlaced(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+    public void onPlaced(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.onPlaced(worldIn, pos, state, placer, stack);
         if (stack.hasNbt()) {
             if (stack.getNbt() != null)

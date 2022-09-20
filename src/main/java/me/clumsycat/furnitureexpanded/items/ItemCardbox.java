@@ -14,12 +14,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 
-import javax.annotation.Nullable;
 import java.util.List;
 
 public class ItemCardbox extends BlockItem {
@@ -32,7 +30,7 @@ public class ItemCardbox extends BlockItem {
 
     @Environment(value= EnvType.CLIENT)
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable World worldIn, List<Text> tooltip, TooltipContext flagIn) {
+    public void appendTooltip(ItemStack stack, World worldIn, List<Text> tooltip, TooltipContext flagIn) {
         if (stack.getItem() == RegistryHandler.CARDBOX.asItem()) {
             NbtCompound compoundnbt = stack.getSubNbt("BlockEntityTag");
             if (compoundnbt != null) {
@@ -51,14 +49,14 @@ public class ItemCardbox extends BlockItem {
                         }
                     }
                     if (i > 6) {
-                        tooltip.add((new TranslatableText("container.shulkerBox.more", i).formatted(Formatting.ITALIC)));
+                        tooltip.add((Text.translatable("container.shulkerBox.more", i).formatted(Formatting.ITALIC)));
                     }
                 }
             }
         }
     }
 
-    public static float getFullnessPropertyOverride(ItemStack stack, @Nullable World world, @Nullable LivingEntity livingEntity, int i) {
+    public static float getFullnessPropertyOverride(ItemStack stack, World world, LivingEntity livingEntity, int i) {
         if (stack.getItem() == RegistryHandler.CARDBOX.asItem())
             if (stack.hasNbt()) {
                 assert stack.getNbt() != null;

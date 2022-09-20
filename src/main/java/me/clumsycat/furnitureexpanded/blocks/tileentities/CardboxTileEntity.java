@@ -10,7 +10,6 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ShulkerBoxScreenHandler;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
@@ -72,7 +71,7 @@ public class CardboxTileEntity extends LootableContainerBlockEntity {
 
     @Override
     protected Text getContainerName() {
-        return new TranslatableText("block.furnitureexpanded.cardbox");
+        return Text.translatable("block.furnitureexpanded.cardbox");
     }
 
 

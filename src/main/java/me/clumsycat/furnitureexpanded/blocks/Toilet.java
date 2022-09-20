@@ -26,9 +26,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import javax.annotation.Nullable;
-
-
 public class Toilet extends Block {
     private static final IntProperty type = BSProperties.TYPE_0_1;
     private static final DirectionProperty face = HorizontalFacingBlock.FACING;
@@ -48,7 +45,7 @@ public class Toilet extends Block {
         if (worldIn.isClient) return ActionResult.SUCCESS;
         ItemStack stack = player.getMainHandStack();
         if (!SeatHandler.isOccupied(worldIn, pos)) {
-            if (stack.isIn(ItemTags.CARPETS)) {
+            if (stack.isIn(ItemTags.WOOL_CARPETS)) {
                 int j = DyeHandler.carpetResolver(16, stack);
                 if (state.get(dye) != j && j < 16) {
                     if (!player.isCreative()) {
@@ -85,7 +82,7 @@ public class Toilet extends Block {
     }
 
     @Override
-    public void afterBreak(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity tileentity, ItemStack stack) {
+    public void afterBreak(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity tileentity, ItemStack stack) {
         ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         if (state.get(dye) >= 0 && state.get(dye) < 16) ItemScatterer.spawn(worldIn, pos.getX(), pos.getY() + .5, pos.getZ(), new ItemStack(DyeHandler.CARPET_DYES.get(DyeColor.byId(state.get(dye)))));
         super.afterBreak(worldIn, player, pos, state, tileentity, stack);
@@ -107,7 +104,6 @@ public class Toilet extends Block {
         return BlockRenderType.MODEL;
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite());

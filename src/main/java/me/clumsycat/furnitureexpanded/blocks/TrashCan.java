@@ -28,8 +28,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import javax.annotation.Nullable;
-
 public class TrashCan extends BlockWithEntity {
     private static final DirectionProperty face = HorizontalFacingBlock.FACING;
     private static final IntProperty type = BSProperties.TYPE_0_1;
@@ -42,7 +40,6 @@ public class TrashCan extends BlockWithEntity {
         this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH).with(type, 0));
     }
 
-    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World worldIn, BlockState state, BlockEntityType<T> entitytype) {
         return !worldIn.isClient ? TrashCanTileEntity::tick : null;
@@ -109,7 +106,6 @@ public class TrashCan extends BlockWithEntity {
         return BlockRenderType.MODEL;
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite());

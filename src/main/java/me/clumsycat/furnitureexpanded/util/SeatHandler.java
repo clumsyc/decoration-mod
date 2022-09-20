@@ -47,7 +47,7 @@ public class SeatHandler {
     }
 
     private static Identifier getDimensionTypeId(World world) {
-        return world.getDimension().getEffects();
+        return world.getDimension().effects();
     }
 
     public static void create(World world, BlockPos pos, PlayerEntity player, double offsetY) {

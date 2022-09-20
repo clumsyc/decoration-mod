@@ -29,8 +29,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.explosion.Explosion;
 
-import javax.annotation.Nullable;
-
 public class FileCabinet extends BlockWithEntity {
     public static final DirectionProperty face = HorizontalFacingBlock.FACING;
     public static final IntProperty type = BSProperties.TYPE_0_2;
@@ -58,7 +56,6 @@ public class FileCabinet extends BlockWithEntity {
         }
     }
 
-    @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World worldIn, BlockState state, BlockEntityType<T> entitytype) {
         return !worldIn.isClient ? (state.get(type) == 0 ? FileCabinetTileEntity::tick : null) : null;
@@ -123,7 +120,6 @@ public class FileCabinet extends BlockWithEntity {
         return PistonBehavior.BLOCK;
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         return this.getDefaultState().with(type, 0).with(face, context.getPlayerFacing());

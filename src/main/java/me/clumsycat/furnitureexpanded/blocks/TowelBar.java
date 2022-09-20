@@ -22,8 +22,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.explosion.Explosion;
 
-import javax.annotation.Nullable;
-
 public class TowelBar extends Block {
     private static final DirectionProperty face = HorizontalFacingBlock.FACING;
     private static final EnumProperty<WallHeight> height = BSProperties.WALL_HEIGHT;
@@ -41,7 +39,7 @@ public class TowelBar extends Block {
     }
 
     @Override
-    public void afterBreak(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity tileentity, ItemStack stack) {
+    public void afterBreak(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity tileentity, ItemStack stack) {
         ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.afterBreak(worldIn, player, pos, state, tileentity, stack);
     }
@@ -52,7 +50,6 @@ public class TowelBar extends Block {
         super.onDestroyedByExplosion(worldIn, pos, explosion);
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         double posY = context.getHitPos().y - context.getBlockPos().getY();

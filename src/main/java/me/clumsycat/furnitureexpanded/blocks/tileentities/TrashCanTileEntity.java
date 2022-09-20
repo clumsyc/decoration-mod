@@ -14,7 +14,6 @@ import net.minecraft.screen.Generic3x3ContainerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.text.Text;
-import net.minecraft.text.TranslatableText;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -83,7 +82,7 @@ public class TrashCanTileEntity extends LootableContainerBlockEntity {
 
     @Override
     protected Text getContainerName() {
-        return new TranslatableText("block.furnitureexpanded.trash_can");
+        return Text.translatable("block.furnitureexpanded.trash_can");
     }
 
     @Override

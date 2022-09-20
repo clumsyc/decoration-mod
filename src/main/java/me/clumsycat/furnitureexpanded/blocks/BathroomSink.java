@@ -22,8 +22,6 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.explosion.Explosion;
 
-import javax.annotation.Nullable;
-
 public class BathroomSink extends Block {
     private static final DirectionProperty face = HorizontalFacingBlock.FACING;
     public static final IntProperty type = BSProperties.TYPE_0_1;
@@ -47,7 +45,7 @@ public class BathroomSink extends Block {
     }
 
     @Override
-    public void afterBreak(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity tileentity, ItemStack stack) {
+    public void afterBreak(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, BlockEntity tileentity, ItemStack stack) {
         ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.afterBreak(worldIn, player, pos, state, tileentity, stack);
     }
@@ -73,7 +71,6 @@ public class BathroomSink extends Block {
         };
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite());

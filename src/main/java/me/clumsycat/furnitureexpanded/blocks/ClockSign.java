@@ -25,8 +25,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldView;
 import net.minecraft.world.explosion.Explosion;
 
-import javax.annotation.Nullable;
-
 public class ClockSign extends BlockWithEntity {
     public static final BooleanProperty main = BSProperties.MAIN;
     public static final DirectionProperty face = HorizontalFacingBlock.FACING;
@@ -43,7 +41,7 @@ public class ClockSign extends BlockWithEntity {
     }
 
     @Override
-    public void onPlaced(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+    public void onPlaced(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
         super.onPlaced(worldIn, pos, state, placer, stack);
         Direction v3 = state.get(face).rotateYClockwise();
         worldIn.setBlockState(pos.offset(v3), state.with(main, false), Block.NOTIFY_ALL);
@@ -85,7 +83,6 @@ public class ClockSign extends BlockWithEntity {
         return PistonBehavior.BLOCK;
     }
 
-    @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
         return this.getDefaultState().with(face, context.getPlayerFacing());
