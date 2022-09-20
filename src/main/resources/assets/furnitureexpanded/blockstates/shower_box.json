@@ -1,13 +1,13 @@
 {
-	"variants": {
-		"half=lower,facing=north": { "model": "furnitureexpanded:block/shower_box_bottom" },
-		"half=lower,facing=south": { "model": "furnitureexpanded:block/shower_box_bottom", "y":  180},
-		"half=lower,facing=west": { "model": "furnitureexpanded:block/shower_box_bottom", "y":  270},
-		"half=lower,facing=east": { "model": "furnitureexpanded:block/shower_box_bottom", "y":  90},
-
-		"half=upper,facing=north": { "model": "furnitureexpanded:block/shower_box_top" },
-		"half=upper,facing=south": { "model": "furnitureexpanded:block/shower_box_top", "y":  180},
-		"half=upper,facing=west": { "model": "furnitureexpanded:block/shower_box_top", "y":  270},
-		"half=upper,facing=east": { "model": "furnitureexpanded:block/shower_box_top", "y":  90}
-	}
+  "variants": {
+	"facing=north,half=lower": { "model": "furnitureexpanded:block/shower_box_bottom" },
+	"facing=south,half=lower": { "model": "furnitureexpanded:block/shower_box_bottom", "y":  180},
+	"facing=west,half=lower": { "model": "furnitureexpanded:block/shower_box_bottom", "y":  270},
+	"facing=east,half=lower": { "model": "furnitureexpanded:block/shower_box_bottom", "y":  90},
+	
+	"facing=north,half=upper": { "model": "furnitureexpanded:block/shower_box_top" },
+	"facing=south,half=upper": { "model": "furnitureexpanded:block/shower_box_top", "y":  180},
+	"facing=west,half=upper": { "model": "furnitureexpanded:block/shower_box_top", "y":  270},
+	"facing=east,half=upper": { "model": "furnitureexpanded:block/shower_box_top", "y":  90}
+  }
 }

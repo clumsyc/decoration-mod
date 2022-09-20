@@ -3,82 +3,77 @@ package me.clumsycat.furnitureexpanded.blocks;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.CardboxTileEntity;
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.Shapes;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.*;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.explosion.Explosion;
 
 import javax.annotation.Nullable;
 
-@SuppressWarnings("NullableProblems")
-public class Cardbox extends BaseEntityBlock {
-    public static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
+public class Cardbox extends BlockWithEntity {
+    public static final DirectionProperty face = HorizontalFacingBlock.FACING;
     public static final BooleanProperty sealed = BSProperties.SEALED;
 
     public Cardbox() {
-        super(AbstractChestBlock.Properties.of(Material.WOOD)
+        super(AbstractBlock.Settings.of(Material.WOOD)
                 .strength(0.3f, 1f)
-                .sound(SoundType.WOOL));
-        this.registerDefaultState(this.stateDefinition.any().setValue(face, Direction.NORTH).setValue(sealed, false));
+                .sounds(BlockSoundGroup.WOOL));
+        this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH).with(sealed, false));
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-            if (player.getMainHandItem().getItem() == RegistryHandler.TAPE.get().asItem()) {
-                if (!state.getValue(sealed)) {
-                    worldIn.setBlockAndUpdate(pos, state.setValue(sealed, true));
-                    worldIn.playSound(null, pos, SoundEvents.BEEHIVE_SHEAR, SoundSource.BLOCKS, 1.0f, 1.0f);
-                    ItemStack tape = player.getMainHandItem();
-                    if (tape.getItem() == RegistryHandler.TAPE.get().asItem())
-                        tape.hurtAndBreak(1, player, (p_226874_1_) -> {
-                        p_226874_1_.broadcastBreakEvent(handIn);
+    public ActionResult onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
+            if (player.getMainHandStack().getItem() == RegistryHandler.TAPE) {
+                if (!state.get(sealed)) {
+                    worldIn.setBlockState(pos, state.with(sealed, true), Block.NOTIFY_ALL);
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_BEEHIVE_SHEAR, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    ItemStack tape = player.getMainHandStack();
+                    if (tape.getItem() == RegistryHandler.TAPE)
+                        tape.damage(1, player, (p_226874_1_) -> {
+                        p_226874_1_.sendToolBreakStatus(handIn);
                     });
                 }
-            } else if (player.getMainHandItem().getItem() == Items.SHEARS) {
-                if (state.getValue(sealed)) {
-                    worldIn.setBlockAndUpdate(pos, state.setValue(sealed, false));
-                    worldIn.playSound(null, pos, SoundEvents.BEEHIVE_EXIT, SoundSource.BLOCKS, 1.0f, 1.0f);
-                    ItemStack shears = player.getMainHandItem();
+            } else if (player.getMainHandStack().getItem() == Items.SHEARS) {
+                if (state.get(sealed)) {
+                    worldIn.setBlockState(pos, state.with(sealed, false), Block.NOTIFY_ALL);
+                    worldIn.playSound(null, pos, SoundEvents.BLOCK_BEEHIVE_EXIT, SoundCategory.BLOCKS, 1.0f, 1.0f);
+                    ItemStack shears = player.getMainHandStack();
                     if (shears.getItem() == Items.SHEARS.asItem())
-                        shears.hurtAndBreak(3, player, (p_226874_1_) -> {
-                            p_226874_1_.broadcastBreakEvent(handIn);
+                        shears.damage(3, player, (p_226874_1_) -> {
+                            p_226874_1_.sendToolBreakStatus(handIn);
                         });
                 }
             } else {
-                if (worldIn.isClientSide) return InteractionResult.SUCCESS;
-                if (player.isCrouching()) {
+                if (worldIn.isClient) return ActionResult.SUCCESS;
+                if (player.isSneaking()) {
                     BlockEntity tileentity = worldIn.getBlockEntity(pos);
                     if (tileentity instanceof CardboxTileEntity) {
-                        if (state.getValue(sealed) || ((CardboxTileEntity) tileentity).isEmpty()) {
-                            for (ItemStack inv : player.getInventory().items) {
+                        if (state.get(sealed) || ((CardboxTileEntity) tileentity).isEmpty()) {
+                            for (ItemStack inv : player.getInventory().main) {
                                 if (inv.isEmpty()) {
-                                    player.addItem(getDrop((CardboxTileEntity) tileentity, state.getValue(sealed)));
+                                    player.giveItemStack(getDrop((CardboxTileEntity) tileentity, state.get(sealed)));
                                     worldIn.removeBlockEntity(pos);
                                     worldIn.removeBlock(pos, false);
                                     break;
@@ -86,114 +81,112 @@ public class Cardbox extends BaseEntityBlock {
                             }
                         }
                     }
-                    return InteractionResult.CONSUME;
+                    return ActionResult.CONSUME;
                 } else {
-                    if (!state.getValue(sealed)) {
-                        if (worldIn.isEmptyBlock(pos.above())) {
+                    if (!state.get(sealed)) {
+                        if (worldIn.isAir(pos.up())) {
                             BlockEntity tileentity = worldIn.getBlockEntity(pos);
                             if (tileentity instanceof CardboxTileEntity) {
-                                player.openMenu((CardboxTileEntity) tileentity);
+                                player.openHandledScreen((CardboxTileEntity) tileentity);
                             }
-                            return InteractionResult.CONSUME;
+                            return ActionResult.CONSUME;
                         }
                     }
                 }
             }
-        return worldIn.isClientSide ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
+        return worldIn.isClient ? ActionResult.SUCCESS : ActionResult.CONSUME;
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(face, context.getHorizontalDirection().getOpposite());
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite());
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(sealed, face);
     }
 
-    public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
+    public BlockEntity createBlockEntity(BlockPos pPos, BlockState pState) {
         return new CardboxTileEntity(pPos, pState);
     }
 
     @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
-        if (stack.hasTag()) {
-            if (stack.getTag() != null)
-                if (stack.getTag().contains("sealed"))
-                    if (stack.getTag().getBoolean("sealed"))
-                        worldIn.setBlockAndUpdate(pos, state.setValue(sealed, true));
+    public void onPlaced(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.onPlaced(worldIn, pos, state, placer, stack);
+        if (stack.hasNbt()) {
+            if (stack.getNbt() != null)
+                if (stack.getNbt().contains("sealed"))
+                    if (stack.getNbt().getBoolean("sealed"))
+                        worldIn.setBlockState(pos, state.with(sealed, true));
         }
     }
-
-
     @Override
-    public void onBlockExploded(BlockState state, Level worldIn, BlockPos pos, Explosion explosion) {
+    public void onDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosion) {
         CardboxTileEntity te = (CardboxTileEntity) worldIn.getBlockEntity(pos);
         assert te != null;
         if (!te.isEmpty()) {
-            CompoundTag compoundnbt = te.saveToNbt(new CompoundTag());
-            NonNullList<ItemStack> invdrop = NonNullList.withSize(27, ItemStack.EMPTY);
-            ContainerHelper.loadAllItems(compoundnbt, invdrop);
-            Containers.dropContents(worldIn, pos, invdrop);
+            NbtCompound compoundnbt = te.saveToNbt(new NbtCompound());
+            DefaultedList<ItemStack> invdrop = DefaultedList.ofSize(27, ItemStack.EMPTY);
+            Inventories.readNbt(compoundnbt, invdrop);
+            ItemScatterer.spawn(worldIn, pos, invdrop);
         }
-        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
-        super.onBlockExploded(state, worldIn, pos, explosion);
+        ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+        super.onDestroyedByExplosion(worldIn, pos, explosion);
     }
 
+
     @Override
-    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
+    public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         CardboxTileEntity te = (CardboxTileEntity) worldIn.getBlockEntity(pos);
-        ItemStack is = getDrop(te, state.getValue(sealed));
-        if (!player.isCreative()) Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), is);
-        if (!state.getValue(sealed)) {
+        ItemStack is = getDrop(te, state.get(sealed));
+        if (!player.isCreative()) ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), is);
+        if (!state.get(sealed)) {
             if (!te.isEmpty()) {
-                CompoundTag compoundnbt = te.saveToNbt(new CompoundTag());
-                NonNullList<ItemStack> invdrop = NonNullList.withSize(27, ItemStack.EMPTY);
-                ContainerHelper.loadAllItems(compoundnbt, invdrop);
-                Containers.dropContents(worldIn, pos, invdrop);
+                NbtCompound compoundnbt = te.saveToNbt(new NbtCompound());
+                DefaultedList<ItemStack> invdrop = DefaultedList.ofSize(27, ItemStack.EMPTY);
+                Inventories.readNbt(compoundnbt, invdrop);
+                ItemScatterer.spawn(worldIn, pos, invdrop);
             }
         }
-        super.playerWillDestroy(worldIn, pos, state, player);
+        super.onBreak(worldIn, pos, state, player);
     }
 
     protected ItemStack getDrop(CardboxTileEntity tileentity, boolean sealed) {
         ItemStack itemstack = new ItemStack(this);
         if (tileentity != null && sealed) {
             if (!tileentity.isEmpty()) {
-                CompoundTag compoundnbt = tileentity.saveToNbt(new CompoundTag());
-                if (!compoundnbt.isEmpty()) itemstack.addTagElement("BlockEntityTag", compoundnbt);
-                if (tileentity.hasCustomName()) itemstack.setHoverName(tileentity.getCustomName());
+                NbtCompound compoundnbt = tileentity.saveToNbt(new NbtCompound());
+                if (!compoundnbt.isEmpty()) itemstack.setSubNbt("BlockEntityTag", compoundnbt);
+                if (tileentity.hasCustomName()) itemstack.setCustomName(tileentity.getCustomName());
             }
-            if (itemstack.getTag() != null) itemstack.getTag().putBoolean("sealed", true);
+            if (itemstack.getNbt() != null) itemstack.getNbt().putBoolean("sealed", true);
         }
         return itemstack;
     }
 
     @Override
-    public PushReaction getPistonPushReaction(BlockState p_149656_1_) {
-        return PushReaction.BLOCK;
+    public PistonBehavior getPistonBehavior(BlockState p_149656_1_) {
+        return PistonBehavior.BLOCK;
     }
 
     @Override
-    public BlockState rotate(BlockState state, Rotation rot) {
-        return state.setValue(face, rot.rotate(state.getValue(face)));
+    public BlockState rotate(BlockState state, BlockRotation rot) {
+        return state.with(face, rot.rotate(state.get(face)));
     }
 
     @Override
-    public BlockState mirror(BlockState state, Mirror mirrorIn) {
-        return state.rotate(mirrorIn.getRotation(state.getValue(face)));
+    public BlockState mirror(BlockState state, BlockMirror mirrorIn) {
+        return state.rotate(mirrorIn.getRotation(state.get(face)));
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
     }
-
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return Shapes.block();
+    public VoxelShape getOutlineShape(BlockState state, BlockView worldIn, BlockPos pos, ShapeContext context) {
+        return VoxelShapes.fullCube();
     }
 }

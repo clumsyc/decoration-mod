@@ -1,8 +1,8 @@
 package me.clumsycat.furnitureexpanded.util.enums;
 
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.StringIdentifiable;
 
-public enum WallHeight implements StringRepresentable {
+public enum WallHeight implements StringIdentifiable {
     HIGHER("higher"),
     NORMAL("normal"),
     LOWER("lower");
@@ -17,8 +17,7 @@ public enum WallHeight implements StringRepresentable {
         return this.name;
     }
 
-    @SuppressWarnings("NullableProblems")
-    public String getSerializedName() {
+    public String asString() {
         return this.name;
     }
 }

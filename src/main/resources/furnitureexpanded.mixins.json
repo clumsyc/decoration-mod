@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "me.clumsycat.furnitureexpanded.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "BlockBreakEvent",
+    "RemainderAcessor"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

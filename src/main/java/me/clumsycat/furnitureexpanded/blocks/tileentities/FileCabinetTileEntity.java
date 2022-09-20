@@ -2,97 +2,96 @@ package me.clumsycat.furnitureexpanded.blocks.tileentities;
 
 import me.clumsycat.furnitureexpanded.blocks.FileCabinet;
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.Vec3i;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ChestMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.GenericContainerScreenHandler;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3i;
+import net.minecraft.world.World;
 
-public class FileCabinetTileEntity extends RandomizableContainerBlockEntity {
-    private NonNullList<ItemStack> chestContents = NonNullList.withSize(54, ItemStack.EMPTY);
+public class FileCabinetTileEntity extends LootableContainerBlockEntity {
+    private DefaultedList<ItemStack> chestContents = DefaultedList.ofSize(54, ItemStack.EMPTY);
     private int numPlayersUsing = 0;
     public FileCabinetTileEntity(BlockPos pPos, BlockState pBlockState) {
-        super(RegistryHandler.FILE_CABINET_TE.get(), pPos, pBlockState);
+        super(RegistryHandler.FILE_CABINET_TE, pPos, pBlockState);
     }
 
-    public CompoundTag saveToNbt(CompoundTag compound) {
-        if (!this.trySaveLootTable(compound))
-            ContainerHelper.saveAllItems(compound, this.chestContents, false);
+    public NbtCompound saveToNbt(NbtCompound compound) {
+        if (!this.serializeLootTable(compound))
+            Inventories.writeNbt(compound, this.chestContents, false);
         return compound;
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        if (!this.trySaveLootTable(compound)) {
-            ContainerHelper.saveAllItems(compound, this.chestContents);
+    public void writeNbt(NbtCompound compound) {
+        super.writeNbt(compound);
+        if (!this.serializeLootTable(compound)) {
+            Inventories.writeNbt(compound, this.chestContents);
         }
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void readNbt(NbtCompound pTag) {
+        super.readNbt(pTag);
         this.loadFromTag(pTag);
     }
 
-    public void loadFromTag(CompoundTag nbt) {
-        this.chestContents = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        if (!this.tryLoadLootTable(nbt)) {
-            ContainerHelper.loadAllItems(nbt, this.chestContents);
+    public void loadFromTag(NbtCompound nbt) {
+        this.chestContents = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
+        if (!this.deserializeLootTable(nbt)) {
+            Inventories.readNbt(nbt, this.chestContents);
         }
     }
 
     @Override
-    public int getContainerSize() {
+    public int size() {
         return 54;
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
+    protected DefaultedList<ItemStack> getInvStackList() {
         return this.chestContents;
     }
 
     @Override
-    protected void setItems(NonNullList<ItemStack> itemsIn) {
+    protected void setInvStackList(DefaultedList<ItemStack> itemsIn) {
         this.chestContents = itemsIn;
     }
 
     @Override
-    protected Component getDefaultName() {
-        return new TranslatableComponent("block.furnitureexpanded.file_cabinet");
+    protected Text getContainerName() {
+        return new TranslatableText("block.furnitureexpanded.file_cabinet");
     }
 
     @Override
-    protected AbstractContainerMenu createMenu(int id, Inventory player) {
-        return ChestMenu.sixRows(id, player, this);
+    protected ScreenHandler createScreenHandler(int id, PlayerInventory inventory) {
+        return GenericContainerScreenHandler.createGeneric9x6(id, inventory, this);
     }
 
     @Override
-    public void startOpen(Player player) {
+    public void onOpen(PlayerEntity player) {
         if (!player.isSpectator()) {
             if (this.numPlayersUsing < 0) {
                 this.numPlayersUsing = 0;
             }
             ++this.numPlayersUsing;
-            BlockState stateUP = this.getLevel().getBlockState(getBlockPos().above());
-            if (!this.getLevel().isEmptyBlock(getBlockPos().above())) {
-                if (stateUP.getValue(FileCabinet.type) == 1) {
-                    this.playSound(stateUP, SoundEvents.BARREL_OPEN);
+            BlockState stateUP = this.getWorld().getBlockState(getPos().up());
+            if (!this.getWorld().isAir(getPos().up())) {
+                if (stateUP.get(FileCabinet.type) == 1) {
+                    this.playSound(stateUP, SoundEvents.BLOCK_BARREL_OPEN);
                     this.setOpenProperty(stateUP, 2);
                 }
             }
@@ -100,37 +99,37 @@ public class FileCabinetTileEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
-    public void stopOpen(Player player) {
+    public void onClose(PlayerEntity player) {
         if (!player.isSpectator()) {
             --this.numPlayersUsing;
         }
     }
 
     private void scheduleTick() {
-        this.getLevel().scheduleTick(this.getBlockPos(), this.getBlockState().getBlock(), 5);
+        this.getWorld().createAndScheduleBlockTick(this.getPos(), this.getCachedState().getBlock(), 5);
     }
 
-    public static <T extends BlockEntity> void tick(Level worldIn, BlockPos pos, BlockState state, BlockEntity tileentity) {
-        if (!worldIn.isClientSide) {
+    public static <T extends BlockEntity> void tick(World worldIn, BlockPos pos, BlockState state, BlockEntity tileentity) {
+        if (!worldIn.isClient) {
             if (tileentity instanceof FileCabinetTileEntity) {
                 ((FileCabinetTileEntity) tileentity).tickLogic(worldIn, pos, state, (FileCabinetTileEntity) tileentity);
             }
         }
     }
 
-    private void tickLogic(Level worldIn, BlockPos pos, BlockState state, FileCabinetTileEntity te) {
+    private void tickLogic(World worldIn, BlockPos pos, BlockState state, FileCabinetTileEntity te) {
         if (getNumPlayersUsing(worldIn, pos) > 0) {
             this.scheduleTick();
         } else {
-            BlockState stateUP = worldIn.getBlockState(pos.above());
-            if (!state.is(RegistryHandler.FILE_CABINET.get())) {
-                this.setRemoved();
+            BlockState stateUP = worldIn.getBlockState(pos.up());
+            if (!state.isOf(RegistryHandler.FILE_CABINET)) {
+                this.markRemoved();
                 return;
             }
-            if (!worldIn.isEmptyBlock(pos.above())) {
-                if (stateUP.is(RegistryHandler.FILE_CABINET.get()))
-                    if (stateUP.getValue(FileCabinet.type) == 2) {
-                        this.playSound(stateUP, SoundEvents.BARREL_CLOSE);
+            if (!worldIn.isAir(pos.up())) {
+                if (stateUP.isOf(RegistryHandler.FILE_CABINET))
+                    if (stateUP.get(FileCabinet.type) == 2) {
+                        this.playSound(stateUP, SoundEvents.BLOCK_BARREL_CLOSE);
                         this.setOpenProperty(stateUP, 1);
                     }
             }
@@ -138,7 +137,7 @@ public class FileCabinetTileEntity extends RandomizableContainerBlockEntity {
     }
 
 
-    public static int getNumPlayersUsing(BlockGetter worldIn, BlockPos pos) {
+    public static int getNumPlayersUsing(World worldIn, BlockPos pos) {
         BlockState blockstate = worldIn.getBlockState(pos);
         if (blockstate.hasBlockEntity()) {
             BlockEntity blockentity = worldIn.getBlockEntity(pos);
@@ -154,16 +153,16 @@ public class FileCabinetTileEntity extends RandomizableContainerBlockEntity {
     }
 
     private void setOpenProperty(BlockState state, int open) {
-        if (!this.getLevel().isEmptyBlock(getBlockPos().above())) {
-            this.getLevel().setBlockAndUpdate(this.getBlockPos().above(), state.setValue(FileCabinet.type, open));
+        if (this.getWorld().getBlockState(getPos().up()).isOf(this.getCachedState().getBlock())) {
+            this.getWorld().setBlockState(this.getPos().up(), state.with(FileCabinet.type, open));
         }
     }
 
     private void playSound(BlockState state, SoundEvent sound) {
-        Vec3i vector3i = this.getLevel().getBlockState(getBlockPos().above()).getValue(FileCabinet.face).getNormal();
-        double d0 = (double)this.getBlockPos().getX() + 0.5D + (double)vector3i.getX() / 2.0D;
-        double d1 = (double)this.getBlockPos().getY() + 0.5D + (double)vector3i.getY() / 2.0D;
-        double d2 = (double)this.getBlockPos().getZ() + 0.5D + (double)vector3i.getZ() / 2.0D;
-        this.getLevel().playSound(null, d0, d1, d2, sound, SoundSource.BLOCKS, 0.5F, this.getLevel().random.nextFloat() * 0.1F + 0.9F);
+        Vec3i vector3i = state.get(FileCabinet.face).getVector();
+        double d0 = (double)this.getPos().getX() + 0.5D + (double)vector3i.getX() / 2.0D;
+        double d1 = (double)this.getPos().getY() + 0.5D + (double)vector3i.getY() / 2.0D;
+        double d2 = (double)this.getPos().getZ() + 0.5D + (double)vector3i.getZ() / 2.0D;
+        this.getWorld().playSound(null, d0, d1, d2, sound, SoundCategory.BLOCKS, 0.5F, this.getWorld().random.nextFloat() * 0.1F + 0.9F);
     }
 }

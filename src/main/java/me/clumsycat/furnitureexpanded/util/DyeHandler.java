@@ -1,11 +1,11 @@
 package me.clumsycat.furnitureexpanded.util;
 
 import com.google.common.collect.Maps;
-import net.minecraft.Util;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.DyeColor;
+import net.minecraft.util.Util;
 
 import java.util.Map;
 

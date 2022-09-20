@@ -1,55 +1,51 @@
 package me.clumsycat.furnitureexpanded.renderer;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.ClockSignTileEntity;
-import net.minecraft.client.gui.Font;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
-import net.minecraft.core.Direction;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.util.FormattedCharSequence;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.HorizontalFacingBlock;
+import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.block.entity.BlockEntityRenderer;
+import net.minecraft.client.render.block.entity.BlockEntityRendererFactory;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.text.OrderedText;
+import net.minecraft.text.Text;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3f;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-@SuppressWarnings("NullableProblems")
-@OnlyIn(Dist.CLIENT)
 public class ClockSignTileEntityRenderer implements BlockEntityRenderer<ClockSignTileEntity> {
-    private final Font font;
+    private final TextRenderer font;
 
-    public ClockSignTileEntityRenderer(BlockEntityRendererProvider.Context rendererDispatcherIn) {
+    public ClockSignTileEntityRenderer(BlockEntityRendererFactory.Context rendererDispatcherIn) {
         super();
-        this.font = rendererDispatcherIn.getFont();
+        this.font = rendererDispatcherIn.getTextRenderer();
     }
 
     @Override
-    public void render(ClockSignTileEntity tileEntityIn, float partialTicks, PoseStack matrixStackIn, MultiBufferSource bufferIn, int combinedLightIn, int combinedOverlayIn) {
-        BlockState state = tileEntityIn.getBlockState();
+    public void render(ClockSignTileEntity tileEntityIn, float partialTicks, MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int combinedLightIn, int combinedOverlayIn) {
+        BlockState state = tileEntityIn.getCachedState();
         int i1 = 98255;
-        FormattedCharSequence irp = new TextComponent(getTime(tileEntityIn.getLevel() != null ? tileEntityIn.getLevel().getDayTime() : 0)).getVisualOrderText();
+        OrderedText irp = Text.of(getTime(tileEntityIn.getWorld() != null ? tileEntityIn.getWorld().getTimeOfDay() : 0)).asOrderedText();
 
-        float f4 = -state.getValue(BlockStateProperties.HORIZONTAL_FACING).toYRot();
+        float f4 = -state.get(HorizontalFacingBlock.FACING).asRotation();
         renderTask(f4, -.925D, irp, i1, matrixStackIn, bufferIn);
 
-        float f5 = -state.getValue(BlockStateProperties.HORIZONTAL_FACING).getOpposite().toYRot();
+        float f5 = -state.get(HorizontalFacingBlock.FACING).getOpposite().asRotation();
         renderTask(f5, .075D, irp, i1, matrixStackIn, bufferIn);
     }
 
-    private void renderTask(float rotation, double startingPoint, FormattedCharSequence irp, int i1, PoseStack matrixStackIn, MultiBufferSource bufferIn) {
-        matrixStackIn.pushPose();
+    private void renderTask(float rotation, double startingPoint, OrderedText irp, int i1, MatrixStack matrixStackIn, VertexConsumerProvider bufferIn) {
+        matrixStackIn.push();
         matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(rotation));
-        matrixStackIn.mulPose(Direction.DOWN.getRotation());
+        matrixStackIn.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+        matrixStackIn.multiply(Direction.DOWN.getRotationQuaternion());
         matrixStackIn.translate(startingPoint, .27D, -.13D);
         matrixStackIn.scale(0.05f, 0.05f, 0.05f);
-        this.font.drawInBatch(irp, -8, -8, i1, false, matrixStackIn.last().pose(), bufferIn, false, 0, 225 /*combinedLightIn*/);
-        matrixStackIn.popPose();
+        this.font.draw(irp, -8, -8, i1, false, matrixStackIn.peek().getPositionMatrix(), bufferIn, false, 0, 225 /*combinedLightIn*/);
+        matrixStackIn.pop();
     }
 
     private String getTime(long dayTime) {

@@ -1,81 +1,80 @@
 package me.clumsycat.furnitureexpanded.blocks;
 
 import me.clumsycat.furnitureexpanded.util.ModShapes;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.Containers;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
+import net.minecraft.world.explosion.Explosion;
 
 import javax.annotation.Nullable;
 
-@SuppressWarnings("NullableProblems")
 public class MirrorBlock extends Block {
-    private static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
+    private static final DirectionProperty face = HorizontalFacingBlock.FACING;
 
     public MirrorBlock() {
-        super(Properties.of(Material.GLASS)
+        super(Settings.of(Material.GLASS)
                 .strength(.5f, 1f)
-                .sound(SoundType.GLASS));
-        this.registerDefaultState(this.getStateDefinition().any().setValue(face, Direction.NORTH));
+                .sounds(BlockSoundGroup.GLASS));
+        this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH));
     }
 
     @Override
-    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity tileentity, ItemStack stack) {
-        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
-        super.playerDestroy(worldIn, player, pos, state, tileentity, stack);
+    public void afterBreak(World worldIn, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity tileentity, ItemStack stack) {
+        ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+        super.afterBreak(worldIn, player, pos, state, tileentity, stack);
     }
 
     @Override
-    public void onBlockExploded(BlockState state, Level worldIn, BlockPos pos, Explosion explosion) {
-        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
-        super.onBlockExploded(state, worldIn, pos, explosion);
+    public void onDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosion) {
+        ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+        super.onDestroyedByExplosion(worldIn, pos, explosion);
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(face, context.getHorizontalDirection().getOpposite());
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite());
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader reader, BlockPos pos) {
-        Direction direction = state.getValue(face).getOpposite();
-        BlockPos relative = pos.relative(direction);
-        return !reader.isEmptyBlock(relative);
+    public boolean canPlaceAt(BlockState state, WorldView reader, BlockPos pos) {
+        Direction direction = state.get(face).getOpposite();
+        BlockPos relative = pos.offset(direction);
+        return !reader.isAir(relative);
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(face);
     }
 
     @Override
-    public BlockState rotate(BlockState state, Rotation rot) {
-        return state.setValue(face, rot.rotate(state.getValue(face)));
+    public BlockState rotate(BlockState state, BlockRotation rot) {
+        return state.with(face, rot.rotate(state.get(face)));
     }
 
     @Override
-    public BlockState mirror(BlockState state, Mirror mirrorIn) {
-        return state.rotate(mirrorIn.getRotation(state.getValue(face)));
+    public BlockState mirror(BlockState state, BlockMirror mirrorIn) {
+        return state.rotate(mirrorIn.getRotation(state.get(face)));
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return switch (state.getValue(face)) {
+    public VoxelShape getOutlineShape(BlockState state, BlockView worldIn, BlockPos pos, ShapeContext context) {
+        return switch (state.get(face)) {
             case NORTH -> ModShapes.MIRROR_N;
             case EAST -> ModShapes.MIRROR_E;
             case SOUTH -> ModShapes.MIRROR_S;

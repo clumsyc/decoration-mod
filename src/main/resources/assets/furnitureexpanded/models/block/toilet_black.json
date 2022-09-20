@@ -1,15 +1,6 @@
 {
+	"parent": "furnitureexpanded:block/toilet_model",
 	"textures": {
-		"particle": "block/quartz_block_bottom"
-	},
-	"loader": "forge:multi-layer",
-	"layers": {
-		"solid": {
-			"parent": "furnitureexpanded:block/toilet_model",
-			"textures": {
-				"5": "block/black_wool"
-			}
-		},
-		"translucent": {}
+		"5": "block/black_wool"
 	}
 }

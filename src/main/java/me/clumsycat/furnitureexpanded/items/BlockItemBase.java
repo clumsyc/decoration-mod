@@ -1,15 +1,15 @@
 package me.clumsycat.furnitureexpanded.items;
 
-import me.clumsycat.furnitureexpanded.util.ModSetup;
-import net.minecraft.world.item.BlockItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
+import me.clumsycat.furnitureexpanded.Expanded;
+import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
+import net.minecraft.block.Block;
+import net.minecraft.item.BlockItem;
 
 public class BlockItemBase extends BlockItem {
     public BlockItemBase(Block block, int maxStackSize) {
-        super(block, new Item.Properties()
-                .stacksTo(maxStackSize)
-                .tab(ModSetup.TAB)
+        super(block, new FabricItemSettings()
+                .group(Expanded.TAB)
+                .maxCount(maxStackSize)
         );
     }
 }

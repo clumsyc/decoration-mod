@@ -6,92 +6,87 @@ import me.clumsycat.furnitureexpanded.blocks.tileentities.CardboxTileEntity;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.ClockSignTileEntity;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.FileCabinetTileEntity;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.TrashCanTileEntity;
-import me.clumsycat.furnitureexpanded.entities.SeatEntity;
 import me.clumsycat.furnitureexpanded.items.BlockItemBase;
 import me.clumsycat.furnitureexpanded.items.ItemBase;
 import me.clumsycat.furnitureexpanded.items.ItemBaseFinite;
 import me.clumsycat.furnitureexpanded.items.ItemCardbox;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.MobCategory;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import me.clumsycat.furnitureexpanded.mixin.RemainderAcessor;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.minecraft.block.Block;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 
-@SuppressWarnings("unused")
 public class RegistryHandler {
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Expanded.MOD_ID);
-    public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Expanded.MOD_ID);
-    public static final DeferredRegister<BlockEntityType<?>> TILES = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, Expanded.MOD_ID);
-    public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, Expanded.MOD_ID);
-    //public static final DeferredRegister<ContainerType<?>> CONTAINERS = DeferredRegister.create(ForgeRegistries.CONTAINERS, Expanded.MOD_ID);
-    //public static final DeferredRegister<IRecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(ForgeRegistries.RECIPE_SERIALIZERS, Expanded.MOD_ID);
-    //public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Expanded.MOD_ID);
-    //public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Expanded.MOD_ID);
+    public static final Block TOILET = new Toilet();
+    public static final Block BATHROOM_SINK = new BathroomSink();
+    public static final Block SHOWER_BOX = new ShowerBox();
+    public static final Block TOWEL_BAR = new TowelBar();
+    public static final Block PAPER_HOLDER = new PaperHolder();
+    public static final Block TRASH_CAN = new TrashCan();
+    public static final Block MIRROR = new MirrorBlock();
+    public static final Block FILE_CABINET = new FileCabinet();
+    public static final Block CARDBOX = new Cardbox();
+    public static final Block CLOCK_SIGN = new ClockSign();
+
+
+    public static final Item BASKET = new ItemBase(1);
+    public static final Item TAPE = new ItemBaseFinite(1, 16);
+    public static final Item SAW = new ItemBaseFinite(1, 64);
+    public static final Item SAWDUST = new ItemBase(64);
+
 
     public static void init() {
-        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ITEMS.register(modEventBus);
-        BLOCKS.register(modEventBus);
-        TILES.register(modEventBus);
-        ENTITIES.register(modEventBus);
-        //CONTAINERS.register(modEventBus);
-        //RECIPE_SERIALIZERS.register(modEventBus);
-        //SOUND_EVENTS.register(modEventBus);
-        //PARTICLES.register(modEventBus);
+        registerBlock("toilet", TOILET);
+        registerBlock("bathroom_sink", BATHROOM_SINK);
+        registerBlock("shower_box", SHOWER_BOX);
+        registerBlock("towel_bar", TOWEL_BAR);
+        registerBlock("paper_holder", PAPER_HOLDER);
+        registerBlock("trash_can", TRASH_CAN);
+        registerBlock("mirror", MIRROR);
+        registerBlock("file_cabinet", FILE_CABINET);
+        registerBlock("cardbox", CARDBOX);
+        registerBlock("clock_sign", CLOCK_SIGN);
+
+
+        registerItemBlock("toilet", new BlockItemBase(TOILET, 64));
+        registerItemBlock("bathroom_sink", new BlockItemBase(BATHROOM_SINK, 64));
+        registerItemBlock("shower_box", new BlockItemBase(SHOWER_BOX, 64));
+        registerItemBlock("towel_bar", new BlockItemBase(TOWEL_BAR, 64));
+        registerItemBlock("paper_holder", new BlockItemBase(PAPER_HOLDER, 64));
+        registerItemBlock("trash_can", new BlockItemBase(TRASH_CAN, 64));
+        registerItemBlock("mirror", new BlockItemBase(MIRROR, 64));
+        registerItemBlock("file_cabinet", new BlockItemBase(FILE_CABINET, 64));
+        registerItemBlock("clock_sign", new BlockItemBase(CLOCK_SIGN, 64));
+        registerItemBlock("cardbox", new ItemCardbox(CARDBOX));
+
+
+        registerItem("basket", BASKET);
+        registerItem("tape", TAPE);
+        registerItemRemainder("saw", SAW);
+        registerItem("sawdust", SAWDUST);
+
     }
-    // Items
-    public static final RegistryObject<ItemBase> BASKET = ITEMS.register("basket",  () -> new ItemBase(1));
-    public static final RegistryObject<ItemBaseFinite> TAPE = ITEMS.register("tape",  () -> new ItemBaseFinite(1, 16));
-    public static final RegistryObject<ItemBaseFinite> SAW = ITEMS.register("saw",  () -> new ItemBaseFinite(1, 64));
 
-    // Crafting Items
-    public static final RegistryObject<ItemBase> SAWDUST = ITEMS.register("sawdust",  () -> new ItemBase(64));
+    private static Item registerItemRemainder(String name, Item item) {
+        Item rm = registerItem(name, item);
+        ((RemainderAcessor) rm).addRecipeRemainder(rm);
+        return rm;
+    }
 
-    // Block Items
-    public static final RegistryObject<Item> TOILET_ITEM = ITEMS.register("toilet", () -> new BlockItemBase(RegistryHandler.TOILET.get(), 64));
-    public static final RegistryObject<Item> BATHROOM_SINK_ITEM = ITEMS.register("bathroom_sink", () -> new BlockItemBase(RegistryHandler.BATHROOM_SINK.get(), 64));
-    public static final RegistryObject<Item> CARDBOX_ITEM = ITEMS.register("cardbox", () -> new ItemCardbox(RegistryHandler.CARDBOX.get()));
-    public static final RegistryObject<Item> FILE_CABINET_ITEM = ITEMS.register("file_cabinet", () -> new BlockItemBase(RegistryHandler.FILE_CABINET.get(), 64));
-    public static final RegistryObject<Item> CLOCK_SIGN_ITEM = ITEMS.register("clock_sign", () -> new BlockItemBase(RegistryHandler.CLOCK_SIGN.get(), 64));
-    public static final RegistryObject<Item> SHOWER_BOX_ITEM = ITEMS.register("shower_box", () -> new BlockItemBase(RegistryHandler.SHOWER_BOX.get(), 64));
-    public static final RegistryObject<Item> TOWEL_BAR_ITEM = ITEMS.register("towel_bar", () -> new BlockItemBase(RegistryHandler.TOWEL_BAR.get(), 64));
-    public static final RegistryObject<Item> PAPER_HOLDER_ITEM = ITEMS.register("paper_holder", () -> new BlockItemBase(RegistryHandler.PAPER_HOLDER.get(), 64));
-    public static final RegistryObject<Item> TRASH_CAN_ITEM = ITEMS.register("trash_can", () -> new BlockItemBase(RegistryHandler.TRASH_CAN.get(), 64));
-    public static final RegistryObject<Item> MIRROR_ITEM = ITEMS.register("mirror", () -> new BlockItemBase(RegistryHandler.MIRROR.get(), 64));
+    private static Item registerItem(String name, Item item) {
+        return Registry.register(Registry.ITEM, new Identifier(Expanded.MOD_ID, name), item);
+    }
 
+    private static Item registerItemBlock(String name, BlockItem blockItem) {
+        return Registry.register(Registry.ITEM, new Identifier(Expanded.MOD_ID, name), blockItem);
+    }
 
-
-    // [[ Blocks ]] Bathroom section
-    public static final RegistryObject<Block> TOILET = BLOCKS.register("toilet", Toilet::new);
-    public static final RegistryObject<Block> BATHROOM_SINK = BLOCKS.register("bathroom_sink", BathroomSink::new);
-    public static final RegistryObject<Block> SHOWER_BOX = BLOCKS.register("shower_box", ShowerBox::new);
-    public static final RegistryObject<Block> TOWEL_BAR = BLOCKS.register("towel_bar", TowelBar::new);
-    public static final RegistryObject<Block> PAPER_HOLDER = BLOCKS.register("paper_holder", PaperHolder::new);
-    public static final RegistryObject<Block> TRASH_CAN = BLOCKS.register("trash_can", TrashCan::new);
-    public static final RegistryObject<Block> MIRROR = BLOCKS.register("mirror", MirrorBlock::new);
-
-
-    // [[ Blocks ]] Bedroom section
-
-    // [[ Blocks ]] Living Room section
-
-    // [[ Blocks ]] Kitchen
-
-    // [[ Blocks ]] Office section
-    public static final RegistryObject<Block> FILE_CABINET = BLOCKS.register("file_cabinet", FileCabinet::new);
-
-    // [[ Blocks ]] Others
-    public static final RegistryObject<Block> CARDBOX = BLOCKS.register("cardbox", Cardbox::new);
-    public static final RegistryObject<Block> CLOCK_SIGN = BLOCKS.register("clock_sign", ClockSign::new);
-
-
-
+    private static Block registerBlock(String name, Block block) {
+        return Registry.register(Registry.BLOCK, new Identifier(Expanded.MOD_ID, name), block);
+    }
 
 
     /**
@@ -100,19 +95,10 @@ public class RegistryHandler {
      *
      */
 
-    public static final RegistryObject<BlockEntityType<CardboxTileEntity>> CARDBOX_TE = TILES.register("cardbox", () -> BlockEntityType.Builder.of(CardboxTileEntity::new, CARDBOX.get()).build(null));
-    public static final RegistryObject<BlockEntityType<FileCabinetTileEntity>> FILE_CABINET_TE = TILES.register("file_cabinet", () -> BlockEntityType.Builder.of(FileCabinetTileEntity::new, FILE_CABINET.get()).build(null));
-    public static final RegistryObject<BlockEntityType<ClockSignTileEntity>> CLOCK_SIGN_TE = TILES.register("clock_sign", () -> BlockEntityType.Builder.of(ClockSignTileEntity::new, CLOCK_SIGN.get()).build(null));
-    public static final RegistryObject<BlockEntityType<TrashCanTileEntity>> TRASH_CAN_TE = TILES.register("trash_can", () -> BlockEntityType.Builder.of(TrashCanTileEntity::new, TRASH_CAN.get()).build(null));
+    public static final BlockEntityType<CardboxTileEntity> CARDBOX_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "cardbox"), FabricBlockEntityTypeBuilder.create(CardboxTileEntity::new, CARDBOX).build());
+    public static final BlockEntityType<FileCabinetTileEntity> FILE_CABINET_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "file_cabinet"), FabricBlockEntityTypeBuilder.create(FileCabinetTileEntity::new, FILE_CABINET).build());
+    public static final BlockEntityType<ClockSignTileEntity> CLOCK_SIGN_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "clock_sign"), FabricBlockEntityTypeBuilder.create(ClockSignTileEntity::new, CLOCK_SIGN).build());
+    public static final BlockEntityType<TrashCanTileEntity> TRASH_CAN_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "trash_can"), FabricBlockEntityTypeBuilder.create(TrashCanTileEntity::new, TRASH_CAN).build());
 
 
-    /**
-     *
-     * ENTITIES
-     *
-     */
-
-    public static final RegistryObject<EntityType<SeatEntity>> SEAT = ENTITIES.register("seat",
-            () -> EntityType.Builder.<SeatEntity>of(SeatEntity::new, MobCategory.MISC)
-                    .build(String.valueOf(new ResourceLocation(Expanded.MOD_ID, "seat"))));
 }

@@ -1,50 +1,50 @@
 package me.clumsycat.furnitureexpanded.blocks.tileentities;
 
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.ShulkerBoxMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ShulkerBoxScreenHandler;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
 
-public class CardboxTileEntity extends RandomizableContainerBlockEntity {
-    private NonNullList<ItemStack> chestContents = NonNullList.withSize(27, ItemStack.EMPTY);
+public class CardboxTileEntity extends LootableContainerBlockEntity {
+    private DefaultedList<ItemStack> chestContents = DefaultedList.ofSize(27, ItemStack.EMPTY);
 
     public CardboxTileEntity(BlockPos pPos, BlockState pBlockState) {
-        super(RegistryHandler.CARDBOX_TE.get(), pPos, pBlockState);
+        super(RegistryHandler.CARDBOX_TE, pPos, pBlockState);
     }
 
-    public CompoundTag saveToNbt(CompoundTag compound) {
-        if (!this.trySaveLootTable(compound))
-            ContainerHelper.saveAllItems(compound, this.chestContents, false);
+    public NbtCompound saveToNbt(NbtCompound compound) {
+        if (!this.serializeLootTable(compound))
+            Inventories.writeNbt(compound, this.chestContents, false);
         return compound;
     }
 
     @Override
-    protected void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        if (!this.trySaveLootTable(compound)) {
-            ContainerHelper.saveAllItems(compound, this.chestContents);
+    protected void writeNbt(NbtCompound compound) {
+        super.writeNbt(compound);
+        if (!this.serializeLootTable(compound)) {
+            Inventories.writeNbt(compound, this.chestContents);
         }
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void readNbt(NbtCompound pTag) {
+        super.readNbt(pTag);
         this.loadFromTag(pTag);
     }
 
-    public void loadFromTag(CompoundTag nbt) {
-        this.chestContents = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        if (!this.tryLoadLootTable(nbt)) {
-            ContainerHelper.loadAllItems(nbt, this.chestContents);
+    public void loadFromTag(NbtCompound nbt) {
+        this.chestContents = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
+        if (!this.deserializeLootTable(nbt)) {
+            Inventories.readNbt(nbt, this.chestContents);
         }
     }
 
@@ -56,28 +56,29 @@ public class CardboxTileEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
-    public int getContainerSize() {
+    public int size() {
         return 27;
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
+    protected DefaultedList<ItemStack> getInvStackList() {
         return this.chestContents;
     }
 
     @Override
-    protected void setItems(NonNullList<ItemStack> itemsIn) {
+    protected void setInvStackList(DefaultedList<ItemStack> itemsIn) {
         this.chestContents = itemsIn;
     }
 
     @Override
-    protected Component getDefaultName() {
-        return new TranslatableComponent("block.furnitureexpanded.cardbox");
+    protected Text getContainerName() {
+        return new TranslatableText("block.furnitureexpanded.cardbox");
     }
 
+
     @Override
-    protected AbstractContainerMenu createMenu(int id, Inventory player) {
-        return new ShulkerBoxMenu(id, player, this);
+    protected ScreenHandler createScreenHandler(int id, PlayerInventory player) {
+        return new ShulkerBoxScreenHandler(id, player, this);
     }
 
 }

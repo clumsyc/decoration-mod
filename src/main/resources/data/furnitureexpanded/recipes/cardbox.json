@@ -10,7 +10,7 @@
             "item": "furnitureexpanded:sawdust"
         },
         "c": {
-            "tag": "forge:chests"
+            "item": "minecraft:chest"
         }
     },
     "result": {

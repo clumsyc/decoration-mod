@@ -1,22 +1,20 @@
 package me.clumsycat.furnitureexpanded.util;
 
 import me.clumsycat.furnitureexpanded.entities.SeatEntity;
-
-import net.minecraft.core.BlockPos;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class SeatHandler {
-    public static final Map<ResourceLocation, Map<BlockPos, SeatEntity>> OCCUPIED = new HashMap<>();
+    public static final Map<Identifier, Map<BlockPos, SeatEntity>> OCCUPIED = new HashMap<>();
 
-    public static boolean addSeatEntity(Level world, BlockPos blockPos, SeatEntity entity) {
-        if(!world.isClientSide){
-            ResourceLocation id = getDimensionTypeId(world);
+    public static boolean addSeatEntity(World world, BlockPos blockPos, SeatEntity entity) {
+        if(!world.isClient){
+            Identifier id = getDimensionTypeId(world);
             if(!OCCUPIED.containsKey(id)) OCCUPIED.put(id, new HashMap<>());
             OCCUPIED.get(id).put(blockPos, entity);
             return true;
@@ -24,10 +22,9 @@ public class SeatHandler {
         return false;
     }
 
-    @SuppressWarnings("UnusedReturnValue")
-    public static boolean removeSeatEntity(Level world, BlockPos pos) {
-        if(!world.isClientSide) {
-            ResourceLocation id = getDimensionTypeId(world);
+    public static boolean removeSeatEntity(World world, BlockPos pos) {
+        if(!world.isClient) {
+            Identifier id = getDimensionTypeId(world);
             if(OCCUPIED.containsKey(id)) {
                 OCCUPIED.get(id).remove(pos);
                 return true;
@@ -36,40 +33,29 @@ public class SeatHandler {
         return false;
     }
 
-    public static SeatEntity getSeatEntity(Level world, BlockPos pos) {
-        if(!world.isClientSide) {
-            ResourceLocation id = getDimensionTypeId(world);
+    public static SeatEntity getSeatEntity(World world, BlockPos pos) {
+        if(!world.isClient) {
+            Identifier id = getDimensionTypeId(world);
             if(OCCUPIED.containsKey(id) && OCCUPIED.get(id).containsKey(pos)) return OCCUPIED.get(id).get(pos);
         }
         return null;
     }
 
-    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public static boolean isOccupied(Level world, BlockPos pos) {
-        ResourceLocation id = getDimensionTypeId(world);
+    public static boolean isOccupied(World world, BlockPos pos) {
+        Identifier id = getDimensionTypeId(world);
         return OCCUPIED.containsKey(id) && OCCUPIED.get(id).containsKey(pos);
     }
 
-    private static ResourceLocation getDimensionTypeId(Level world) {
-        return world.dimension().location();
+    private static Identifier getDimensionTypeId(World world) {
+        return world.getDimension().getEffects();
     }
 
-    public static void create(Level world, BlockPos pos, Player player, double offsetY) {
-        if(!world.isClientSide && !isOccupied(world, pos)) {
-            SeatEntity seat = new SeatEntity(world, pos, player.position(), offsetY);
+    public static void create(World world, BlockPos pos, PlayerEntity player, double offsetY) {
+        if(!world.isClient && !isOccupied(world, pos)) {
+            SeatEntity seat = new SeatEntity(world, pos, player.getPos(), offsetY);
             if (addSeatEntity(world, pos, seat)) {
-                world.addFreshEntity(seat);
+                world.spawnEntity(seat);
                 player.startRiding(seat);
-            }
-        }
-    }
-
-    public static void onBreak(BlockEvent.BreakEvent event) {
-        if(!event.getWorld().isClientSide()) {
-            SeatEntity entity = getSeatEntity((Level) event.getWorld(), event.getPos());
-            if(entity != null) {
-                removeSeatEntity((Level) event.getWorld(), event.getPos());
-                entity.ejectPassengers();
             }
         }
     }

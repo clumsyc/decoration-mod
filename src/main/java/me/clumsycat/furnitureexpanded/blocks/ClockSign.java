@@ -3,135 +3,126 @@ package me.clumsycat.furnitureexpanded.blocks;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.ClockSignTileEntity;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
-import net.minecraft.world.Containers;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
-import net.minecraft.world.level.block.*;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockBehaviour;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
-import net.minecraft.world.level.material.PushReaction;
-import net.minecraft.world.phys.shapes.CollisionContext;
-import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraft.block.*;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.piston.PistonBehavior;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.DirectionProperty;
+import net.minecraft.util.BlockMirror;
+import net.minecraft.util.BlockRotation;
+import net.minecraft.util.ItemScatterer;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
+import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
+import net.minecraft.world.World;
+import net.minecraft.world.WorldView;
+import net.minecraft.world.explosion.Explosion;
 
 import javax.annotation.Nullable;
 
-@SuppressWarnings("NullableProblems")
-public class ClockSign extends BaseEntityBlock {
+public class ClockSign extends BlockWithEntity {
     public static final BooleanProperty main = BSProperties.MAIN;
-    public static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
+    public static final DirectionProperty face = HorizontalFacingBlock.FACING;
 
     public ClockSign() {
-        super(BlockBehaviour.Properties.of(Material.METAL)
+        super(AbstractBlock.Settings.of(Material.METAL)
                 .strength(2f, 2f)
-                .sound(SoundType.METAL));
-        this.registerDefaultState(this.stateDefinition.any().setValue(face, Direction.NORTH).setValue(main, true));
+                .sounds(BlockSoundGroup.METAL));
+        this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH).with(main, true));
     }
     @Override
-    public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return (state.getValue(main)) ? new ClockSignTileEntity(pos, state) : null;
-    }
-
-    @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
-        Vec3i v3 = state.getValue(face).getClockWise().getNormal();
-        worldIn.setBlockAndUpdate(pos.offset(v3), state.setValue(main, false));
+    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return (state.get(main)) ? new ClockSignTileEntity(pos, state) : null;
     }
 
     @Override
-
-    public void playerWillDestroy(Level worldIn, BlockPos pos, BlockState state, Player player) {
+    public void onPlaced(World worldIn, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
+        super.onPlaced(worldIn, pos, state, placer, stack);
+        Direction v3 = state.get(face).rotateYClockwise();
+        worldIn.setBlockState(pos.offset(v3), state.with(main, false), Block.NOTIFY_ALL);
+    }
+    @Override
+    public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
         destroyAdj(worldIn, pos, state);
-        super.playerWillDestroy(worldIn, pos, state, player);
+        if (!player.isCreative()) ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
+        super.onBreak(worldIn, pos, state, player);
     }
 
     @Override
-    public void playerDestroy(Level worldIn, Player player, BlockPos pos, BlockState state, @Nullable BlockEntity tileentity, ItemStack stack) {
-        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
-    }
-
-    @Override
-    public void onBlockExploded(BlockState state, Level worldIn, BlockPos pos, Explosion explosion) {
-        Containers.dropItemStack(worldIn, pos.getX(), pos.getY(), pos.getZ(), state.getBlock().asItem().getDefaultInstance());
+    public void onDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosion) {
+        BlockState state = worldIn.getBlockState(pos);
+        ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), state.getBlock().asItem().getDefaultStack());
         destroyAdj(worldIn, pos, state);
-        super.onBlockExploded(state, worldIn, pos, explosion);
+        super.onDestroyedByExplosion(worldIn, pos, explosion);
     }
 
-    private void destroyAdj(Level worldIn, BlockPos pos, BlockState state) {
-        boolean _main = state.getValue(main);
-        Direction _fc = state.getValue(face);
-        BlockPos _pcw = pos.offset(_fc.getClockWise().getNormal());
-        BlockPos _ccw = pos.offset(_fc.getCounterClockWise().getNormal());
+    private void destroyAdj(World worldIn, BlockPos pos, BlockState state) {
+        boolean _main = state.get(main);
+        Direction _fc = state.get(face);
+        BlockPos _pcw = pos.offset(_fc.rotateYClockwise());
+        BlockPos _ccw = pos.offset(_fc.rotateYCounterclockwise());
         if(worldIn.getBlockState((_main ? _pcw : _ccw)).getBlock() == this) {
-            if(worldIn.getBlockState((_main ? _pcw : _ccw)).getValue(face) == _fc) {
+            if(worldIn.getBlockState((_main ? _pcw : _ccw)).get(face) == _fc) {
                 worldIn.removeBlock((_main ? _pcw : _ccw), false);
             }
         }
     }
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader worldIn, BlockPos pos) {
-        return worldIn.isEmptyBlock(pos.offset(state.getValue(face).getClockWise().getNormal()));
+    public boolean canPlaceAt(BlockState state, WorldView worldIn, BlockPos pos) {
+        return worldIn.isAir(pos.offset(state.get(face).rotateYClockwise()));
     }
 
-    @SuppressWarnings("NullableProblems")
     @Override
-    public PushReaction getPistonPushReaction(BlockState p_149656_1_) {
-        return PushReaction.BLOCK;
+    public PistonBehavior getPistonBehavior(BlockState p_149656_1_) {
+        return PistonBehavior.BLOCK;
     }
 
     @Nullable
     @Override
-    public BlockState getStateForPlacement(BlockPlaceContext context) {
-        return this.defaultBlockState().setValue(face, context.getHorizontalDirection());
+    public BlockState getPlacementState(ItemPlacementContext context) {
+        return this.getDefaultState().with(face, context.getPlayerFacing());
     }
 
     @Override
-    public BlockState rotate(BlockState state, Rotation rot) {
-        return state.setValue(face, rot.rotate(state.getValue(face)));
+    public BlockState rotate(BlockState state, BlockRotation rot) {
+        return state.with(face, rot.rotate(state.get(face)));
     }
 
     @Override
-    public BlockState mirror(BlockState state, Mirror mirrorIn) {
-        return state.rotate(mirrorIn.getRotation(state.getValue(face)));
+    public BlockState mirror(BlockState state, BlockMirror mirrorIn) {
+        return state.rotate(mirrorIn.getRotation(state.get(face)));
     }
 
     @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+    protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(face, main);
     }
 
     @Override
-    public float getShadeBrightness(BlockState state, BlockGetter worldIn, BlockPos pos) {
+    public float getAmbientOcclusionLightLevel(BlockState state, BlockView world, BlockPos pos) {
         return 0.5f;
     }
 
     @Override
-    public RenderShape getRenderShape(BlockState state) {
-        return RenderShape.MODEL;
+    public BlockRenderType getRenderType(BlockState state) {
+        return BlockRenderType.MODEL;
     }
 
     @Override
-    public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {
-        return switch (state.getValue(face)) {
-            case NORTH -> state.getValue(main) ? ModShapes.CLOCK_SIGN_N : ModShapes.CLOCK_SIGN_S;
-            case EAST -> state.getValue(main) ? ModShapes.CLOCK_SIGN_E : ModShapes.CLOCK_SIGN_W;
-            case SOUTH -> state.getValue(main) ? ModShapes.CLOCK_SIGN_S : ModShapes.CLOCK_SIGN_N;
-            default -> state.getValue(main) ? ModShapes.CLOCK_SIGN_W : ModShapes.CLOCK_SIGN_E;
+    public VoxelShape getOutlineShape(BlockState state, BlockView worldIn, BlockPos pos, ShapeContext context) {
+        return switch (state.get(face)) {
+            case NORTH -> state.get(main) ? ModShapes.CLOCK_SIGN_N : ModShapes.CLOCK_SIGN_S;
+            case EAST -> state.get(main) ? ModShapes.CLOCK_SIGN_E : ModShapes.CLOCK_SIGN_W;
+            case SOUTH -> state.get(main) ? ModShapes.CLOCK_SIGN_S : ModShapes.CLOCK_SIGN_N;
+            default -> state.get(main) ? ModShapes.CLOCK_SIGN_W : ModShapes.CLOCK_SIGN_E;
         };
     }
 }

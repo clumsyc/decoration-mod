@@ -10,7 +10,7 @@
             "tag": "minecraft:buttons"
         },
         "s": {
-            "tag": "forge:stone"
+            "item": "minecraft:stone"
         },
         "c": {
             "tag": "minecraft:carpets"

@@ -7,7 +7,7 @@
     ],
     "key": {
         "s": {
-            "tag": "forge:stone"
+            "item": "minecraft:stone"
         },
         "b": {
             "item": "minecraft:bucket"

@@ -5,37 +5,30 @@ import me.clumsycat.furnitureexpanded.items.ItemCardbox;
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
 import me.clumsycat.furnitureexpanded.renderer.ClockSignTileEntityRenderer;
 import me.clumsycat.furnitureexpanded.renderer.SeatRenderer;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.item.ItemProperties;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.EntityRenderersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
+import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.minecraft.client.item.ModelPredicateProviderRegistry;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.util.Identifier;
 
-@Mod.EventBusSubscriber(modid = Expanded.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ClientSetup {
+public class ClientSetup implements ClientModInitializer {
 
-    @SubscribeEvent
-    public static void init(final FMLClientSetupEvent event) {
-        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.SHOWER_BOX.get(), (layer) -> layer == RenderType.solid() || layer == RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.BATHROOM_SINK.get(), (layer) -> layer == RenderType.solid() || layer == RenderType.translucent());
-        ItemBlockRenderTypes.setRenderLayer(RegistryHandler.TOILET.get(), (layer) -> layer == RenderType.solid() || layer == RenderType.translucent());
+    @Override
+    public void onInitializeClient() {
+        BlockEntityRendererRegistry.register(RegistryHandler.CLOCK_SIGN_TE, ClockSignTileEntityRenderer::new);
+        EntityRendererRegistry.register(Expanded.SEAT, SeatRenderer::new);
+        applyLayers();
 
-        event.enqueueWork(ClientSetup::registerPropertyOverride);
+        ModelPredicateProviderRegistry.register(RegistryHandler.CARDBOX.asItem(), new Identifier("fullness"), ItemCardbox::getFullnessPropertyOverride);
     }
 
-    @SubscribeEvent
-    public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerBlockEntityRenderer(RegistryHandler.CLOCK_SIGN_TE.get(), ClockSignTileEntityRenderer::new);
-        event.registerEntityRenderer(RegistryHandler.SEAT.get(), SeatRenderer::new);
+    private void applyLayers() {
+        BlockRenderLayerMap.INSTANCE.putBlock(RegistryHandler.SHOWER_BOX, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(RegistryHandler.BATHROOM_SINK, RenderLayer.getTranslucent());
+        BlockRenderLayerMap.INSTANCE.putBlock(RegistryHandler.TOILET, RenderLayer.getTranslucent());
+
+
     }
-
-    public static void registerPropertyOverride() {
-        ItemProperties.register(RegistryHandler.CARDBOX_ITEM.get(), new ResourceLocation("fullness"), ItemCardbox::getFullnessPropertyOverride);
-    }
-
-
 }

@@ -1,8 +1,8 @@
 package me.clumsycat.furnitureexpanded.util.enums;
 
-import net.minecraft.util.StringRepresentable;
+import net.minecraft.util.StringIdentifiable;
 
-public enum WallSide implements StringRepresentable {
+public enum WallSide implements StringIdentifiable {
     LEFT("left"),
     NORMAL("normal"),
     RIGHT("right");
@@ -17,8 +17,7 @@ public enum WallSide implements StringRepresentable {
         return this.name;
     }
 
-    @SuppressWarnings("NullableProblems")
-    public String getSerializedName() {
+    public String asString() {
         return this.name;
     }
 }

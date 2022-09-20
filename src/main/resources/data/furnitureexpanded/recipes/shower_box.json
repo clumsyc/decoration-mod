@@ -7,7 +7,7 @@
     ],
     "key": {
         "g": {
-            "tag": "forge:glass"
+            "item": "minecraft:glass"
         },
         "i": {
             "item": "minecraft:iron_ingot"

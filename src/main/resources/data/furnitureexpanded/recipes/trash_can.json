@@ -7,10 +7,10 @@
     ],
     "key": {
         "s": {
-            "tag": "forge:stone"
+            "item": "minecraft:stone"
         },
         "c": {
-            "tag": "forge:chests"
+            "item": "minecraft:chest"
         },
         "i": {
             "item": "minecraft:iron_ingot"

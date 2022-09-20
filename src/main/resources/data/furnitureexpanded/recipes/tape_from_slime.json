@@ -7,7 +7,7 @@
     ],
     "key": {
         "h": {
-            "tag": "forge:slimeballs"
+            "item": "minecraft:slime_ball"
         },
         "p": {
             "item": "minecraft:paper"

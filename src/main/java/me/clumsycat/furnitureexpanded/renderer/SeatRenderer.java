@@ -2,20 +2,22 @@ package me.clumsycat.furnitureexpanded.renderer;
 
 import me.clumsycat.furnitureexpanded.Expanded;
 import me.clumsycat.furnitureexpanded.entities.SeatEntity;
-import net.minecraft.client.renderer.culling.Frustum;
-import net.minecraft.client.renderer.entity.EntityRenderer;
-import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.resources.ResourceLocation;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.render.Frustum;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.EntityRendererFactory;
+import net.minecraft.util.Identifier;
 
-@SuppressWarnings("NullableProblems")
+@Environment(value= EnvType.CLIENT)
 public class SeatRenderer extends EntityRenderer<SeatEntity> {
-    private static final ResourceLocation _texture = new ResourceLocation(Expanded.MOD_ID, "");
-    public SeatRenderer(EntityRendererProvider.Context p_i46179_1_) {
+    private static final Identifier _texture = new Identifier(Expanded.MOD_ID, "");
+    public SeatRenderer(EntityRendererFactory.Context p_i46179_1_) {
         super(p_i46179_1_);
     }
 
     @Override
-    public ResourceLocation getTextureLocation(SeatEntity entity) {
+    public Identifier getTexture(SeatEntity entity) {
         return _texture;
     }
 
@@ -25,7 +27,7 @@ public class SeatRenderer extends EntityRenderer<SeatEntity> {
     }
 
     @Override
-    protected boolean shouldShowName(SeatEntity p_177070_1_) {
+    protected boolean hasLabel(SeatEntity p_177070_1_) {
         return false;
     }
 }

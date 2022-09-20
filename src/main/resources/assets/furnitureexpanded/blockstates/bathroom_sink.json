@@ -1,13 +1,20 @@
 {
-  "variants": {
-    "facing=north,type=0": { "model": "furnitureexpanded:block/bathroom_sink" },
-    "facing=south,type=0": { "model": "furnitureexpanded:block/bathroom_sink", "y":  180},
-    "facing=west,type=0": { "model": "furnitureexpanded:block/bathroom_sink", "y":  270},
-    "facing=east,type=0": { "model": "furnitureexpanded:block/bathroom_sink", "y":  90},
-
-    "facing=north,type=1": { "model": "furnitureexpanded:block/bathroom_sink_on" },
-    "facing=south,type=1": { "model": "furnitureexpanded:block/bathroom_sink_on", "y":  180},
-    "facing=west,type=1": { "model": "furnitureexpanded:block/bathroom_sink_on", "y":  270},
-    "facing=east,type=1": { "model": "furnitureexpanded:block/bathroom_sink_on", "y":  90}
-  }
+  "multipart": [
+    { "apply": { "model": "furnitureexpanded:block/bathroom_sink" },
+      "when": { "facing": "north" }},
+    { "apply": { "model": "furnitureexpanded:block/bathroom_sink", "y": 180 },
+      "when": { "facing": "south" }},
+    { "apply": { "model": "furnitureexpanded:block/bathroom_sink", "y": 270 },
+      "when": { "facing": "west" }},
+    { "apply": { "model": "furnitureexpanded:block/bathroom_sink", "y": 90 },
+      "when": { "facing": "east" }},
+    { "apply": { "model": "furnitureexpanded:block/bathroom_sink_on" },
+      "when": { "facing": "north", "type": 1 }},
+    { "apply": { "model": "furnitureexpanded:block/bathroom_sink_on", "y": 180 },
+      "when": { "facing": "south", "type": 1 }},
+    { "apply": { "model": "furnitureexpanded:block/bathroom_sink_on", "y": 270 },
+      "when": { "facing": "west", "type": 1 }},
+    { "apply": { "model": "furnitureexpanded:block/bathroom_sink_on", "y": 90 },
+      "when": { "facing": "east", "type": 1 }}
+  ]
 }

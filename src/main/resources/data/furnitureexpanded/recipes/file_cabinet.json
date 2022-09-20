@@ -7,7 +7,7 @@
     ],
     "key": {
         "c": {
-            "tag": "forge:chests"
+            "item": "minecraft:chest"
         },
         "b": {
             "item": "minecraft:iron_block"

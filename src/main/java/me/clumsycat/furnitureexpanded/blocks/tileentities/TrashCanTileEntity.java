@@ -2,55 +2,56 @@ package me.clumsycat.furnitureexpanded.blocks.tileentities;
 
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TranslatableComponent;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.AbstractContainerMenu;
-import net.minecraft.world.inventory.DispenserMenu;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.LootableContainerBlockEntity;
+import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.Generic3x3ContainerScreenHandler;
+import net.minecraft.screen.ScreenHandler;
+import net.minecraft.state.property.IntProperty;
+import net.minecraft.text.Text;
+import net.minecraft.text.TranslatableText;
+import net.minecraft.util.collection.DefaultedList;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 
 
-public class TrashCanTileEntity extends RandomizableContainerBlockEntity {
-    private static final IntegerProperty type = BSProperties.TYPE_0_1;
+public class TrashCanTileEntity extends LootableContainerBlockEntity {
+    private static final IntProperty type = BSProperties.TYPE_0_1;
     private int ticksLeft = 0;
-    private NonNullList<ItemStack> chestContents = NonNullList.withSize(9, ItemStack.EMPTY);
+    private DefaultedList<ItemStack> chestContents = DefaultedList.ofSize(9, ItemStack.EMPTY);
     public TrashCanTileEntity(BlockPos pPos, BlockState pBlockState) {
-        super(RegistryHandler.TRASH_CAN_TE.get(), pPos, pBlockState);
+        super(RegistryHandler.TRASH_CAN_TE, pPos, pBlockState);
     }
 
-    public CompoundTag saveToNbt(CompoundTag compound) {
-        if (!this.trySaveLootTable(compound))
-            ContainerHelper.saveAllItems(compound, this.chestContents, false);
+    public NbtCompound saveToNbt(NbtCompound compound) {
+        if (!this.serializeLootTable(compound))
+            Inventories.writeNbt(compound, this.chestContents, false);
         return compound;
     }
 
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
-        if (!this.trySaveLootTable(compound)) {
-            ContainerHelper.saveAllItems(compound, this.chestContents);
+    public void writeNbt(NbtCompound compound) {
+        super.writeNbt(compound);
+        if (!this.serializeLootTable(compound)) {
+            Inventories.writeNbt(compound, this.chestContents);
         }
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    public void readNbt(NbtCompound pTag) {
+        super.readNbt(pTag);
         this.loadFromTag(pTag);
     }
 
-    public void loadFromTag(CompoundTag nbt) {
-        this.chestContents = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        if (!this.tryLoadLootTable(nbt)) {
-            ContainerHelper.loadAllItems(nbt, this.chestContents);
+    public void loadFromTag(NbtCompound nbt) {
+        this.chestContents = DefaultedList.ofSize(this.size(), ItemStack.EMPTY);
+        if (!this.deserializeLootTable(nbt)) {
+            Inventories.readNbt(nbt, this.chestContents);
         }
     }
 
@@ -66,40 +67,40 @@ public class TrashCanTileEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
-    public int getContainerSize() {
+    public int size() {
         return chestContents.size();
     }
 
     @Override
-    protected NonNullList<ItemStack> getItems() {
+    protected DefaultedList<ItemStack> getInvStackList() {
         return this.chestContents;
     }
 
     @Override
-    protected void setItems(NonNullList<ItemStack> itemsIn) {
+    protected void setInvStackList(DefaultedList<ItemStack> itemsIn) {
         this.chestContents = itemsIn;
     }
 
     @Override
-    protected Component getDefaultName() {
-        return new TranslatableComponent("block.furnitureexpanded.trash_can");
+    protected Text getContainerName() {
+        return new TranslatableText("block.furnitureexpanded.trash_can");
     }
 
     @Override
-    protected AbstractContainerMenu createMenu(int id, Inventory inventory) {
-        return new DispenserMenu(id, inventory, this);
+    protected ScreenHandler createScreenHandler(int id, PlayerInventory inventory) {
+        return new Generic3x3ContainerScreenHandler(id, inventory, this);
     }
 
-    public static <T extends BlockEntity> void tick(Level worldIn, BlockPos pos, BlockState state, BlockEntity tileentity) {
-        if (!worldIn.isClientSide) {
+    public static <T extends BlockEntity> void tick(World worldIn, BlockPos pos, BlockState state, BlockEntity tileentity) {
+        if (!worldIn.isClient) {
             if (tileentity instanceof TrashCanTileEntity) {
                 TrashCanTileEntity te = (TrashCanTileEntity) worldIn.getBlockEntity(pos);
                 if (te.ticksLeft > 0) {
                     te.ticksLeft--;
-                    if (state.getValue(type) != 1)
-                        worldIn.setBlockAndUpdate(pos, state.setValue(type, 1));
-                } else if (state.getValue(type) != 0)
-                    worldIn.setBlockAndUpdate(pos, state.setValue(type, 0));
+                    if (state.get(type) != 1)
+                        worldIn.setBlockState(pos, state.with(type, 1), Block.NOTIFY_ALL);
+                } else if (state.get(type) != 0)
+                    worldIn.setBlockState(pos, state.with(type, 0), Block.NOTIFY_ALL);
             }
         }
     }
