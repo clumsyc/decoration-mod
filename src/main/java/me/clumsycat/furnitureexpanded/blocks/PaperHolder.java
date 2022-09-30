@@ -56,7 +56,7 @@ public class PaperHolder extends Block {
     public BlockState getPlacementState(ItemPlacementContext context) {
         WallHeight _height = WallHeight.NORMAL;
         WallSide _side = WallSide.NORMAL;
-        Direction nearest = context.getPlayerLookDirection();
+        Direction nearest = context.getPlayerFacing();
         if (!(nearest == Direction.DOWN || nearest == Direction.UP)) {
             Direction direction = nearest.rotateYClockwise();
             double axis = context.getHitPos().getComponentAlongAxis(direction.getAxis());
@@ -69,7 +69,7 @@ public class PaperHolder extends Block {
             if (posY <= 0.33) _height = WallHeight.LOWER;
             else if (posY > 0.66) _height = WallHeight.HIGHER;
         }
-        return this.getDefaultState().with(face, context.getPlayerLookDirection().getOpposite()).with(height, _height).with(side, _side);
+        return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite()).with(height, _height).with(side, _side);
     }
 
     @Override
