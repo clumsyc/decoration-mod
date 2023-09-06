@@ -33,7 +33,8 @@ public class TowelBar extends Block {
     public TowelBar() {
         super(Properties.of(Material.STONE)
                 .strength(1f, 1f)
-                .sound(SoundType.STONE));
+                .sound(SoundType.STONE)
+                .noCollission());
         this.registerDefaultState(this.getStateDefinition().any().setValue(face, Direction.NORTH).setValue(height, WallHeight.NORMAL));
     }
 

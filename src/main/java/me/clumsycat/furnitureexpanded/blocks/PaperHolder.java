@@ -35,7 +35,8 @@ public class PaperHolder extends Block {
     public PaperHolder() {
         super(Properties.of(Material.WOOL)
                 .strength(.5f, 1f)
-                .sound(SoundType.WOOL));
+                .sound(SoundType.WOOL)
+                .noCollission());
         this.registerDefaultState(this.getStateDefinition().any().setValue(face, Direction.NORTH).setValue(height, WallHeight.NORMAL).setValue(side, WallSide.NORMAL));
     }
 
