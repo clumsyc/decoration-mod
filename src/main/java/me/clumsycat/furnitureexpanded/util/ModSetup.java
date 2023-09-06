@@ -17,14 +17,10 @@ public class ModSetup {
         MinecraftForge.EVENT_BUS.addListener(SeatHandler::onBreak);
     }
 
-
     public static final CreativeModeTab TAB = new CreativeModeTab("expandedTab") {
-        @SuppressWarnings("NullableProblems")
         @Override
         public ItemStack makeIcon() {
             return new ItemStack(RegistryHandler.CARDBOX_ITEM.get());
         }
     };
-
-
 }

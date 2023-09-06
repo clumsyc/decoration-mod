@@ -1,13 +1,15 @@
 {
   "itemGroup.expandedTab": "Furniture Expanded",
 
-  "item.furnitureexpanded.basket": "Cesta",
   "item.furnitureexpanded.tape": "Fita Adesiva",
   "item.furnitureexpanded.saw": "Serra",
   "item.furnitureexpanded.sawdust": "Serragem",
+  "item.furnitureexpanded.basket": "Cesta",
 
   "block.furnitureexpanded.toilet": "Vaso Sanitário",
+  "block.furnitureexpanded.bathtub": "Banheira",
   "block.furnitureexpanded.shower_box": "Box do Chuveiro",
+  "block.furnitureexpanded.shower_head": "Chuveiro",
   "block.furnitureexpanded.bathroom_sink": "Pia de Banheiro",
   "block.furnitureexpanded.towel_bar": "Barra de Toalha",
   "block.furnitureexpanded.paper_holder": "Porta Papel Higiênico",
@@ -15,5 +17,7 @@
   "block.furnitureexpanded.mirror": "Espelho",
   "block.furnitureexpanded.cardbox": "Caixa de Papelão",
   "block.furnitureexpanded.file_cabinet": "Armário de Arquivos",
-  "block.furnitureexpanded.clock_sign": "Relógio Digital Grande"
+  "block.furnitureexpanded.clock_sign": "Relógio Digital Grande",
+
+  "sound.furnitureexpanded.shower": "Chuveiro"
 }

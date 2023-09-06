@@ -27,6 +27,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -66,7 +67,7 @@ public class Toilet extends Block {
                 if (state.getValue(type) == 0) worldIn.setBlockAndUpdate(pos, state.setValue(type, 1));
                 else {
                     int y = hit.getBlockPos().getY();
-                    if (hit.getDirection() == Direction.UP && hit.getLocation().y == (y + .625) && !player.isCrouching()) SeatHandler.create(worldIn, pos, player, 0);
+                    if (hit.getDirection() == Direction.UP && hit.getLocation().y == (y + .625) && !player.isCrouching()) SeatHandler.create(worldIn, pos, player, Vec3.ZERO);
                     else worldIn.setBlockAndUpdate(pos, state.setValue(type, 0));
                 }
                 worldIn.playSound(null, pos, SoundType.WOOD.getBreakSound(), SoundSource.BLOCKS, 0.5f, 0.5f);

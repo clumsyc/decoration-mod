@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.level.BlockEvent;
 
 import java.util.HashMap;
@@ -54,9 +55,9 @@ public class SeatHandler {
         return world.dimension().location();
     }
 
-    public static void create(Level world, BlockPos pos, Player player, double offsetY) {
+    public static void create(Level world, BlockPos pos, Player player, Vec3 offset) {
         if(!world.isClientSide && !isOccupied(world, pos)) {
-            SeatEntity seat = new SeatEntity(world, pos, player.position(), offsetY);
+            SeatEntity seat = new SeatEntity(world, pos, player.position(), offset);
             if (addSeatEntity(world, pos, seat)) {
                 world.addFreshEntity(seat);
                 player.startRiding(seat);

@@ -4,7 +4,7 @@ license="All rights reserved"
 
 [[mods]]
 modId="furnitureexpanded"
-version="1.19-1.0.1" #${file.jarVersion}
+version="1.19-1.1"
 displayName="Furniture Expanded"
 logoFile="expanded.png"
 authors="clumsycat"

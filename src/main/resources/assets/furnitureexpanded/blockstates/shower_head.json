@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "facing=north,enabled=false": { "model": "furnitureexpanded:block/shower_head" },
+    "facing=south,enabled=false": { "model": "furnitureexpanded:block/shower_head", "y":  180},
+    "facing=west,enabled=false": { "model": "furnitureexpanded:block/shower_head", "y":  270},
+    "facing=east,enabled=false": { "model": "furnitureexpanded:block/shower_head", "y":  90},
+
+    "facing=north,enabled=true": { "model": "furnitureexpanded:block/shower_head" },
+    "facing=south,enabled=true": { "model": "furnitureexpanded:block/shower_head", "y":  180},
+    "facing=west,enabled=true": { "model": "furnitureexpanded:block/shower_head", "y":  270},
+    "facing=east,enabled=true": { "model": "furnitureexpanded:block/shower_head", "y":  90}
+  }
+}

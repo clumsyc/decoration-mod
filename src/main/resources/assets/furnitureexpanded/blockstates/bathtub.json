@@ -1,0 +1,23 @@
+{
+  "variants": {
+    "facing=north,main=true,type=0": { "model": "furnitureexpanded:block/bathtub_top" },
+    "facing=south,main=true,type=0": { "model": "furnitureexpanded:block/bathtub_top", "y":  180},
+    "facing=west,main=true,type=0": { "model": "furnitureexpanded:block/bathtub_top", "y":  270},
+    "facing=east,main=true,type=0": { "model": "furnitureexpanded:block/bathtub_top", "y":  90},
+
+    "facing=north,main=true,type=1": { "model": "furnitureexpanded:block/bathtub_top_on" },
+    "facing=south,main=true,type=1": { "model": "furnitureexpanded:block/bathtub_top_on", "y":  180},
+    "facing=west,main=true,type=1": { "model": "furnitureexpanded:block/bathtub_top_on", "y":  270},
+    "facing=east,main=true,type=1": { "model": "furnitureexpanded:block/bathtub_top_on", "y":  90},
+
+    "facing=north,main=false,type=0": { "model": "furnitureexpanded:block/bathtub_bottom" },
+    "facing=south,main=false,type=0": { "model": "furnitureexpanded:block/bathtub_bottom", "y":  180},
+    "facing=west,main=false,type=0": { "model": "furnitureexpanded:block/bathtub_bottom", "y":  270},
+    "facing=east,main=false,type=0": { "model": "furnitureexpanded:block/bathtub_bottom", "y":  90},
+
+    "facing=north,main=false,type=1": { "model": "furnitureexpanded:block/bathtub_bottom_on" },
+    "facing=south,main=false,type=1": { "model": "furnitureexpanded:block/bathtub_bottom_on", "y":  180},
+    "facing=west,main=false,type=1": { "model": "furnitureexpanded:block/bathtub_bottom_on", "y":  270},
+    "facing=east,main=false,type=1": { "model": "furnitureexpanded:block/bathtub_bottom_on", "y":  90}
+  }
+}

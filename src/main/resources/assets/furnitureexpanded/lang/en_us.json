@@ -1,13 +1,15 @@
 {
   "itemGroup.expandedTab": "Furniture Expanded",
 
-  "item.furnitureexpanded.basket": "Basket",
   "item.furnitureexpanded.tape": "Adhesive Tape",
   "item.furnitureexpanded.saw": "Saw",
   "item.furnitureexpanded.sawdust": "Sawdust",
+  "item.furnitureexpanded.basket": "Basket",
 
   "block.furnitureexpanded.toilet": "Toilet",
-  "block.furnitureexpanded.shower_box": "Shower Box",
+  "block.furnitureexpanded.bathtub": "Bath Tub",
+  "block.furnitureexpanded.shower_box": "Shower Enclosure",
+  "block.furnitureexpanded.shower_head": "Shower Head",
   "block.furnitureexpanded.bathroom_sink": "Bathroom Sink",
   "block.furnitureexpanded.towel_bar": "Towel Bar",
   "block.furnitureexpanded.paper_holder": "Toilet Paper Holder",
@@ -15,5 +17,7 @@
   "block.furnitureexpanded.mirror": "Mirror",
   "block.furnitureexpanded.cardbox": "Cardbox",
   "block.furnitureexpanded.file_cabinet": "File Cabinet",
-  "block.furnitureexpanded.clock_sign": "Clock Sign"
+  "block.furnitureexpanded.clock_sign": "Clock Sign",
+
+  "sound.furnitureexpanded.shower": "Shower"
 }

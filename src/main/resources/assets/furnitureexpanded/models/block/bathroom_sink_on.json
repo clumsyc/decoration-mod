@@ -6,7 +6,7 @@
 	"loader": "forge:composite",
 	"children": {
 		"solid": {
-			"parent": "furnitureexpanded:block/bathroom_sink_model"
+			"parent": "furnitureexpanded:block/bathroom_sink"
 		},
 		"translucent": {
 			"render_type": "translucent",
