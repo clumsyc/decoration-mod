@@ -1,13 +1,11 @@
 package me.clumsycat.furnitureexpanded.items;
 
-import me.clumsycat.furnitureexpanded.util.ModSetup;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 public class ItemBaseFinite extends Item {
     public ItemBaseFinite(int maxStackSize, int durability) {
         super(new Properties()
-                .tab(ModSetup.TAB)
                 .stacksTo(maxStackSize)
                 .durability(durability)
         );

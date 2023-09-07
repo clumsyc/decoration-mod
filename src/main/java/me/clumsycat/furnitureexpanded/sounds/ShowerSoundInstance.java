@@ -31,7 +31,7 @@ public class ShowerSoundInstance extends AbstractTickableSoundInstance {
 
     @Override
     public void tick() {
-        BlockPos soundPos = new BlockPos(this.x, this.y, this.z);
+        BlockPos soundPos = BlockPos.containing(this.x, this.y, this.z);
         BlockState state = Minecraft.getInstance().level.getBlockState(soundPos);
         if (!state.is(RegistryHandler.SHOWER_HEAD.get())) {
             this._stop(soundPos);

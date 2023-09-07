@@ -105,9 +105,6 @@ public class RegistryHandler {
 
 
 
-
-
-
     /**
      *
      * ENTITIES
@@ -123,8 +120,8 @@ public class RegistryHandler {
      * SOUNDS
      *
      */
-
-    public static final RegistryObject<SoundEvent> SHOWER_SFX = SOUNDS.register("shower_sfx", () -> new SoundEvent(new ResourceLocation(Expanded.MOD_ID, "shower_sfx")));
+    
+    public static final RegistryObject<SoundEvent> SHOWER_SFX = SOUNDS.register("shower_sfx", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(Expanded.MOD_ID, "shower_sfx")));
 
     /**
      *

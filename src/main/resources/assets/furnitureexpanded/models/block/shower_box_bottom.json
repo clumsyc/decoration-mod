@@ -9,7 +9,7 @@
 			"render_type": "solid",
 			"textures": {
 				"4": "block/polished_andesite",
-				"7": "furnitureexpanded:blocks/showerbox",
+				"7": "furnitureexpanded:block/showerbox",
 				"particle": "block/gray_stained_glass"
 			},
 			"elements": [

@@ -6,6 +6,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,7 +29,7 @@ public class SeatEntity extends Entity {
     }
 
     @Override
-    public Packet<?> getAddEntityPacket() {
+    public Packet<ClientGamePacketListener> getAddEntityPacket() {
         return NetworkHooks.getEntitySpawningPacket(this);
     }
 
@@ -70,7 +71,7 @@ public class SeatEntity extends Entity {
     }
 
     private Vec3 findDismountSpot(Vec3 location) {
-        BlockPos p1 = new BlockPos(location);
+        BlockPos p1 = BlockPos.containing(location);
         if (!this.level.getBlockState(p1).isSuffocating(this.level, p1) && !this.level.getBlockState(p1.above()).isSuffocating(this.level, p1.above())) {
             return location;
         } else {

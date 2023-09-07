@@ -49,7 +49,7 @@ public class BathTub extends Block {
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
         if(player.getMainHandItem().isEmpty()) {
-            double distSqr = pos.distSqr(new BlockPos(player.position().x, player.position().y, player.position().z));
+            double distSqr = pos.distSqr(BlockPos.containing(player.position().x, player.position().y, player.position().z));
             if (distSqr < 2 && !player.isCrouching()) {
                 Direction direction = state.getValue(face);
                 SeatHandler.create(worldIn, pos, player, new Vec3(0, -0.33, 0).relative(direction, -0.25));

@@ -3,7 +3,6 @@ package me.clumsycat.furnitureexpanded.items;
 import me.clumsycat.furnitureexpanded.gui.BasketContainer;
 import me.clumsycat.furnitureexpanded.gui.CustomItemInventory;
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
-import me.clumsycat.furnitureexpanded.util.ModSetup;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -26,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 public class ItemBasket extends Item implements DyeableLeatherItem {
     public ItemBasket() {
         super(new Item.Properties()
-                .tab(ModSetup.TAB)
                 .stacksTo(1)
         );
     }

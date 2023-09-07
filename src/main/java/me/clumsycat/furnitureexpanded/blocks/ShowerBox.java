@@ -51,7 +51,7 @@ public class ShowerBox extends Block {
 
     @Override
     public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        double distSqr = pos.distSqr(new BlockPos(player.position().x, player.position().y, player.position().z));
+        double distSqr = pos.distSqr(BlockPos.containing(player.position().x, player.position().y, player.position().z));
         Direction.Axis directionAxis = state.getValue(face).getAxis();
         double axis = pos.get(directionAxis);
         double posZ = axis - hit.getLocation().get(directionAxis);

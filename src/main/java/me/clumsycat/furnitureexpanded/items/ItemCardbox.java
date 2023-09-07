@@ -1,7 +1,6 @@
 package me.clumsycat.furnitureexpanded.items;
 
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
-import me.clumsycat.furnitureexpanded.util.ModSetup;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.NonNullList;
@@ -25,8 +24,7 @@ import java.util.List;
 public class ItemCardbox extends BlockItem {
     public ItemCardbox(Block block) {
         super(block, new Properties()
-                .stacksTo(1)
-                .tab(ModSetup.TAB));
+                .stacksTo(1));
     }
 
     @OnlyIn(Dist.CLIENT)

@@ -1,7 +1,7 @@
 package me.clumsycat.furnitureexpanded.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.mojang.math.Vector3f;
+import com.mojang.math.Axis;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.ClockSignTileEntity;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -44,11 +44,11 @@ public class ClockSignTileEntityRenderer implements BlockEntityRenderer<ClockSig
     private void renderTask(float rotation, double startingPoint, FormattedCharSequence irp, int i1, PoseStack matrixStackIn, MultiBufferSource bufferIn) {
         matrixStackIn.pushPose();
         matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-        matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(rotation));
+        matrixStackIn.mulPose(Axis.YP.rotationDegrees(rotation));
         matrixStackIn.mulPose(Direction.DOWN.getRotation());
         matrixStackIn.translate(startingPoint, .27D, -.13D);
         matrixStackIn.scale(0.05f, 0.05f, 0.05f);
-        this.font.drawInBatch(irp, -8, -8, i1, false, matrixStackIn.last().pose(), bufferIn, false, 0, 225 /*combinedLightIn*/);
+        this.font.drawInBatch(irp, -8, -8, i1, false, matrixStackIn.last().pose(), bufferIn, Font.DisplayMode.NORMAL, 0, 225);
         matrixStackIn.popPose();
     }
 

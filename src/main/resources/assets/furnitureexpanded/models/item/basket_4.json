@@ -1,9 +1,9 @@
 {
 	"credit": "Made with Blockbench",
 	"textures": {
-		"2": "furnitureexpanded:items/basket_handle",
-		"6": "furnitureexpanded:items/basket_content",
-		"7": "furnitureexpanded:items/basket"
+		"2": "furnitureexpanded:item/basket_handle",
+		"6": "furnitureexpanded:item/basket_content",
+		"7": "furnitureexpanded:item/basket"
 	},
 	"elements": [
 		{

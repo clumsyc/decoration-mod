@@ -11,7 +11,7 @@
 		"translucent": {
 			"render_type": "translucent",
 			"textures": {
-				"3": "furnitureexpanded:blocks/water_still"
+				"3": "furnitureexpanded:block/water_still"
 			},
 			"elements": [
 				{
