@@ -22,7 +22,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -34,7 +33,7 @@ public class ShowerHead extends BaseEntityBlock {
     private static final BooleanProperty enabled = BlockStateProperties.ENABLED;
 
     public ShowerHead() {
-        super(Block.Properties.of(Material.CLAY)
+        super(Block.Properties.of()
                 .strength(1f, 2f)
                 .sound(SoundType.STONE)
         );

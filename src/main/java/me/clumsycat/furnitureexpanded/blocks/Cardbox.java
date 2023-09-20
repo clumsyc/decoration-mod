@@ -27,7 +27,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -42,7 +41,7 @@ public class Cardbox extends BaseEntityBlock {
     public static final BooleanProperty sealed = BSProperties.SEALED;
 
     public Cardbox() {
-        super(AbstractChestBlock.Properties.of(Material.WOOD)
+        super(AbstractChestBlock.Properties.of()
                 .strength(0.3f, 1f)
                 .sound(SoundType.WOOL));
         this.registerDefaultState(this.stateDefinition.any().setValue(face, Direction.NORTH).setValue(sealed, false));

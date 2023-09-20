@@ -7,11 +7,15 @@ import me.clumsycat.furnitureexpanded.entities.SeatEntity;
 import me.clumsycat.furnitureexpanded.items.*;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -28,6 +32,7 @@ public class RegistryHandler {
     public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Expanded.MOD_ID);
     public static final DeferredRegister<ParticleType<?>> PARTICLES = DeferredRegister.create(ForgeRegistries.PARTICLE_TYPES, Expanded.MOD_ID);
     public static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Expanded.MOD_ID);
+    public static final DeferredRegister<CreativeModeTab> CREATIVE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Expanded.MOD_ID);
 
     public static void init() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -37,7 +42,16 @@ public class RegistryHandler {
         ENTITIES.register(modEventBus);
         PARTICLES.register(modEventBus);
         SOUNDS.register(modEventBus);
+        CREATIVE_TABS.register(modEventBus);
     }
+
+
+    public static final RegistryObject<CreativeModeTab> EXPANDED_TAB = CREATIVE_TABS.register("expanded_tab", () ->
+            CreativeModeTab.builder().icon(() -> new ItemStack(RegistryHandler.CARDBOX_ITEM.get()))
+                    .title(Component.translatable("item_group."+Expanded.MOD_ID+".expanded_tab")).build());
+
+
+
     // Items
     public static final RegistryObject<ItemBaseFinite> TAPE = ITEMS.register("tape",  () -> new ItemBaseFinite(1, 16));
     public static final RegistryObject<ItemBaseFinite> SAW = ITEMS.register("saw",  () -> new ItemBaseFinite(1, 64));

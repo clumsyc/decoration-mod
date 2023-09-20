@@ -36,13 +36,14 @@ public class SeatEntity extends Entity {
     @Override
     public void remove(RemovalReason pReason) {
         super.remove(pReason);
-        SeatHandler.removeSeatEntity(level, bpos);
+        SeatHandler.removeSeatEntity(this.level(), bpos);
         if (this.isAlive()) this.kill();
     }
 
     @Override
     public Vec3 getDismountLocationForPassenger(LivingEntity p_230268_1_) {
-        BlockState state = this.level.getBlockState(this.bpos);
+        if (this.bpos == null) return p_230268_1_.position().add(0, 0.5, 0);
+        BlockState state = this.level().getBlockState(this.bpos);
         if (state.is(RegistryHandler.TOILET.get())) {
             Direction direction = state.getValue(HorizontalDirectionalBlock.FACING);
             return findDismountSpot(new Vec3(this.bpos.getX() + 0.5, this.bpos.getY() + 0.5, this.bpos.getZ() + 0.5).relative(direction, 0.75));
@@ -65,20 +66,20 @@ public class SeatEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if (!level.isClientSide)
+        if (!this.level().isClientSide)
             if (this.getPassengers().isEmpty())
                 this.remove(RemovalReason.DISCARDED);
     }
 
     private Vec3 findDismountSpot(Vec3 location) {
         BlockPos p1 = BlockPos.containing(location);
-        if (!this.level.getBlockState(p1).isSuffocating(this.level, p1) && !this.level.getBlockState(p1.above()).isSuffocating(this.level, p1.above())) {
+        if (!this.level().getBlockState(p1).isSuffocating(this.level(), p1) && !this.level().getBlockState(p1.above()).isSuffocating(this.level(), p1.above())) {
             return location;
         } else {
             for (Direction direction : HorizontalDirectionalBlock.FACING.getPossibleValues()) {
                 direction = direction.getClockWise();
                 p1 = new BlockPos(this.bpos.relative(direction));
-                if (!this.level.getBlockState(p1).isSuffocating(this.level, p1) && !this.level.getBlockState(p1.above()).isSuffocating(this.level, p1.above())) {
+                if (!this.level().getBlockState(p1).isSuffocating(this.level(), p1) && !this.level().getBlockState(p1.above()).isSuffocating(this.level(), p1.above())) {
                     return new Vec3(p1.getX() + 0.5D, p1.getY() + 0.5D, p1.getZ() + 0.5D);
                 }
             }

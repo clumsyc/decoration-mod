@@ -18,7 +18,7 @@ public class BasketContainer extends AbstractContainerMenu {
     public BasketContainer(int pContainerId, Inventory playerInv, ItemStack basket) {
         super(MenuType.GENERIC_9x1, pContainerId);
         this.basket = basket;
-        if (!playerInv.player.getLevel().isClientSide) basketInventory = ItemBasket.getInventory(basket);
+        if (!playerInv.player.level().isClientSide) basketInventory = ItemBasket.getInventory(basket);
         else basketInventory = new SimpleContainer(9);
 
         for (int col = 0; col < 9; ++col) {

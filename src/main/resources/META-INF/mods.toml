@@ -1,10 +1,10 @@
 modLoader="javafml"
-loaderVersion="[45,)"
+loaderVersion="[47,)"
 license="All rights reserved"
 
 [[mods]]
 modId="furnitureexpanded"
-version="1.19.4-1.1"
+version="1.20.1-1.1"
 displayName="Furniture Expanded"
 logoFile="expanded.png"
 authors="clumsycat"
@@ -14,12 +14,12 @@ Just a collection of furniture.
 [[dependencies.furnitureexpanded]] #optional
     modId="forge"
     mandatory=true
-    versionRange="[45,)"
+    versionRange="[47,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.furnitureexpanded]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.4,1.20)"
+    versionRange="[1.20.1,1.21)"
     ordering="NONE"
     side="BOTH"

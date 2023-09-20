@@ -44,7 +44,7 @@ public class ClientSetup {
 
     @SubscribeEvent
     public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
-        event.register(RegistryHandler.SHOWER_PARTICLES.get(), ShowerParticles.Provider::new);
+        event.registerSpriteSet(RegistryHandler.SHOWER_PARTICLES.get(), ShowerParticles.Provider::new);
     }
 
 

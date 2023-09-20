@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
@@ -33,7 +32,7 @@ public class PaperHolder extends Block {
     private static final EnumProperty<WallSide> side = BSProperties.WALL_SIDE;
 
     public PaperHolder() {
-        super(Properties.of(Material.WOOL)
+        super(Properties.of()
                 .strength(.5f, 1f)
                 .sound(SoundType.WOOL)
                 .noCollission());

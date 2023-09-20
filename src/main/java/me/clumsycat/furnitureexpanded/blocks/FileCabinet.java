@@ -27,7 +27,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -41,7 +40,7 @@ public class FileCabinet extends BaseEntityBlock {
     public static final IntegerProperty type = BSProperties.TYPE_0_2;
 
     public FileCabinet() {
-        super(Properties.of(Material.METAL)
+        super(Properties.of()
                 .strength(2f, 2f)
                 .sound(SoundType.METAL));
         this.registerDefaultState(this.stateDefinition.any().setValue(face, Direction.NORTH).setValue(type, 1));

@@ -26,7 +26,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -40,7 +39,7 @@ public class TrashCan extends BaseEntityBlock {
     private static final IntegerProperty type = BSProperties.TYPE_0_1;
 
     public TrashCan() {
-        super(Properties.of(Material.METAL)
+        super(Properties.of()
                 .strength(1f, 2f)
                 .sound(SoundType.METAL)
         );

@@ -24,7 +24,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -42,7 +41,7 @@ public class Toilet extends Block {
 
 
     public Toilet() {
-        super(Block.Properties.of(Material.CLAY)
+        super(Block.Properties.of()
                 .strength(1f, 2f)
                 .sound(SoundType.STONE));
         this.registerDefaultState(this.getStateDefinition().any().setValue(face, Direction.NORTH).setValue(type, 0).setValue(dye, 16));

@@ -20,7 +20,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -33,7 +32,7 @@ public class BathroomSink extends Block {
     public static final IntegerProperty type = BSProperties.TYPE_0_1;
 
     public BathroomSink() {
-        super(Block.Properties.of(Material.CLAY)
+        super(Block.Properties.of()
                 .strength(1f, 2f)
                 .sound(SoundType.STONE)
         );
