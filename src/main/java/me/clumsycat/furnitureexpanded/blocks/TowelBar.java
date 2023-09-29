@@ -57,7 +57,7 @@ public class TowelBar extends Block {
         WallHeight _height = WallHeight.LOWER;
         if (posY > 0.33 && posY < 0.66) _height = WallHeight.NORMAL;
         else if (posY > 0.66) _height = WallHeight.HIGHER;
-        return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite()).with(height, _height);
+        return this.getDefaultState().with(face, context.getHorizontalPlayerFacing().getOpposite()).with(height, _height);
     }
 
     @Override

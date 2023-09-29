@@ -122,7 +122,7 @@ public class FileCabinet extends BlockWithEntity {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
-        return this.getDefaultState().with(type, 0).with(face, context.getPlayerFacing());
+        return this.getDefaultState().with(type, 0).with(face, context.getHorizontalPlayerFacing());
     }
 
     @Override

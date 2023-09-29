@@ -4,7 +4,7 @@
 		"1": "block/black_concrete",
 		"2": "block/white_concrete",
 		"3": "block/gray_concrete",
-		"4": "furnitureexpanded:blocks/cabinet",
+		"4": "furnitureexpanded:block/cabinet",
 		"particle": "block/gray_concrete"
 	},
 	"elements": [

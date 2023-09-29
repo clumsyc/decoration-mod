@@ -11,7 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3f;
+import net.minecraft.util.math.RotationAxis;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -40,11 +40,11 @@ public class ClockSignTileEntityRenderer implements BlockEntityRenderer<ClockSig
     private void renderTask(float rotation, double startingPoint, OrderedText irp, int i1, MatrixStack matrixStackIn, VertexConsumerProvider bufferIn) {
         matrixStackIn.push();
         matrixStackIn.translate(0.5D, 0.5D, 0.5D);
-        matrixStackIn.multiply(Vec3f.POSITIVE_Y.getDegreesQuaternion(rotation));
+        matrixStackIn.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(rotation));
         matrixStackIn.multiply(Direction.DOWN.getRotationQuaternion());
         matrixStackIn.translate(startingPoint, .27D, -.13D);
         matrixStackIn.scale(0.05f, 0.05f, 0.05f);
-        this.font.draw(irp, -8, -8, i1, false, matrixStackIn.peek().getPositionMatrix(), bufferIn, false, 0, 225 /*combinedLightIn*/);
+        this.font.draw(irp, -8, -8, i1, false, matrixStackIn.peek().getPositionMatrix(), bufferIn, TextRenderer.TextLayerType.NORMAL, 0, 225 /*combinedLightIn*/);
         matrixStackIn.pop();
     }
 

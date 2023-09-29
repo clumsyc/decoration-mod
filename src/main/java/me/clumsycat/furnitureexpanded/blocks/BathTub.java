@@ -44,10 +44,10 @@ public class BathTub extends Block {
     @Override
     public ActionResult onUse(BlockState state, World worldIn, BlockPos pos, PlayerEntity player, Hand handIn, BlockHitResult hit) {
         if(player.getMainHandStack().isEmpty()) {
-            double distSqr = pos.getSquaredDistance(new BlockPos(player.getX(), player.getY(), player.getZ()));
+            double distSqr = pos.getSquaredDistance(new Vec3d(player.getX(), player.getY(), player.getZ()));
             if (distSqr < 2 && !player.isSneaking()) {
                 Direction direction = state.get(face);
-                SeatHandler.create(worldIn, pos, player, new Vec3d(0, -0.6, 0).withBias(direction, -0.25));
+                SeatHandler.create(worldIn, pos, player, new Vec3d(0, -0.6, 0).offset(direction, -0.25));
             } else {
                 BlockPos adjPos = getAdjBlockOrNull(worldIn, pos, state.get(face));
                 if (adjPos != null) {
@@ -85,9 +85,8 @@ public class BathTub extends Block {
 
     @Override
     public boolean canPlaceAt(BlockState state, WorldView reader, BlockPos pos) {
-        return reader.isAir(pos.offset(state.get(face).getOpposite()));
+        return reader.isAir(pos.offset(state.get(face)));
     }
-
 
     @Override
     public void onBreak(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
@@ -120,7 +119,7 @@ public class BathTub extends Block {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
-        return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite());
+        return this.getDefaultState().with(face, context.getHorizontalPlayerFacing());
     }
 
     @Override

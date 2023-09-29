@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"0": "block/gray_concrete",
-		"1": "furnitureexpanded:blocks/mirror",
+		"1": "furnitureexpanded:block/mirror",
 		"particle": "block/gray_concrete"
 	},
 	"elements": [

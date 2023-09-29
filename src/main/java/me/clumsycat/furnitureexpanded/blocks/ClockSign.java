@@ -85,7 +85,7 @@ public class ClockSign extends BlockWithEntity {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
-        return this.getDefaultState().with(face, context.getPlayerFacing());
+        return this.getDefaultState().with(face, context.getHorizontalPlayerFacing());
     }
 
     @Override

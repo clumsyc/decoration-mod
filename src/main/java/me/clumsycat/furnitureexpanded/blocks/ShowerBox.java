@@ -47,15 +47,14 @@ public class ShowerBox extends HorizontalFacingBlock {
 
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        double distSqr = pos.getSquaredDistance(new BlockPos(player.getX(), player.getY(), player.getZ()));
+        double distSqr = pos.getSquaredDistance(player.getPos());
         Direction.Axis directionAxis = state.get(FACING).getAxis();
         double axis = pos.getComponentAlongAxis(directionAxis);
         double posZ = axis - hit.getPos().getComponentAlongAxis(directionAxis);
         int pointer = state.get(FACING).getVector().getComponentAlongAxis(directionAxis);
         if (pointer < 0) posZ = hit.getPos().getComponentAlongAxis(directionAxis) - axis;
         else posZ = 1-(posZ - posZ*2);
-
-        if (posZ >= 0.9 && posZ < 1 && distSqr <= 1 && hit.getSide() == state.get(FACING) && state.get(half) == _upper) {
+        if (posZ >= 0.9 && posZ < 1 && distSqr <= 2.1 && hit.getSide() == state.get(FACING) && state.get(half) == _upper) {
             BlockState abvState = world.getBlockState(pos.up());
             if (abvState.isOf(RegistryHandler.SHOWER_HEAD))
                 ShowerHead.setShowerState(world, pos.up(), !abvState.get(enabled));
@@ -135,7 +134,7 @@ public class ShowerBox extends HorizontalFacingBlock {
     @Nullable
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
-        return this.getDefaultState().with(half, _lower).with(FACING, context.getPlayerFacing().getOpposite()).with(open, false).with(attached, false);
+        return this.getDefaultState().with(half, _lower).with(FACING, context.getHorizontalPlayerFacing().getOpposite()).with(open, false).with(attached, false);
     }
 
     @Override

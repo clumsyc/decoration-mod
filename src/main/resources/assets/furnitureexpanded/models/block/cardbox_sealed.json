@@ -1,10 +1,10 @@
 {
   "parent": "block/orientable",
   "textures": {
-    "top": "furnitureexpanded:blocks/cardbox_top_sealed",
-    "front": "furnitureexpanded:blocks/cardbox_side_arrows",
-    "west": "furnitureexpanded:blocks/cardbox_side_sealed",
-    "east": "furnitureexpanded:blocks/cardbox_side_sealed",
-    "side": "furnitureexpanded:blocks/cardbox_side"
+    "top": "furnitureexpanded:block/cardbox_top_sealed",
+    "front": "furnitureexpanded:block/cardbox_side_arrows",
+    "west": "furnitureexpanded:block/cardbox_side_sealed",
+    "east": "furnitureexpanded:block/cardbox_side_sealed",
+    "side": "furnitureexpanded:block/cardbox_side"
   }
 }

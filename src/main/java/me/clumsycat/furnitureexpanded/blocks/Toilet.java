@@ -11,12 +11,12 @@ import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.IntProperty;
-import net.minecraft.tag.ItemTags;
 import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
@@ -61,7 +61,7 @@ public class Toilet extends Block {
                 else {
                     int y = hit.getBlockPos().getY();
                     if (hit.getSide() == Direction.UP && hit.getPos().y == (y + .625) && !player.isSneaking())
-                        SeatHandler.create(worldIn, pos, player, new Vec3d(0, -0.11, 0).withBias(state.get(face), 0.05));
+                        SeatHandler.create(worldIn, pos, player, new Vec3d(0, -0.11, 0).offset(state.get(face), 0.05));
                     else worldIn.setBlockState(pos, state.with(type, 0), Block.NOTIFY_ALL);
                 }
                 worldIn.playSound(null, pos, BlockSoundGroup.WOOD.getBreakSound(), SoundCategory.BLOCKS, 0.5f, 0.5f);
@@ -108,7 +108,7 @@ public class Toilet extends Block {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
-        return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite());
+        return this.getDefaultState().with(face, context.getHorizontalPlayerFacing().getOpposite());
     }
 
     @Override

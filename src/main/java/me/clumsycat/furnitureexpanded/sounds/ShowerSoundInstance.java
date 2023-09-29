@@ -28,7 +28,7 @@ public class ShowerSoundInstance extends MovingSoundInstance {
 
     @Override
     public void tick() {
-        BlockPos soundPos = new BlockPos(this.x, this.y, this.z);
+        BlockPos soundPos = BlockPos.ofFloored(this.x, this.y, this.z);
         BlockState state = MinecraftClient.getInstance().world.getBlockState(soundPos);
         if (!state.isOf(RegistryHandler.SHOWER_HEAD)) {
             this._stop(soundPos);

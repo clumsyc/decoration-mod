@@ -50,7 +50,7 @@ public class BasketContainer extends ScreenHandler {
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int quickMovedSlotIndex) {
+    public ItemStack quickMove(PlayerEntity player, int quickMovedSlotIndex) {
         ItemStack quickMovedStack = ItemStack.EMPTY;
         Slot quickMovedSlot = this.slots.get(quickMovedSlotIndex);
 

@@ -105,7 +105,7 @@ public class FileCabinetTileEntity extends LootableContainerBlockEntity {
     }
 
     private void scheduleTick() {
-        this.getWorld().createAndScheduleBlockTick(this.getPos(), this.getCachedState().getBlock(), 5);
+        this.getWorld().scheduleBlockTick(this.getPos(), this.getCachedState().getBlock(), 5);
     }
 
     public static <T extends BlockEntity> void tick(World worldIn, BlockPos pos, BlockState state, BlockEntity tileentity) {

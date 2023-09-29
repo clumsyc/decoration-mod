@@ -100,7 +100,7 @@ public class ShowerHead extends BlockWithEntity {
 
     @Override
     public BlockState getPlacementState(ItemPlacementContext context) {
-        return this.getDefaultState().with(face, context.getPlayerFacing().getOpposite());
+        return this.getDefaultState().with(face, context.getHorizontalPlayerFacing().getOpposite());
     }
 
     @Override

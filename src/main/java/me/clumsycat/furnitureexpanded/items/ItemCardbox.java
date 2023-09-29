@@ -1,6 +1,5 @@
 package me.clumsycat.furnitureexpanded.items;
 
-import me.clumsycat.furnitureexpanded.Expanded;
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -23,7 +22,6 @@ import java.util.List;
 public class ItemCardbox extends BlockItem {
     public ItemCardbox(Block block) {
         super(block, new FabricItemSettings()
-                .group(Expanded.TAB)
                 .maxCount(1)
         );
     }

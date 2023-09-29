@@ -9,7 +9,8 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.Packet;
+import net.minecraft.network.listener.ClientPlayPacketListener;
+import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.EntitySpawnS2CPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -28,7 +29,7 @@ public class SeatEntity extends Entity {
     }
 
     @Override
-    public Packet<?> createSpawnPacket() {
+    public Packet<ClientPlayPacketListener> createSpawnPacket() {
         return new EntitySpawnS2CPacket(this);
     }
 
@@ -45,7 +46,7 @@ public class SeatEntity extends Entity {
             BlockState state = this.world.getBlockState(this.bpos);
             if (state.isOf(RegistryHandler.TOILET)) {
                 Direction direction = state.get(HorizontalFacingBlock.FACING);
-                return findDismountSpot(new Vec3d(this.bpos.getX() + 0.5, this.bpos.getY() + 0.5, this.bpos.getZ() + 0.5).withBias(direction, 0.75));
+                return findDismountSpot(new Vec3d(this.bpos.getX() + 0.5, this.bpos.getY() + 0.5, this.bpos.getZ() + 0.5).offset(direction, 0.75));
             }
             if (state.isOf(RegistryHandler.BATHTUB)) {
                 return new Vec3d(this.bpos.getX() + 0.5, this.bpos.getY() + 0.5, this.bpos.getZ() + 0.5);
@@ -72,7 +73,7 @@ public class SeatEntity extends Entity {
     }
 
     private Vec3d findDismountSpot(Vec3d location) {
-        BlockPos p1 = new BlockPos(location);
+        BlockPos p1 = BlockPos.ofFloored(location);
         if (!this.world.getBlockState(p1).shouldSuffocate(this.world, p1) && !this.world.getBlockState(p1.up()).shouldSuffocate(this.world, p1.up())) {
             return location;
         } else {

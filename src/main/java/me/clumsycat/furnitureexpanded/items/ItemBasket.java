@@ -1,6 +1,5 @@
 package me.clumsycat.furnitureexpanded.items;
 
-import me.clumsycat.furnitureexpanded.Expanded;
 import me.clumsycat.furnitureexpanded.gui.BasketContainer;
 import me.clumsycat.furnitureexpanded.gui.CustomItemInventory;
 import me.clumsycat.furnitureexpanded.registries.RegistryHandler;
@@ -26,7 +25,6 @@ import org.jetbrains.annotations.Nullable;
 public class ItemBasket extends Item implements DyeableItem {
     public ItemBasket() {
         super(new FabricItemSettings()
-                .group(Expanded.TAB)
                 .maxCount(1)
         );
     }

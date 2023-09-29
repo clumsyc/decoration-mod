@@ -3,7 +3,7 @@
 	"loader": "forge:composite",
 	"textures": {
 		"0": "block/gray_stained_glass",
-		"7": "furnitureexpanded:blocks/showerbox",
+		"7": "furnitureexpanded:block/showerbox",
 		"particle": "block/gray_stained_glass"
 	},
 	"elements": [

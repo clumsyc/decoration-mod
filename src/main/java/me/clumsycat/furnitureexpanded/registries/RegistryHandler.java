@@ -12,9 +12,10 @@ import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 
 public class RegistryHandler {
     public static final Block TOILET = new Toilet();
@@ -38,6 +39,8 @@ public class RegistryHandler {
 
 
     public static void init() {
+        CreativeExpandedTab.registerItemGroup();
+
         registerBlock("toilet", TOILET);
         registerBlock("bathroom_sink", BATHROOM_SINK);
         registerBlock("bathtub", BATHTUB);
@@ -72,9 +75,9 @@ public class RegistryHandler {
         registerItem("sawdust", SAWDUST);
 
 
-        Registry.register(Registry.SOUND_EVENT, SHOWER_SFX_ID, SHOWER_SFX);
+        Registry.register(Registries.SOUND_EVENT, SHOWER_SFX_ID, SHOWER_SFX);
 
-        Registry.register(Registry.PARTICLE_TYPE, SHOWER_PARTICLE_ID, SHOWER_PARTICLE);
+        Registry.register(Registries.PARTICLE_TYPE, SHOWER_PARTICLE_ID, SHOWER_PARTICLE);
 
     }
 
@@ -85,15 +88,19 @@ public class RegistryHandler {
     }
 
     private static Item registerItem(String name, Item item) {
-        return Registry.register(Registry.ITEM, new Identifier(Expanded.MOD_ID, name), item);
+        Item i = Registry.register(Registries.ITEM, new Identifier(Expanded.MOD_ID, name), item);
+        CreativeExpandedTab.addItemToExpandedTab(i);
+        return i;
     }
 
     private static Item registerItemBlock(String name, BlockItem blockItem) {
-        return Registry.register(Registry.ITEM, new Identifier(Expanded.MOD_ID, name), blockItem);
+        BlockItem bi = Registry.register(Registries.ITEM, new Identifier(Expanded.MOD_ID, name), blockItem);
+        CreativeExpandedTab.addItemToExpandedTab(bi);
+        return bi;
     }
 
     private static Block registerBlock(String name, Block block) {
-        return Registry.register(Registry.BLOCK, new Identifier(Expanded.MOD_ID, name), block);
+        return Registry.register(Registries.BLOCK, new Identifier(Expanded.MOD_ID, name), block);
     }
 
 
@@ -103,16 +110,16 @@ public class RegistryHandler {
      *
      */
 
-    public static final BlockEntityType<CardboxTileEntity> CARDBOX_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "cardbox"), FabricBlockEntityTypeBuilder.create(CardboxTileEntity::new, CARDBOX).build());
-    public static final BlockEntityType<FileCabinetTileEntity> FILE_CABINET_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "file_cabinet"), FabricBlockEntityTypeBuilder.create(FileCabinetTileEntity::new, FILE_CABINET).build());
-    public static final BlockEntityType<ClockSignTileEntity> CLOCK_SIGN_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "clock_sign"), FabricBlockEntityTypeBuilder.create(ClockSignTileEntity::new, CLOCK_SIGN).build());
-    public static final BlockEntityType<TrashCanTileEntity> TRASH_CAN_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "trash_can"), FabricBlockEntityTypeBuilder.create(TrashCanTileEntity::new, TRASH_CAN).build());
-    public static final BlockEntityType<ShowerHeadTileEntity> SHOWER_HEAD_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "shower_head"), FabricBlockEntityTypeBuilder.create(ShowerHeadTileEntity::new, SHOWER_HEAD).build());
+    public static final BlockEntityType<CardboxTileEntity> CARDBOX_TE = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "cardbox"), FabricBlockEntityTypeBuilder.create(CardboxTileEntity::new, CARDBOX).build());
+    public static final BlockEntityType<FileCabinetTileEntity> FILE_CABINET_TE = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "file_cabinet"), FabricBlockEntityTypeBuilder.create(FileCabinetTileEntity::new, FILE_CABINET).build());
+    public static final BlockEntityType<ClockSignTileEntity> CLOCK_SIGN_TE = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "clock_sign"), FabricBlockEntityTypeBuilder.create(ClockSignTileEntity::new, CLOCK_SIGN).build());
+    public static final BlockEntityType<TrashCanTileEntity> TRASH_CAN_TE = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "trash_can"), FabricBlockEntityTypeBuilder.create(TrashCanTileEntity::new, TRASH_CAN).build());
+    public static final BlockEntityType<ShowerHeadTileEntity> SHOWER_HEAD_TE = Registry.register(Registries.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "shower_head"), FabricBlockEntityTypeBuilder.create(ShowerHeadTileEntity::new, SHOWER_HEAD).build());
 
 
 
     public static final Identifier SHOWER_SFX_ID = new Identifier(Expanded.MOD_ID, "shower_sfx");
-    public static SoundEvent SHOWER_SFX = new SoundEvent(SHOWER_SFX_ID);
+    public static SoundEvent SHOWER_SFX = SoundEvent.of(SHOWER_SFX_ID);
 
 
     public static final Identifier SHOWER_PARTICLE_ID = new Identifier(Expanded.MOD_ID, "shower_particle");
