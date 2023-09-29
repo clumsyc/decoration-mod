@@ -27,7 +27,7 @@ public class BathroomSink extends Block {
     public static final IntProperty type = BSProperties.TYPE_0_1;
 
     public BathroomSink() {
-        super(FabricBlockSettings.of(Material.AGGREGATE)
+        super(FabricBlockSettings.create()
                 .strength(1f, 2f)
                 .sounds(BlockSoundGroup.STONE)
                 .nonOpaque()

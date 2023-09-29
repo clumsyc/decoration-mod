@@ -34,9 +34,10 @@ public class FileCabinet extends BlockWithEntity {
     public static final IntProperty type = BSProperties.TYPE_0_2;
 
     public FileCabinet() {
-        super(Settings.of(Material.METAL)
+        super(Settings.create()
                 .strength(2f, 2f)
-                .sounds(BlockSoundGroup.METAL));
+                .sounds(BlockSoundGroup.METAL)
+                .pistonBehavior(PistonBehavior.BLOCK));
         this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH).with(type, 1));
     }
 
@@ -113,11 +114,6 @@ public class FileCabinet extends BlockWithEntity {
     @Override
     public boolean canPlaceAt(BlockState state, WorldView worldIn, BlockPos pos) {
         return worldIn.getBlockState(pos.up()).isAir();
-    }
-
-    @Override
-    public PistonBehavior getPistonBehavior(BlockState state) {
-        return PistonBehavior.BLOCK;
     }
 
     @Override

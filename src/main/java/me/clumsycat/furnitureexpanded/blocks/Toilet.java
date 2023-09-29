@@ -33,10 +33,11 @@ public class Toilet extends Block {
     private static final IntProperty dye = BSProperties.DYE_17;
 
     public Toilet() {
-        super(FabricBlockSettings.of(Material.AGGREGATE)
+        super(FabricBlockSettings.create()
                 .strength(1f, 2f)
                 .sounds(BlockSoundGroup.STONE)
                 .nonOpaque()
+                .pistonBehavior(PistonBehavior.BLOCK)
         );
         this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH).with(type, 0).with(dye, 16));
     }
@@ -94,11 +95,6 @@ public class Toilet extends Block {
     public void onDestroyedByExplosion(World worldIn, BlockPos pos, Explosion explosion) {
         ItemScatterer.spawn(worldIn, pos.getX(), pos.getY(), pos.getZ(), new ItemStack(this));
         super.onDestroyedByExplosion(worldIn, pos, explosion);
-    }
-
-    @Override
-    public PistonBehavior getPistonBehavior(BlockState p_149656_1_) {
-        return PistonBehavior.BLOCK;
     }
 
     @Override

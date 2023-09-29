@@ -33,7 +33,7 @@ public class BathTub extends Block {
     public static final BooleanProperty main = BSProperties.MAIN;
 
     public BathTub() {
-        super(FabricBlockSettings.of(Material.AGGREGATE)
+        super(FabricBlockSettings.create()
                 .strength(1f, 2f)
                 .sounds(BlockSoundGroup.STONE)
                 .nonOpaque()

@@ -37,10 +37,11 @@ public class ShowerBox extends HorizontalFacingBlock {
     private static final BooleanProperty enabled = Properties.ENABLED;
 
     public ShowerBox() {
-        super(Settings.of(Material.METAL)
+        super(Settings.create()
                 .strength(1f, 1f)
                 .sounds(BlockSoundGroup.BASALT)
                 .nonOpaque()
+                .pistonBehavior(PistonBehavior.BLOCK)
         );
         this.setDefaultState(this.getStateManager().getDefaultState().with(FACING, Direction.NORTH).with(half, _lower).with(open, false).with(attached, false));
     }
@@ -124,11 +125,6 @@ public class ShowerBox extends HorizontalFacingBlock {
     @Override
     public boolean canPlaceAt(BlockState state, WorldView worldIn, BlockPos pos) {
         return worldIn.isAir(pos.up());
-    }
-
-    @Override
-    public PistonBehavior getPistonBehavior(BlockState p_149656_1_) {
-        return PistonBehavior.BLOCK;
     }
 
     @Nullable

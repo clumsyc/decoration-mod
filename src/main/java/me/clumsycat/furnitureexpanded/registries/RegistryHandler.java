@@ -39,7 +39,7 @@ public class RegistryHandler {
 
 
     public static void init() {
-        CreativeExpandedTab.registerItemGroup();
+        CreativeExpandedTab.registerTab();
 
         registerBlock("toilet", TOILET);
         registerBlock("bathroom_sink", BATHROOM_SINK);
@@ -88,15 +88,11 @@ public class RegistryHandler {
     }
 
     private static Item registerItem(String name, Item item) {
-        Item i = Registry.register(Registries.ITEM, new Identifier(Expanded.MOD_ID, name), item);
-        CreativeExpandedTab.addItemToExpandedTab(i);
-        return i;
+        return Registry.register(Registries.ITEM, new Identifier(Expanded.MOD_ID, name), item);
     }
 
     private static Item registerItemBlock(String name, BlockItem blockItem) {
-        BlockItem bi = Registry.register(Registries.ITEM, new Identifier(Expanded.MOD_ID, name), blockItem);
-        CreativeExpandedTab.addItemToExpandedTab(bi);
-        return bi;
+        return Registry.register(Registries.ITEM, new Identifier(Expanded.MOD_ID, name), blockItem);
     }
 
     private static Block registerBlock(String name, Block block) {

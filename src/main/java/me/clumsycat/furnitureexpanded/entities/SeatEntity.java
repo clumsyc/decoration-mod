@@ -36,14 +36,14 @@ public class SeatEntity extends Entity {
     @Override
     public void remove(RemovalReason pReason) {
         super.remove(pReason);
-        SeatHandler.removeSeatEntity(world, bpos);
+        SeatHandler.removeSeatEntity(getWorld(), bpos);
         if (this.isAlive()) this.kill();
     }
 
     @Override
     public Vec3d updatePassengerForDismount(LivingEntity p_230268_1_) {
         if (this.bpos != null) {
-            BlockState state = this.world.getBlockState(this.bpos);
+            BlockState state = this.getWorld().getBlockState(this.bpos);
             if (state.isOf(RegistryHandler.TOILET)) {
                 Direction direction = state.get(HorizontalFacingBlock.FACING);
                 return findDismountSpot(new Vec3d(this.bpos.getX() + 0.5, this.bpos.getY() + 0.5, this.bpos.getZ() + 0.5).offset(direction, 0.75));
@@ -67,20 +67,20 @@ public class SeatEntity extends Entity {
     @Override
     public void tick() {
         super.tick();
-        if (!world.isClient)
+        if (!getWorld().isClient)
             if (!this.hasPassengers())
                 this.remove(RemovalReason.DISCARDED);
     }
 
     private Vec3d findDismountSpot(Vec3d location) {
         BlockPos p1 = BlockPos.ofFloored(location);
-        if (!this.world.getBlockState(p1).shouldSuffocate(this.world, p1) && !this.world.getBlockState(p1.up()).shouldSuffocate(this.world, p1.up())) {
+        if (!this.getWorld().getBlockState(p1).shouldSuffocate(this.getWorld(), p1) && !this.getWorld().getBlockState(p1.up()).shouldSuffocate(this.getWorld(), p1.up())) {
             return location;
         } else {
             for (Direction direction : HorizontalFacingBlock.FACING.getValues()) {
                 direction = direction.rotateYClockwise();
                 p1 = new BlockPos(this.bpos.offset(direction));
-                if (!this.world.getBlockState(p1).shouldSuffocate(this.world, p1) && !this.world.getBlockState(p1.up()).shouldSuffocate(this.world, p1.up())) {
+                if (!this.getWorld().getBlockState(p1).shouldSuffocate(this.getWorld(), p1) && !this.getWorld().getBlockState(p1.up()).shouldSuffocate(this.getWorld(), p1.up())) {
                     return new Vec3d(p1.getX() + 0.5D, p1.getY() + 0.5D, p1.getZ() + 0.5D);
                 }
             }

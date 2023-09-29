@@ -33,9 +33,10 @@ public class TrashCan extends BlockWithEntity {
     private static final IntProperty type = BSProperties.TYPE_0_1;
 
     public TrashCan() {
-        super(Settings.of(Material.METAL)
+        super(Settings.create()
                 .strength(1f, 2f)
                 .sounds(BlockSoundGroup.METAL)
+                .pistonBehavior(PistonBehavior.BLOCK)
         );
         this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH).with(type, 0));
     }
@@ -94,11 +95,6 @@ public class TrashCan extends BlockWithEntity {
     @Override
     public BlockEntity createBlockEntity(BlockPos pPos, BlockState pState) {
         return new TrashCanTileEntity(pPos, pState);
-    }
-
-    @Override
-    public PistonBehavior getPistonBehavior(BlockState p_149656_1_) {
-        return PistonBehavior.BLOCK;
     }
 
     @Override

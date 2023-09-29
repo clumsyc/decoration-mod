@@ -24,7 +24,7 @@ public class MirrorBlock extends Block {
     private static final DirectionProperty face = HorizontalFacingBlock.FACING;
 
     public MirrorBlock() {
-        super(Settings.of(Material.GLASS)
+        super(Settings.create()
                 .strength(.5f, 1f)
                 .sounds(BlockSoundGroup.GLASS));
         this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH));

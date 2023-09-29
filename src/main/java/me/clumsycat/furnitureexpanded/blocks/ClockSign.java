@@ -30,9 +30,10 @@ public class ClockSign extends BlockWithEntity {
     public static final DirectionProperty face = HorizontalFacingBlock.FACING;
 
     public ClockSign() {
-        super(AbstractBlock.Settings.of(Material.METAL)
+        super(AbstractBlock.Settings.create()
                 .strength(2f, 2f)
-                .sounds(BlockSoundGroup.METAL));
+                .sounds(BlockSoundGroup.METAL)
+                .pistonBehavior(PistonBehavior.BLOCK));
         this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH).with(main, true));
     }
     @Override
@@ -76,11 +77,6 @@ public class ClockSign extends BlockWithEntity {
     @Override
     public boolean canPlaceAt(BlockState state, WorldView worldIn, BlockPos pos) {
         return worldIn.isAir(pos.offset(state.get(face).rotateYClockwise()));
-    }
-
-    @Override
-    public PistonBehavior getPistonBehavior(BlockState p_149656_1_) {
-        return PistonBehavior.BLOCK;
     }
 
     @Override

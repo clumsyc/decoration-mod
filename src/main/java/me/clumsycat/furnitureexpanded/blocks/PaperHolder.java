@@ -29,7 +29,7 @@ public class PaperHolder extends Block {
     private static final EnumProperty<WallSide> side = BSProperties.WALL_SIDE;
 
     public PaperHolder() {
-        super(Settings.of(Material.WOOL)
+        super(Settings.create()
                 .strength(.5f, 1f)
                 .sounds(BlockSoundGroup.WOOL)
                 .noCollision());

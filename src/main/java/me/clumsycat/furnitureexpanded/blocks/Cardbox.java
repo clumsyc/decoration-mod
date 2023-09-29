@@ -35,9 +35,10 @@ public class Cardbox extends BlockWithEntity {
     public static final BooleanProperty sealed = BSProperties.SEALED;
 
     public Cardbox() {
-        super(AbstractBlock.Settings.of(Material.WOOD)
+        super(AbstractBlock.Settings.create()
                 .strength(0.3f, 1f)
-                .sounds(BlockSoundGroup.WOOL));
+                .sounds(BlockSoundGroup.WOOL)
+                .pistonBehavior(PistonBehavior.BLOCK));
         this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH).with(sealed, false));
     }
 
@@ -161,11 +162,6 @@ public class Cardbox extends BlockWithEntity {
             if (itemstack.getNbt() != null) itemstack.getNbt().putBoolean("sealed", true);
         }
         return itemstack;
-    }
-
-    @Override
-    public PistonBehavior getPistonBehavior(BlockState p_149656_1_) {
-        return PistonBehavior.BLOCK;
     }
 
     @Override

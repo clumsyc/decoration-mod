@@ -33,7 +33,7 @@ public class ShowerHead extends BlockWithEntity {
     private static final BooleanProperty enabled = Properties.ENABLED;
 
     public ShowerHead() {
-        super(Settings.of(Material.AGGREGATE)
+        super(Settings.create()
                 .strength(1f, 2f)
                 .sounds(BlockSoundGroup.STONE)
         );

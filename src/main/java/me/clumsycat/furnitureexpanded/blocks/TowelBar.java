@@ -27,7 +27,7 @@ public class TowelBar extends Block {
     private static final EnumProperty<WallHeight> height = BSProperties.WALL_HEIGHT;
 
     public TowelBar() {
-        super(Settings.of(Material.STONE)
+        super(Settings.create()
                 .strength(1f, 1f)
                 .sounds(BlockSoundGroup.STONE)
                 .noCollision());
