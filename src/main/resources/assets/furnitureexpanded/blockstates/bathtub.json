@@ -1,0 +1,33 @@
+{
+  "multipart": [
+    { "apply": { "model": "furnitureexpanded:block/bathtub_top" },
+      "when": { "main": true, "facing": "north" }},
+    { "apply": { "model": "furnitureexpanded:block/bathtub_top", "y": 180 },
+      "when": { "main": true, "facing": "south" }},
+    { "apply": { "model": "furnitureexpanded:block/bathtub_top", "y": 270 },
+      "when": { "main": true, "facing": "west" }},
+    { "apply": { "model": "furnitureexpanded:block/bathtub_top", "y": 90 },
+      "when": { "main": true, "facing": "east" }},
+
+    { "apply": { "model": "furnitureexpanded:block/bathtub_bottom" },
+      "when": { "main": false, "facing": "north" }},
+    { "apply": { "model": "furnitureexpanded:block/bathtub_bottom", "y": 180 },
+      "when": { "main": false, "facing": "south" }},
+    { "apply": { "model": "furnitureexpanded:block/bathtub_bottom", "y": 270 },
+      "when": { "main": false, "facing": "west" }},
+    { "apply": { "model": "furnitureexpanded:block/bathtub_bottom", "y": 90 },
+      "when": { "main": false, "facing": "east" }},
+
+    { "apply": { "model": "furnitureexpanded:block/bathtub_water" },
+      "when": { "facing": "north", "type": 1 }},
+    { "apply": { "model": "furnitureexpanded:block/bathtub_water", "y": 180 },
+      "when": { "facing": "south", "type": 1 }},
+    { "apply": { "model": "furnitureexpanded:block/bathtub_water", "y": 270 },
+      "when": { "facing": "west", "type": 1 }},
+    { "apply": { "model": "furnitureexpanded:block/bathtub_water", "y": 90 },
+      "when": { "facing": "east", "type": 1 }}
+  ]
+}
+
+
+

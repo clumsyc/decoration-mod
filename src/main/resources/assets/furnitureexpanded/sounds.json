@@ -1,0 +1,12 @@
+{
+  "shower_sfx": {
+    "subtitle": "sound.furnitureexpanded.shower",
+    "sounds": [
+      {
+        "name": "furnitureexpanded:shower",
+        "attenuation_distance": 8,
+        "stream": true
+      }
+    ]
+  }
+}

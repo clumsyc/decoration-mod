@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "rii",
+        "il ",
+        "   "
+    ],
+    "key": {
+        "l": {
+            "item": "minecraft:lever"
+        },
+        "r": {
+            "item": "minecraft:redstone"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:shower_head",
+        "count": 1
+    }
+}

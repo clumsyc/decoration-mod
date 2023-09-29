@@ -2,27 +2,26 @@ package me.clumsycat.furnitureexpanded.registries;
 
 import me.clumsycat.furnitureexpanded.Expanded;
 import me.clumsycat.furnitureexpanded.blocks.*;
-import me.clumsycat.furnitureexpanded.blocks.tileentities.CardboxTileEntity;
-import me.clumsycat.furnitureexpanded.blocks.tileentities.ClockSignTileEntity;
-import me.clumsycat.furnitureexpanded.blocks.tileentities.FileCabinetTileEntity;
-import me.clumsycat.furnitureexpanded.blocks.tileentities.TrashCanTileEntity;
-import me.clumsycat.furnitureexpanded.items.BlockItemBase;
-import me.clumsycat.furnitureexpanded.items.ItemBase;
-import me.clumsycat.furnitureexpanded.items.ItemBaseFinite;
-import me.clumsycat.furnitureexpanded.items.ItemCardbox;
+import me.clumsycat.furnitureexpanded.blocks.tileentities.*;
+import me.clumsycat.furnitureexpanded.items.*;
 import me.clumsycat.furnitureexpanded.mixin.RemainderAcessor;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
+import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.block.Block;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.particle.DefaultParticleType;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
 public class RegistryHandler {
     public static final Block TOILET = new Toilet();
     public static final Block BATHROOM_SINK = new BathroomSink();
+    public static final Block BATHTUB = new BathTub();
     public static final Block SHOWER_BOX = new ShowerBox();
+    public static final Block SHOWER_HEAD = new ShowerHead();
     public static final Block TOWEL_BAR = new TowelBar();
     public static final Block PAPER_HOLDER = new PaperHolder();
     public static final Block TRASH_CAN = new TrashCan();
@@ -32,7 +31,7 @@ public class RegistryHandler {
     public static final Block CLOCK_SIGN = new ClockSign();
 
 
-    public static final Item BASKET = new ItemBase(1);
+    public static final Item BASKET = new ItemBasket();
     public static final Item TAPE = new ItemBaseFinite(1, 16);
     public static final Item SAW = new ItemBaseFinite(1, 64);
     public static final Item SAWDUST = new ItemBase(64);
@@ -41,7 +40,9 @@ public class RegistryHandler {
     public static void init() {
         registerBlock("toilet", TOILET);
         registerBlock("bathroom_sink", BATHROOM_SINK);
+        registerBlock("bathtub", BATHTUB);
         registerBlock("shower_box", SHOWER_BOX);
+        registerBlock("shower_head", SHOWER_HEAD);
         registerBlock("towel_bar", TOWEL_BAR);
         registerBlock("paper_holder", PAPER_HOLDER);
         registerBlock("trash_can", TRASH_CAN);
@@ -53,7 +54,9 @@ public class RegistryHandler {
 
         registerItemBlock("toilet", new BlockItemBase(TOILET, 64));
         registerItemBlock("bathroom_sink", new BlockItemBase(BATHROOM_SINK, 64));
+        registerItemBlock("bathtub", new BlockItemBase(BATHTUB, 64));
         registerItemBlock("shower_box", new BlockItemBase(SHOWER_BOX, 64));
+        registerItemBlock("shower_head", new BlockItemBase(SHOWER_HEAD, 64));
         registerItemBlock("towel_bar", new BlockItemBase(TOWEL_BAR, 64));
         registerItemBlock("paper_holder", new BlockItemBase(PAPER_HOLDER, 64));
         registerItemBlock("trash_can", new BlockItemBase(TRASH_CAN, 64));
@@ -67,6 +70,11 @@ public class RegistryHandler {
         registerItem("tape", TAPE);
         registerItemRemainder("saw", SAW);
         registerItem("sawdust", SAWDUST);
+
+
+        Registry.register(Registry.SOUND_EVENT, SHOWER_SFX_ID, SHOWER_SFX);
+
+        Registry.register(Registry.PARTICLE_TYPE, SHOWER_PARTICLE_ID, SHOWER_PARTICLE);
 
     }
 
@@ -99,6 +107,15 @@ public class RegistryHandler {
     public static final BlockEntityType<FileCabinetTileEntity> FILE_CABINET_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "file_cabinet"), FabricBlockEntityTypeBuilder.create(FileCabinetTileEntity::new, FILE_CABINET).build());
     public static final BlockEntityType<ClockSignTileEntity> CLOCK_SIGN_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "clock_sign"), FabricBlockEntityTypeBuilder.create(ClockSignTileEntity::new, CLOCK_SIGN).build());
     public static final BlockEntityType<TrashCanTileEntity> TRASH_CAN_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "trash_can"), FabricBlockEntityTypeBuilder.create(TrashCanTileEntity::new, TRASH_CAN).build());
+    public static final BlockEntityType<ShowerHeadTileEntity> SHOWER_HEAD_TE = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(Expanded.MOD_ID, "shower_head"), FabricBlockEntityTypeBuilder.create(ShowerHeadTileEntity::new, SHOWER_HEAD).build());
 
+
+
+    public static final Identifier SHOWER_SFX_ID = new Identifier(Expanded.MOD_ID, "shower_sfx");
+    public static SoundEvent SHOWER_SFX = new SoundEvent(SHOWER_SFX_ID);
+
+
+    public static final Identifier SHOWER_PARTICLE_ID = new Identifier(Expanded.MOD_ID, "shower_particle");
+    public static final DefaultParticleType SHOWER_PARTICLE = FabricParticleTypes.simple();
 
 }

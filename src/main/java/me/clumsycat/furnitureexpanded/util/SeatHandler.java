@@ -4,6 +4,7 @@ import me.clumsycat.furnitureexpanded.entities.SeatEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 import java.util.HashMap;
@@ -50,9 +51,9 @@ public class SeatHandler {
         return world.getDimension().effects();
     }
 
-    public static void create(World world, BlockPos pos, PlayerEntity player, double offsetY) {
+    public static void create(World world, BlockPos pos, PlayerEntity player, Vec3d offset) {
         if(!world.isClient && !isOccupied(world, pos)) {
-            SeatEntity seat = new SeatEntity(world, pos, player.getPos(), offsetY);
+            SeatEntity seat = new SeatEntity(world, pos, player.getPos(), offset);
             if (addSeatEntity(world, pos, seat)) {
                 world.spawnEntity(seat);
                 player.startRiding(seat);

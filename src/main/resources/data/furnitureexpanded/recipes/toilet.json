@@ -13,7 +13,7 @@
             "item": "minecraft:stone"
         },
         "c": {
-            "tag": "minecraft:carpets"
+            "tag": "minecraft:wool_carpets"
         }
     },
     "result": {

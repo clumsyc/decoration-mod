@@ -29,7 +29,8 @@ public class TowelBar extends Block {
     public TowelBar() {
         super(Settings.of(Material.STONE)
                 .strength(1f, 1f)
-                .sounds(BlockSoundGroup.STONE));
+                .sounds(BlockSoundGroup.STONE)
+                .noCollision());
         this.setDefaultState(this.getStateManager().getDefaultState().with(face, Direction.NORTH).with(height, WallHeight.NORMAL));
     }
 

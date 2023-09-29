@@ -21,6 +21,7 @@ import net.minecraft.util.*;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -59,7 +60,8 @@ public class Toilet extends Block {
                 if (state.get(type) == 0) worldIn.setBlockState(pos, state.with(type, 1), Block.NOTIFY_ALL);
                 else {
                     int y = hit.getBlockPos().getY();
-                    if (hit.getSide() == Direction.UP && hit.getPos().y == (y + .625) && !player.isSneaking()) SeatHandler.create(worldIn, pos, player, 1.25);
+                    if (hit.getSide() == Direction.UP && hit.getPos().y == (y + .625) && !player.isSneaking())
+                        SeatHandler.create(worldIn, pos, player, new Vec3d(0, -0.11, 0).withBias(state.get(face), 0.05));
                     else worldIn.setBlockState(pos, state.with(type, 0), Block.NOTIFY_ALL);
                 }
                 worldIn.playSound(null, pos, BlockSoundGroup.WOOD.getBreakSound(), SoundCategory.BLOCKS, 0.5f, 0.5f);
@@ -72,7 +74,7 @@ public class Toilet extends Block {
     public void onBlockBreakStart(BlockState state, World worldIn, BlockPos pos, PlayerEntity player) {
         super.onBlockBreakStart(state, worldIn, pos, player);
         if (!player.isCreative()) {
-            if (worldIn.getBlockState(pos).isOf(this)) {
+            if (state.isOf(this)) {
                 if (state.get(BSProperties.DYE_17) != 16) {
                     ItemScatterer.spawn(worldIn, pos.getX(), pos.getY()+.5, pos.getZ(), new ItemStack(DyeHandler.CARPET_DYES.get(DyeColor.byId(state.get(BSProperties.DYE_17)))));
                     worldIn.setBlockState(pos, state.with(BSProperties.DYE_17, 16), 3);
