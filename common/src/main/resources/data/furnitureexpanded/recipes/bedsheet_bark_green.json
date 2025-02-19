@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "group": "bedsheet_bark",
+    "ingredients": [
+        {
+            "item": "furnitureexpanded:bedsheet_template"
+        },
+        {
+            "tag": "minecraft:logs"
+        },
+        {
+            "item": "minecraft:green_dye"
+        }
+    ],
+    "result": {
+        "item": "furnitureexpanded:bedsheet_bark_green",
+        "count": 1
+    }
+}

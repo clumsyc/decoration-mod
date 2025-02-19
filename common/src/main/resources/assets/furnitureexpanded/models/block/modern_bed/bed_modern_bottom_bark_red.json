@@ -1,0 +1,6 @@
+{
+    "parent": "furnitureexpanded:block/modern_bed/bed_modern_bottom_bedsheet",
+    "textures": {
+        "2": "furnitureexpanded:block/bedsheets/bark/bedsheet_red"
+    }
+}

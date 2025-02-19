@@ -1,0 +1,18 @@
+{
+  "multipart": [
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_far" }, "when": { "facing": "north", "depth": "far" }},
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_far", "y": 180 }, "when": { "facing": "south", "depth": "far" }},
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_far", "y": 270 }, "when": { "facing": "west", "depth": "far" }},
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_far", "y": 90 }, "when": { "facing": "east", "depth": "far" }},
+
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_normal" }, "when": { "facing": "north", "depth": "normal" }},
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_normal", "y": 180 }, "when": { "facing": "south", "depth": "normal" }},
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_normal", "y": 270 }, "when": { "facing": "west", "depth": "normal" }},
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_normal", "y": 90 }, "when": { "facing": "east", "depth": "normal" }},
+
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_near" }, "when": { "facing": "north", "depth": "near" }},
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_near", "y": 180 }, "when": { "facing": "south", "depth": "near" }},
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_near", "y": 270 }, "when": { "facing": "west", "depth": "near" }},
+    { "apply": { "model": "furnitureexpanded:block/alarm_clock_near", "y": 90 }, "when": { "facing": "east", "depth": "near" }}
+  ]
+}

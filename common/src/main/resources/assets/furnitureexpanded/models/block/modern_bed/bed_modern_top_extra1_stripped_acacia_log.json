@@ -1,0 +1,6 @@
+{
+    "parent": "furnitureexpanded:block/modern_bed/bed_modern_top_bedsheet",
+    "textures": {
+        "2": "furnitureexpanded:block/bedsheets/extra1/bedsheet_stripped_acacia_log"
+    }
+}

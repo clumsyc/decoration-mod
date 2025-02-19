@@ -1,0 +1,23 @@
+{
+    "parent": "furnitureexpanded:item/basket_1",
+    "overrides": [
+        {
+            "predicate": {
+                "fullness": 0.25
+            },
+            "model": "furnitureexpanded:item/basket_2"
+        },
+        {
+            "predicate": {
+                "fullness": 0.5
+            },
+            "model": "furnitureexpanded:item/basket_3"
+        },
+        {
+            "predicate": {
+                "fullness": 1
+            },
+            "model": "furnitureexpanded:item/basket_4"
+        }
+    ]
+}

@@ -1,0 +1,20 @@
+{
+  "replace": false,
+  "values": [
+    "furnitureexpanded:alarm_clock",
+    "furnitureexpanded:bathroom_sink",
+    "furnitureexpanded:bathtub",
+    "furnitureexpanded:bedside_table",
+    "furnitureexpanded:clock_sign",
+    "furnitureexpanded:file_cabinet",
+    "furnitureexpanded:mirror",
+    "furnitureexpanded:modern_bed",
+    "furnitureexpanded:nightstand",
+    "furnitureexpanded:paper_holder",
+    "furnitureexpanded:shower_box",
+    "furnitureexpanded:shower_head",
+    "furnitureexpanded:toilet",
+    "furnitureexpanded:towel_bar",
+    "furnitureexpanded:trash_can"
+  ]
+}

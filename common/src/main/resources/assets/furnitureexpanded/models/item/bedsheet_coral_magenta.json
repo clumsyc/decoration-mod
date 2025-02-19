@@ -1,0 +1,6 @@
+{
+    "parent": "furnitureexpanded:item/bedsheet_model",
+    "textures": {
+        "0": "furnitureexpanded:block/bedsheets/coral/bedsheet_magenta"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "group": "bedsheet_bamboo",
+    "ingredients": [
+        {
+            "item": "furnitureexpanded:bedsheet_template"
+        },
+        {
+            "item": "minecraft:bamboo"
+        },
+        {
+            "item": "minecraft:purple_dye"
+        }
+    ],
+    "result": {
+        "item": "furnitureexpanded:bedsheet_bamboo_purple",
+        "count": 1
+    }
+}

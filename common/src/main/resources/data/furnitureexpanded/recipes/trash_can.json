@@ -1,0 +1,23 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "sss",
+        "ici",
+        "iii"
+    ],
+    "key": {
+        "s": {
+            "tag": "furnitureexpanded:stones"
+        },
+        "c": {
+            "tag": "furnitureexpanded:wooden_chests"
+        },
+        "i": {
+            "item": "minecraft:iron_ingot"
+        }
+    },
+    "result": {
+        "item": "furnitureexpanded:trash_can",
+        "count": 1
+    }
+}

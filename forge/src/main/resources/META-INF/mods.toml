@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[47,)"
+#issueTrackerURL = ""
+license = "All rights reserved"
+
+[[mods]]
+modId = "furnitureexpanded"
+version = "${version}"
+displayName = "Furniture Expanded [FORGE]"
+authors = "clumsycat"
+description = '''
+Just a collection of furniture.
+'''
+logoFile = "assets/furnitureexpanded/expanded.png"
+
+[[dependencies.furnitureexpanded]]
+modId = "forge"
+mandatory = true
+versionRange = "[47,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.furnitureexpanded]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20.1,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.furnitureexpanded]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.2.14,)"
+ordering = "AFTER"
+side = "BOTH"

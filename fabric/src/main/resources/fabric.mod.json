@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "furnitureexpanded",
+  "version": "${version}",
+  "name": "Furniture Expanded [FABRIC]",
+  "description": "Just a collection of furniture.",
+  "authors": [
+    "clumsycat"
+  ],
+  "contact": {
+    "homepage": "https://github.com/clumsyc/decoration-mod/issues",
+    "sources": "https://github.com/clumsyc/decoration-mod"
+  },
+  "license": "All rights reserved",
+  "icon": "assets/furnitureexpanded/expanded.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "me.clumsycat.furnitureexpanded.fabric.ExpandedModFabric"
+    ],
+    "client": [
+      "me.clumsycat.furnitureexpanded.fabric.registries.ClientSetup"
+    ]
+  },
+  "mixins": [
+    "furnitureexpanded.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.10",
+    "minecraft": "~1.20.1",
+    "java": ">=17",
+    "architectury": ">=9.2.14",
+    "fabric-api": "*"
+  }
+}

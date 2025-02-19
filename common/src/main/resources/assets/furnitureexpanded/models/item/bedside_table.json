@@ -1,0 +1,40 @@
+{
+    "parent": "furnitureexpanded:block/bedside_table_normal",
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [78, 0, 0],
+            "translation": [0, 0.5, 0],
+            "scale": [0.2, 0.2, 0.2]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [78, 0, 0],
+            "translation": [0, 0.5, 0],
+            "scale": [0.2, 0.2, 0.2]
+        },
+        "firstperson_righthand": {
+            "translation": [-2, 3.25, 2],
+            "scale": [0.25, 0.25, 0.25]
+        },
+        "firstperson_lefthand": {
+            "translation": [-2, 3.25, 2],
+            "scale": [0.25, 0.25, 0.25]
+        },
+        "ground": {
+            "translation": [0, 2.5, 0],
+            "scale": [0.25, 0.25, 0.25]
+        },
+        "gui": {
+            "rotation": [24, -28, 0],
+            "translation": [0, -0.25, 0],
+            "scale": [0.7, 0.7, 0.7]
+        },
+        "head": {
+            "translation": [0, 0, 0.25],
+            "scale": [1, 1, 1.34375]
+        },
+        "fixed": {
+            "translation": [0, 0, -1],
+            "scale": [0.5, 0.5, 0.5]
+        }
+    }
+}

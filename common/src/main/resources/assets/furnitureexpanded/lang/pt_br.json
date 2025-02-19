@@ -1,0 +1,38 @@
+{
+  "itemGroup.furnitureexpanded.expanded_tab": "Furniture Expanded",
+
+  "item.furnitureexpanded.tape": "Fita Adesiva",
+  "item.furnitureexpanded.saw": "Serra",
+  "item.furnitureexpanded.sawdust": "Serragem",
+  "item.furnitureexpanded.basket": "Cesta",
+  "item.furnitureexpanded.bedsheet": "Roupa de Cama",
+  "item.furnitureexpanded.bedsheet_template": "Modelo para Roupa de Cama",
+
+  "block.furnitureexpanded.toilet": "Vaso Sanitário",
+  "block.furnitureexpanded.bathtub": "Banheira",
+  "block.furnitureexpanded.shower_box": "Box do Chuveiro",
+  "block.furnitureexpanded.shower_head": "Chuveiro",
+  "block.furnitureexpanded.bathroom_sink": "Pia de Banheiro",
+  "block.furnitureexpanded.towel_bar": "Barra de Toalha",
+  "block.furnitureexpanded.paper_holder": "Porta Papel Higiênico",
+  "block.furnitureexpanded.trash_can": "Lata de Lixo",
+  "block.furnitureexpanded.mirror": "Espelho",
+  "block.furnitureexpanded.cardbox": "Caixa de Papelão",
+  "block.furnitureexpanded.file_cabinet": "Armário de Arquivos",
+  "block.furnitureexpanded.clock_sign": "Relógio Digital Grande",
+  "block.furnitureexpanded.alarm_clock": "Radio Relógio",
+  "block.furnitureexpanded.modern_bed": "Cama Moderna",
+  "block.furnitureexpanded.nightstand": "Mesa de Cabeceira",
+  "block.furnitureexpanded.bedside_table": "Mesa de Cabeceira",
+
+  "tooltip.furnitureexpanded.color": "Cor: %s",
+  "tooltip.furnitureexpanded.pattern": "Padrão: %s",
+
+  "patterns.furnitureexpanded.bamboo": "Bambu",
+  "patterns.furnitureexpanded.bark": "Casca de Madeira",
+  "patterns.furnitureexpanded.coral": "Coral",
+  "patterns.furnitureexpanded.mushroom": "Cogumelo",
+  "patterns.furnitureexpanded.extra1": "Extra 1",
+
+  "sound.furnitureexpanded.shower": "Chuveiro"
+}

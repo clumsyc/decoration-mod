@@ -1,6 +1,0 @@
-{
-	"parent": "furnitureexpanded:block/cardbox",
-	  "overrides": [
-    { "predicate": { "fullness": 1.0 }, "model": "furnitureexpanded:item/cardbox_sealed" }
-  ]
-}
