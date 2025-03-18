@@ -4,6 +4,7 @@
   "package": "me.clumsycat.furnitureexpanded.fabric.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ItemStackComponentizationDataFixer"
   ],
   "client": [
   ],

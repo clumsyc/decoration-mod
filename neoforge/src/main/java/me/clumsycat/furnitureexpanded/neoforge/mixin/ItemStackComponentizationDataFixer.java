@@ -1,4 +1,4 @@
-package me.clumsycat.furnitureexpanded.mixin;
+package me.clumsycat.furnitureexpanded.neoforge.mixin;
 
 import com.mojang.serialization.Dynamic;
 import net.minecraft.util.datafix.fixes.ItemStackComponentizationFix;
