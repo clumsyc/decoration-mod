@@ -29,10 +29,21 @@
   "tooltip.furnitureexpanded.pattern": "Padrão: %s",
 
   "patterns.furnitureexpanded.bamboo": "Bambu",
-  "patterns.furnitureexpanded.bark": "Casca de Madeira",
+  "patterns.furnitureexpanded.bark": "Casca de Árvore",
   "patterns.furnitureexpanded.coral": "Coral",
   "patterns.furnitureexpanded.mushroom": "Cogumelo",
   "patterns.furnitureexpanded.extra1": "Extra 1",
 
-  "sound.furnitureexpanded.shower": "Chuveiro"
+  "sound.furnitureexpanded.shower": "Chuveiro",
+
+  "tag.item.furnitureexpanded.bedsheets": "Roupas de Cama",
+  "tag.item.furnitureexpanded.bedsheets_bamboo": "Roupas de Cama de Bambu",
+  "tag.item.furnitureexpanded.bedsheets_bark": "Roupas de Cama de Casca de Árvore",
+  "tag.item.furnitureexpanded.bedsheets_coral": "Roupas de Cama de Coral",
+  "tag.item.furnitureexpanded.bedsheets_mushroom": "Roupas de Cama de Cogumelo",
+  "tag.item.furnitureexpanded.bedsheets_extra1": "Roupas de Cama Extra1",
+  "tag.item.furnitureexpanded.slimeballs": "Bolas de Slime",
+  "tag.item.furnitureexpanded.stones": "Pedras",
+  "tag.item.furnitureexpanded.glass_blocks": "Blocos de Vidro",
+  "tag.item.furnitureexpanded.wooden_chests": "Baús de Madeira"
 }

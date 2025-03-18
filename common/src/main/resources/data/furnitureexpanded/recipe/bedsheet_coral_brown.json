@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "group": "bedsheet_coral",
+    "ingredients": [
+        {
+            "item": "furnitureexpanded:bedsheet_template"
+        },
+        {
+            "tag": "minecraft:coral_plants"
+        },
+        {
+            "item": "minecraft:brown_dye"
+        }
+    ],
+    "result": {
+        "id": "furnitureexpanded:bedsheet_coral_brown",
+        "count": 1
+    }
+}

@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "group": "bedsheet_extra1",
+    "ingredients": [
+        {
+            "item": "furnitureexpanded:bedsheet_template"
+        },
+        {
+            "tag": "minecraft:coral_blocks"
+        }
+    ],
+    "result": {
+        "id": "furnitureexpanded:bedsheet_extra1_coral",
+        "count": 1
+    }
+}

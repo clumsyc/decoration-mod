@@ -1,12 +1,12 @@
 package me.clumsycat.furnitureexpanded.blocks;
 
+import com.mojang.serialization.MapCodec;
 import me.clumsycat.furnitureexpanded.ExpandedMod;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.ShowerHeadTileEntity;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -29,7 +30,7 @@ public class ShowerHead extends BaseEntityBlock {
     private static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
     private static final BooleanProperty enabled = BlockStateProperties.ENABLED;
 
-    public ShowerHead() {
+    public ShowerHead(BlockBehaviour.Properties properties) {
         super(Block.Properties.of()
                 .strength(1f, 2f)
                 .sound(SoundType.STONE)
@@ -40,10 +41,18 @@ public class ShowerHead extends BaseEntityBlock {
                 .setValue(enabled, Boolean.FALSE));
     }
 
+    public ShowerHead() {
+        this(null);
+    }
+
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if(player.getMainHandItem().isEmpty())
-            setShowerState(worldIn, pos, !state.getValue(enabled));
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(ShowerHead::new);
+    }
+
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
+        setShowerState(worldIn, pos, !state.getValue(enabled));
         return worldIn.isClientSide ? InteractionResult.SUCCESS : InteractionResult.CONSUME;
     }
 

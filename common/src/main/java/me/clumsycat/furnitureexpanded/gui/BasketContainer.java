@@ -1,8 +1,6 @@
 package me.clumsycat.furnitureexpanded.gui;
 
-import me.clumsycat.furnitureexpanded.items.ItemBasket;
 import net.minecraft.world.Container;
-import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -12,42 +10,32 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 public class BasketContainer extends AbstractContainerMenu {
-    private final ItemStack basket;
+    private ItemStack basketItem;
     public final Container basketInventory;
 
     public BasketContainer(int pContainerId, Inventory playerInv, ItemStack basket) {
         super(MenuType.GENERIC_9x1, pContainerId);
-        this.basket = basket;
-        if (!playerInv.player.level().isClientSide) basketInventory = ItemBasket.getInventory(basket);
-        else basketInventory = new SimpleContainer(9);
+        this.basketItem = basket;
+        basketInventory = new CustomItemInventory(basket, 9);
 
         for (int col = 0; col < 9; ++col) {
-            addSlot(new Slot(basketInventory, col, 17 + col * 18, 26));
+            addSlot(new SlotLocked(basketInventory, col, 17 + col * 18, 26));
         }
 
         for (int row = 0; row < 3; ++row) {
             for (int col = 0; col < 9; ++col) {
-                int _slot_index = col + row * 9 + 9;
-                if (playerInv.getItem(_slot_index).is(basket.getItem()))
-                    addSlot(new SlotLocked(playerInv, _slot_index, 8 + col * 18, 120 + row * 18));
-                else
-                    addSlot(new Slot(playerInv, _slot_index, 8 + col * 18, 120 + row * 18));
+                addSlot(new Slot(playerInv, col + row * 9 + 9, 8 + col * 18, 120 + row * 18));
             }
         }
 
         for (int i = 0; i < 9; ++i) {
-            if (playerInv.getItem(i).is(basket.getItem()))
-                addSlot(new SlotLocked(playerInv, i, 8 + i * 18, 178));
-            else
-                addSlot(new Slot(playerInv, i, 8 + i * 18, 178));
+            addSlot(new Slot(playerInv, i, 8 + i * 18, 178));
         }
     }
 
     @Override
     public boolean stillValid(@NotNull Player player) {
-        ItemStack main = player.getMainHandItem();
-        ItemStack off = player.getOffhandItem();
-        return !main.isEmpty() && main == basket || !off.isEmpty() && off == basket;
+        return player.getMainHandItem() == this.basketItem || player.getOffhandItem() == this.basketItem;
     }
 
     @Override
@@ -94,7 +82,4 @@ public class BasketContainer extends AbstractContainerMenu {
         }
         return quickMovedStack;
     }
-
-
-
 }

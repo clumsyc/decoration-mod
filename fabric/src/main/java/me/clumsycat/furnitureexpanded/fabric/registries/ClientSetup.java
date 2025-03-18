@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.component.DyedItemColor;
 
 public class ClientSetup implements ClientModInitializer {
 
@@ -42,8 +43,8 @@ public class ClientSetup implements ClientModInitializer {
     }
 
     private void registerPropertyOverride() {
-        ItemProperties.register(ExpandedMod.CARDBOX_ITEM.get(), new ResourceLocation("fullness"), ItemCardbox::getFullnessPropertyOverride);
-        ItemProperties.register(ExpandedMod.BASKET.get(), new ResourceLocation("fullness"), ItemBasket::getFullnessPropertyOverride);
+        ItemProperties.register(ExpandedMod.CARDBOX_ITEM.get(), ResourceLocation.parse("fullness"), ItemCardbox::getFullnessPropertyOverride);
+        ItemProperties.register(ExpandedMod.BASKET.get(), ResourceLocation.parse("fullness"), ItemBasket::getFullnessPropertyOverride);
     }
 
     private void registerParticleFactories() {
@@ -51,7 +52,7 @@ public class ClientSetup implements ClientModInitializer {
     }
 
     private void registerItemColors() {
-        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> ((ItemBasket) stack.getItem()).getColor(stack), ExpandedMod.BASKET.get());
+        ColorProviderRegistry.ITEM.register((stack, tintIndex) -> DyedItemColor.getOrDefault(stack, DyedItemColor.LEATHER_COLOR), ExpandedMod.BASKET.get());
     }
 
 

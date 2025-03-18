@@ -1,5 +1,8 @@
 package me.clumsycat.furnitureexpanded.blocks;
 
+import com.mojang.serialization.MapCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import me.clumsycat.furnitureexpanded.blocks.tileentities.ModernBedTileEntity;
 import me.clumsycat.furnitureexpanded.items.FEItemTags;
 import me.clumsycat.furnitureexpanded.items.ItemBedsheet;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
@@ -10,13 +13,14 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.*;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -33,8 +37,11 @@ public class ModernBed extends BedBlock {
     private static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
     private static final IntegerProperty dye = BSProperties.DYE_17;
     private static final EnumProperty<BedsheetPatterns> BedPattern = BSProperties.BED_PATTERNS;
+    public static final MapCodec<BedBlock> CODEC = RecordCodecBuilder.mapCodec((instance) -> {
+        return instance.group(DyeColor.CODEC.fieldOf("color").forGetter(BedBlock::getColor), propertiesCodec()).apply(instance, ModernBed::new);
+    });
 
-    public ModernBed() {
+    public ModernBed(DyeColor dyeColor, BlockBehaviour.Properties properties) {
         super(DyeColor.RED, BlockBehaviour.Properties.of()
                 .strength(2f, 2f)
                 .sound(SoundType.STONE)
@@ -48,11 +55,23 @@ public class ModernBed extends BedBlock {
                 .setValue(OCCUPIED, false));
     }
 
+    public ModernBed() {
+        this(null, null);
+    }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
-        if (worldIn.isClientSide) super.use(state, worldIn, pos, player, handIn, hit);
-        ItemStack stack = player.getMainHandItem();
+    public MapCodec<BedBlock> codec() {
+        return CODEC;
+    }
+
+    @Override
+    public BlockEntity newBlockEntity(BlockPos blockPos, BlockState blockState) {
+        return new ModernBedTileEntity(blockPos, blockState);
+    }
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
+        if (level.isClientSide) return ItemInteractionResult.SUCCESS;
         if (!state.getValue(OCCUPIED)) {
             int dyeColor = state.getValue(dye);
             if (stack.is(FEItemTags.BEDSHEETS)) {
@@ -61,15 +80,16 @@ public class ModernBed extends BedBlock {
                 if (!(dyeColor == j && i.getPattern() == state.getValue(BedPattern)) && j < 16) {
                     if (!player.isCreative()) {
                         stack.setCount(stack.getCount() - 1);
-                        dropSheet(worldIn, pos, state.getValue(BedPattern), dyeColor);
+                        dropSheet(level, pos, state.getValue(BedPattern), dyeColor);
                     }
-                    updateBedColor(worldIn, pos, state, i.getPattern(), j);
-                    return InteractionResult.CONSUME;
+                    updateBedColor(level, pos, state, i.getPattern(), j);
+                    return ItemInteractionResult.CONSUME;
                 }
+            } else {
+                super.useWithoutItem(state, level, pos, player, hit);
             }
         }
-        super.use(state, worldIn, pos, player, handIn, hit);
-        return InteractionResult.CONSUME;
+        return ItemInteractionResult.CONSUME;
     }
 
     public static void updateBedColor(Level level, BlockPos pos, BlockState state, BedsheetPatterns pattern, int dyeColor) {
@@ -112,4 +132,6 @@ public class ModernBed extends BedBlock {
     public RenderShape getRenderShape(BlockState blockState) {
         return RenderShape.MODEL;
     }
+
+
 }

@@ -1,0 +1,15 @@
+{
+    "type": "furnitureexpanded:damageable_item_remainder",
+    "ingredients": [
+        {
+            "item": "furnitureexpanded:saw"
+        },
+        {
+            "tag": "minecraft:logs"
+        }
+    ],
+    "result": {
+        "id": "furnitureexpanded:sawdust",
+        "count": 8
+    }
+}

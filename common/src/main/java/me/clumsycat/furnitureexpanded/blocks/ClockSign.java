@@ -1,5 +1,6 @@
 package me.clumsycat.furnitureexpanded.blocks;
 
+import com.mojang.serialization.MapCodec;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.ClockSignTileEntity;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
@@ -27,7 +28,7 @@ public class ClockSign extends BaseEntityBlock {
     public static final BooleanProperty main = BSProperties.MAIN;
     public static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
 
-    public ClockSign() {
+    public ClockSign(BlockBehaviour.Properties properties) {
         super(BlockBehaviour.Properties.of()
                 .strength(2f, 2f)
                 .sound(SoundType.METAL)
@@ -35,6 +36,16 @@ public class ClockSign extends BaseEntityBlock {
         );
         this.registerDefaultState(this.stateDefinition.any().setValue(face, Direction.NORTH).setValue(main, true));
     }
+
+    public ClockSign() {
+        this(null);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(ClockSign::new);
+    }
+
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
         return (state.getValue(main)) ? new ClockSignTileEntity(pos, state) : null;

@@ -3,9 +3,6 @@ package me.clumsycat.furnitureexpanded;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import dev.architectury.platform.Platform;
 import net.minecraft.core.particles.SimpleParticleType;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.world.entity.Entity;
 
 import java.nio.file.Path;
 
@@ -26,11 +23,6 @@ public class ExpandedExpectPlatform {
     @ExpectPlatform
     public static Path getConfigDirectory() {
         // Just throw an error, the content should get replaced at runtime.
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
-    public static Packet<ClientGamePacketListener> getEntitySpawningPacket(Entity entity) {
         throw new AssertionError();
     }
 

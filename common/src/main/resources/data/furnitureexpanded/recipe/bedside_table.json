@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        "ccc",
+        "c c"
+    ],
+    "key": {
+        "c": {
+            "item": "minecraft:gray_concrete"
+        }
+    },
+    "result": {
+        "id": "furnitureexpanded:bedside_table",
+        "count": 1
+    }
+}

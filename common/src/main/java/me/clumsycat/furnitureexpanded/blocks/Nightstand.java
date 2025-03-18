@@ -1,18 +1,13 @@
 package me.clumsycat.furnitureexpanded.blocks;
 
+import com.mojang.serialization.MapCodec;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.NightstandTileEntity;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -33,7 +28,7 @@ public class Nightstand extends BaseEntityBlock {
     public static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty open = BlockStateProperties.OPEN;
 
-    public Nightstand() {
+    public Nightstand(BlockBehaviour.Properties properties) {
         super(BlockBehaviour.Properties.of()
                 .strength(2f, 2f)
                 .sound(SoundType.WOOD)
@@ -42,8 +37,17 @@ public class Nightstand extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(face, Direction.NORTH).setValue(open, false));
     }
 
+    public Nightstand() {
+        this(null);
+    }
+
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(Nightstand::new);
+    }
+
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
         if (worldIn.isClientSide) return InteractionResult.SUCCESS;
         BlockEntity tileentity = worldIn.getBlockEntity(pos);
         if (tileentity instanceof NightstandTileEntity te)
@@ -62,25 +66,11 @@ public class Nightstand extends BaseEntityBlock {
             BlockEntity tileentity = level.getBlockEntity(pos);
             if (tileentity instanceof NightstandTileEntity te) {
                 if (!te.isEmpty()) {
-                    CompoundTag compoundnbt = te.saveToNbt(new CompoundTag());
-                    NonNullList<ItemStack> invdrop = NonNullList.withSize(te.getContainerSize(), ItemStack.EMPTY);
-                    ContainerHelper.loadAllItems(compoundnbt, invdrop);
-                    Containers.dropContents(level, pos, invdrop);
+                    Containers.dropContents(level, pos, te);
                 }
             }
             super.onRemove(state, level, pos, state2, bl);
         }
-    }
-
-    @Override
-    public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        if (stack.hasCustomHoverName()) {
-            BlockEntity tileentity = worldIn.getBlockEntity(pos);
-            if (tileentity instanceof NightstandTileEntity te) {
-                te.setCustomName(stack.getDisplayName());
-            }
-        }
-        super.setPlacedBy(worldIn, pos, state, placer, stack);
     }
 
     @Override

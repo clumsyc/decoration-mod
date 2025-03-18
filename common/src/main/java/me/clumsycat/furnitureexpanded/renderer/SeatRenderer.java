@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 
 public class SeatRenderer extends EntityRenderer<SeatEntity> {
-    private static final ResourceLocation _texture = new ResourceLocation(ExpandedMod.MOD_ID, "");
+    private static final ResourceLocation _texture = ResourceLocation.fromNamespaceAndPath(ExpandedMod.MOD_ID, "");
     public SeatRenderer(EntityRendererProvider.Context p_i46179_1_) {
         super(p_i46179_1_);
     }

@@ -1,38 +1,31 @@
 package me.clumsycat.furnitureexpanded.gui;
 
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.Tag;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.component.ItemContainerContents;
+import org.jetbrains.annotations.NotNull;
 
 public class CustomItemInventory extends SimpleContainer {
-    private static final String TAG_ITEMS = "Items";
     private final ItemStack stack;
 
     public CustomItemInventory(ItemStack stack, int expectedSize) {
         super(expectedSize);
         this.stack = stack;
-        ListTag lst = stack.hasTag() && stack.getOrCreateTag().contains(TAG_ITEMS) ? stack.getOrCreateTag().getList(TAG_ITEMS, Tag.TAG_COMPOUND) : new ListTag();
-        int i = 0;
-        for (; i < expectedSize && i < lst.size(); i++) {
-            setItem(i, ItemStack.of(lst.getCompound(i)));
-        }
+        ItemContainerContents icc = stack.getOrDefault(DataComponents.CONTAINER, ItemContainerContents.EMPTY);
+        icc.copyInto(this.getItems());
     }
 
     @Override
-    public boolean stillValid(Player player) {
-        return !stack.isEmpty();
+    public boolean stillValid(@NotNull Player player) {
+        return player.getMainHandItem() == this.stack || player.getOffhandItem() == this.stack;
     }
 
     @Override
     public void setChanged() {
         super.setChanged();
-        ListTag list = new ListTag();
-        for (int i = 0; i < getContainerSize(); i++) {
-            list.add(getItem(i).save(new CompoundTag()));
-        }
-        stack.getOrCreateTag().put(TAG_ITEMS, list);
+        this.stack.set(DataComponents.CONTAINER, ItemContainerContents.fromItems(this.getItems()));
     }
+
 }

@@ -2,13 +2,19 @@ package me.clumsycat.furnitureexpanded.fabric.events;
 
 import me.clumsycat.furnitureexpanded.ExpandedMod;
 import me.clumsycat.furnitureexpanded.blocks.ModernBed;
+import me.clumsycat.furnitureexpanded.entities.SeatEntity;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.DyeHandler;
+import me.clumsycat.furnitureexpanded.util.SeatHandler;
 import net.fabricmc.fabric.api.event.player.AttackBlockCallback;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class FabricEvents {
@@ -34,4 +40,15 @@ public class FabricEvents {
             return InteractionResult.PASS;
         });
     }
+
+    public static void onBreakEvent(Level level, Player player, BlockPos pos, BlockState state, BlockEntity blockEntity) {
+        if(!level.isClientSide()) {
+            SeatEntity mobentity = SeatHandler.getSeatEntity(level, pos);
+            SeatHandler.removeSeatEntity(level, pos);
+            if(mobentity != null)
+                mobentity.kill();
+        }
+    }
 }
+
+

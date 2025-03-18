@@ -1,0 +1,19 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "group": "bedsheet_mushroom",
+    "ingredients": [
+        {
+            "item": "furnitureexpanded:bedsheet_template"
+        },
+        {
+            "item": "minecraft:red_mushroom"
+        },
+        {
+            "item": "minecraft:blue_dye"
+        }
+    ],
+    "result": {
+        "id": "furnitureexpanded:bedsheet_mushroom_blue",
+        "count": 1
+    }
+}

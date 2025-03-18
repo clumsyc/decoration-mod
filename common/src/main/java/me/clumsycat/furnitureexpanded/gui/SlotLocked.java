@@ -1,7 +1,7 @@
 package me.clumsycat.furnitureexpanded.gui;
 
+import me.clumsycat.furnitureexpanded.util.InvUtils;
 import net.minecraft.world.Container;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
@@ -12,13 +12,8 @@ public class SlotLocked extends Slot {
     }
 
     @Override
-    public boolean mayPickup(Player player) {
-        return false;
-    }
-
-    @Override
     public boolean mayPlace(ItemStack stack) {
-        return false;
+        return !InvUtils.hasContainer(stack);
     }
 
 }

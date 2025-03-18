@@ -1,0 +1,16 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "group": "bedsheet_extra1",
+    "ingredients": [
+        {
+            "item": "furnitureexpanded:bedsheet_template"
+        },
+        {
+            "item": "minecraft:magma_block"
+        }
+    ],
+    "result": {
+        "id": "furnitureexpanded:bedsheet_extra1_magma",
+        "count": 1
+    }
+}

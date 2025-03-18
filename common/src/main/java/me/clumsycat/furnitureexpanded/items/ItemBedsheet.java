@@ -10,7 +10,6 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.level.Level;
 
 import java.util.List;
 
@@ -43,9 +42,10 @@ public class ItemBedsheet extends Item {
 
     @Environment(EnvType.CLIENT)
     @Override
-    public void appendHoverText(ItemStack stack, Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+    public void appendHoverText(ItemStack stack, TooltipContext tooltipContext, List<Component> tooltip, TooltipFlag flagIn) {
         tooltip.add(Component.translatable("tooltip.furnitureexpanded.pattern", Component.translatable("patterns.furnitureexpanded." + bedsheetPattern)));
         if (!bedsheetPattern.equals(BedsheetPatterns.EXTRA1))
             tooltip.add(Component.translatable("tooltip.furnitureexpanded.color", Component.translatable("color.minecraft." + bedsheetColor).withStyle(bedsheetColorFormatting)));
+        super.appendHoverText(stack, tooltipContext, tooltip, flagIn);
     }
 }

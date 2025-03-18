@@ -1,19 +1,15 @@
 package me.clumsycat.furnitureexpanded.blocks;
 
+import com.mojang.serialization.MapCodec;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.TrashCanTileEntity;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -21,6 +17,7 @@ import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -34,7 +31,7 @@ public class TrashCan extends BaseEntityBlock {
     private static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
     private static final IntegerProperty type = BSProperties.TYPE_0_1;
 
-    public TrashCan() {
+    public TrashCan(BlockBehaviour.Properties properties) {
         super(Properties.of()
                 .strength(1f, 2f)
                 .sound(SoundType.METAL)
@@ -43,13 +40,22 @@ public class TrashCan extends BaseEntityBlock {
         this.registerDefaultState(this.getStateDefinition().any().setValue(face, Direction.NORTH).setValue(type, 0));
     }
 
+    public TrashCan() {
+        this(null);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(TrashCan::new);
+    }
+
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level worldIn, BlockState state, BlockEntityType<T> entitytype) {
         return !worldIn.isClientSide ? TrashCanTileEntity::tick : null;
     }
 
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
         if (state.getValue(type) == 1) {
             BlockEntity tileentity = worldIn.getBlockEntity(pos);
             if (tileentity instanceof TrashCanTileEntity te) {
@@ -64,10 +70,7 @@ public class TrashCan extends BaseEntityBlock {
         if (!state.is(state2.getBlock())) {
             if (level.getBlockEntity(pos) instanceof TrashCanTileEntity te) {
                 if (!te.isEmpty()) {
-                    CompoundTag compoundnbt = te.saveToNbt(new CompoundTag());
-                    NonNullList<ItemStack> invdrop = NonNullList.withSize(te.getContainerSize(), ItemStack.EMPTY);
-                    ContainerHelper.loadAllItems(compoundnbt, invdrop);
-                    Containers.dropContents(level, pos, invdrop);
+                    Containers.dropContents(level, pos, te);
                 }
             }
             super.onRemove(state, level, pos, state2, bl);

@@ -1,0 +1,17 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        "www",
+        "w w"
+    ],
+    "key": {
+        "w": {
+            "tag": "minecraft:logs"
+        }
+    },
+    "result": {
+        "id": "furnitureexpanded:nightstand",
+        "count": 1
+    }
+}

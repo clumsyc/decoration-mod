@@ -1,0 +1,20 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "   ",
+        "www",
+        "ccc"
+    ],
+    "key": {
+        "w": {
+            "tag": "minecraft:wool"
+        },
+        "c": {
+            "item": "minecraft:gray_concrete"
+        }
+    },
+    "result": {
+        "id": "furnitureexpanded:modern_bed",
+        "count": 1
+    }
+}

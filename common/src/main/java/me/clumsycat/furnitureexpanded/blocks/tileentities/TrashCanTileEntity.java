@@ -3,6 +3,7 @@ package me.clumsycat.furnitureexpanded.blocks.tileentities;
 import me.clumsycat.furnitureexpanded.ExpandedMod;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -26,30 +27,20 @@ public class TrashCanTileEntity extends RandomizableContainerBlockEntity {
         super(ExpandedMod.TRASH_CAN_TE.get(), pPos, pBlockState);
     }
 
-    public CompoundTag saveToNbt(CompoundTag compound) {
-        if (!this.trySaveLootTable(compound))
-            ContainerHelper.saveAllItems(compound, this.chestContents, false);
-        return compound;
-    }
-
     @Override
-    public void saveAdditional(CompoundTag compound) {
-        super.saveAdditional(compound);
+    public void saveAdditional(CompoundTag compound, HolderLookup.Provider provider) {
+        super.saveAdditional(compound, provider);
         if (!this.trySaveLootTable(compound)) {
-            ContainerHelper.saveAllItems(compound, this.chestContents);
+            ContainerHelper.saveAllItems(compound, this.chestContents, provider);
         }
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
-        this.loadFromTag(pTag);
-    }
-
-    public void loadFromTag(CompoundTag nbt) {
+    public void loadAdditional(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.loadAdditional(pTag, provider);
         this.chestContents = NonNullList.withSize(this.getContainerSize(), ItemStack.EMPTY);
-        if (!this.tryLoadLootTable(nbt)) {
-            ContainerHelper.loadAllItems(nbt, this.chestContents);
+        if (!this.tryLoadLootTable(pTag)) {
+            ContainerHelper.loadAllItems(pTag, this.chestContents, provider);
         }
     }
 

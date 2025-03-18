@@ -17,6 +17,6 @@ public class FEItemTags {
     private FEItemTags() {}
 
     private static TagKey<Item> bind(String string) {
-        return TagKey.create(Registries.ITEM, new ResourceLocation(string));
+        return TagKey.create(Registries.ITEM, ResourceLocation.parse(string));
     }
 }

@@ -17,7 +17,7 @@
   "block.furnitureexpanded.paper_holder": "Toilet Paper Holder",
   "block.furnitureexpanded.trash_can": "Trash Can",
   "block.furnitureexpanded.mirror": "Mirror",
-  "block.furnitureexpanded.cardbox": "Cardbox",
+  "block.furnitureexpanded.cardbox": "Cardboard Box",
   "block.furnitureexpanded.file_cabinet": "File Cabinet",
   "block.furnitureexpanded.clock_sign": "Clock Sign",
   "block.furnitureexpanded.alarm_clock": "Alarm Clock",
@@ -34,5 +34,16 @@
   "patterns.furnitureexpanded.mushroom": "Mushroom",
   "patterns.furnitureexpanded.extra1": "Extra 1",
 
-  "sound.furnitureexpanded.shower": "Shower"
+  "sound.furnitureexpanded.shower": "Shower",
+
+  "tag.item.furnitureexpanded.bedsheets": "Bedsheets",
+  "tag.item.furnitureexpanded.bedsheets_bamboo": "Bamboo Bedsheets",
+  "tag.item.furnitureexpanded.bedsheets_bark": "Bark Bedsheets",
+  "tag.item.furnitureexpanded.bedsheets_coral": "Coral Bedsheets",
+  "tag.item.furnitureexpanded.bedsheets_mushroom": "Mushroom Bedsheets",
+  "tag.item.furnitureexpanded.bedsheets_extra1": "Extra1 Bedsheets",
+  "tag.item.furnitureexpanded.slimeballs": "Slime Balls",
+  "tag.item.furnitureexpanded.stones": "Stones",
+  "tag.item.furnitureexpanded.glass_blocks": "Glass Blocks",
+  "tag.item.furnitureexpanded.wooden_chests": "Wooden Chests"
 }

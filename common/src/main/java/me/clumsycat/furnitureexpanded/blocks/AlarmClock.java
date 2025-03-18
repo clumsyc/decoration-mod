@@ -1,5 +1,6 @@
 package me.clumsycat.furnitureexpanded.blocks;
 
+import com.mojang.serialization.MapCodec;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.AlarmClockTileEntity;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
@@ -8,7 +9,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -34,7 +34,7 @@ public class AlarmClock extends BaseEntityBlock {
     public static final EnumProperty<FloorDepth> depth = BSProperties.FLOOR_DEPTH;
     public static final BooleanProperty isPowered = BlockStateProperties.POWERED;
 
-    public AlarmClock() {
+    public AlarmClock(BlockBehaviour.Properties properties) {
         super(BlockBehaviour.Properties.of()
                 .strength(2f, 2f)
                 .sound(SoundType.METAL)
@@ -46,8 +46,17 @@ public class AlarmClock extends BaseEntityBlock {
                 .setValue(isPowered, false));
     }
 
+    public AlarmClock() {
+        this(null);
+    }
+
     @Override
-    public InteractionResult use(BlockState state, Level level, BlockPos pos, Player player, InteractionHand interactionHand, BlockHitResult blockHitResult) {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(AlarmClock::new);
+    }
+
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult blockHitResult) {
         if (level.isClientSide) return InteractionResult.SUCCESS;
         boolean p = state.getValue(isPowered);
         level.setBlockAndUpdate(pos, state.setValue(isPowered, !p));

@@ -1,15 +1,12 @@
 package me.clumsycat.furnitureexpanded.blocks;
 
+import com.mojang.serialization.MapCodec;
 import me.clumsycat.furnitureexpanded.blocks.tileentities.FileCabinetTileEntity;
 import me.clumsycat.furnitureexpanded.util.BSProperties;
 import me.clumsycat.furnitureexpanded.util.ModShapes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.Containers;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -20,6 +17,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
@@ -33,7 +31,7 @@ public class FileCabinet extends BaseEntityBlock {
     public static final DirectionProperty face = HorizontalDirectionalBlock.FACING;
     public static final IntegerProperty type = BSProperties.TYPE_0_2;
 
-    public FileCabinet() {
+    public FileCabinet(BlockBehaviour.Properties properties) {
         super(Properties.of()
                 .strength(2f, 2f)
                 .sound(SoundType.METAL)
@@ -42,8 +40,17 @@ public class FileCabinet extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(face, Direction.NORTH).setValue(type, 1));
     }
 
+    public FileCabinet() {
+        this(null);
+    }
+
     @Override
-    public InteractionResult use(BlockState state, Level worldIn, BlockPos pos, Player player, InteractionHand handIn, BlockHitResult hit) {
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return simpleCodec(FileCabinet::new);
+    }
+
+    @Override
+    public InteractionResult useWithoutItem(BlockState state, Level worldIn, BlockPos pos, Player player, BlockHitResult hit) {
         if (worldIn.isClientSide) return InteractionResult.SUCCESS;
         else {
             BlockEntity tileentity = worldIn.getBlockEntity(pos);
@@ -75,10 +82,7 @@ public class FileCabinet extends BaseEntityBlock {
                 BlockEntity tileentity = level.getBlockEntity(pos);
                 if (tileentity instanceof FileCabinetTileEntity te) {
                     if (!te.isEmpty()) {
-                        CompoundTag compoundnbt = te.saveToNbt(new CompoundTag());
-                        NonNullList<ItemStack> invdrop = NonNullList.withSize(te.getContainerSize(), ItemStack.EMPTY);
-                        ContainerHelper.loadAllItems(compoundnbt, invdrop);
-                        Containers.dropContents(level, pos, invdrop);
+                        Containers.dropContents(level, pos, te);
                     }
                 }
             }
@@ -90,12 +94,6 @@ public class FileCabinet extends BaseEntityBlock {
 
     @Override
     public void setPlacedBy(Level worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-        if (stack.hasCustomHoverName()) {
-            BlockEntity tileentity = worldIn.getBlockEntity(pos);
-            if (tileentity instanceof FileCabinetTileEntity te) {
-                (te).setCustomName(stack.getDisplayName());
-            }
-        }
         worldIn.setBlock(pos.above(), state.setValue(type, 1).setValue(face, state.getValue(face)), 3);
         super.setPlacedBy(worldIn, pos, state, placer, stack);
     }

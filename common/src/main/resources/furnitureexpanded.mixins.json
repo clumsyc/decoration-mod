@@ -1,11 +1,12 @@
 {
   "required": true,
-  "package": "me.clumsycat.furnitureexpanded.mixin",
-  "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
-  "client": [
-  ],
+  "package": "me.clumsycat.furnitureexpanded.mixin",
+  "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "ItemStackComponentizationDataFixer"
+  ],
+  "client": [
   ],
   "injectors": {
     "defaultRequire": 1
