@@ -54,7 +54,82 @@ public class ExpandedMod {
     public static final RegistrySupplier<ItemBasket> BASKET = ITEMS.register("basket", ItemBasket::new);
 
 
+    // Crafting Items
+    public static final RegistrySupplier<ItemBase> SAWDUST = ITEMS.register("sawdust",  () -> new ItemBase(64));
+
+
+    // [[ Blocks ]] Bathroom section
+    public static final RegistrySupplier<Block> TOILET = BLOCKS.register("toilet", Toilet::new);
+    public static final RegistrySupplier<Item> TOILET_ITEM = ITEMS.register("toilet", () -> new BlockItemBase(ExpandedMod.TOILET.get(), 64));
+
+    public static final RegistrySupplier<Block> BATHROOM_SINK = BLOCKS.register("bathroom_sink", BathroomSink::new);
+    public static final RegistrySupplier<Item> BATHROOM_SINK_ITEM = ITEMS.register("bathroom_sink", () -> new BlockItemBase(ExpandedMod.BATHROOM_SINK.get(), 64));
+
+    public static final RegistrySupplier<Block> BATHTUB = BLOCKS.register("bathtub", BathTub::new);
+    public static final RegistrySupplier<Item> BATHTUB_ITEM = ITEMS.register("bathtub", () -> new BlockItemBase(ExpandedMod.BATHTUB.get(), 64));
+
+    public static final RegistrySupplier<Block> SHOWER_BOX = BLOCKS.register("shower_box", ShowerBox::new);
+    public static final RegistrySupplier<Item> SHOWER_BOX_ITEM = ITEMS.register("shower_box", () -> new BlockItemBase(ExpandedMod.SHOWER_BOX.get(), 64));
+
+    public static final RegistrySupplier<Block> SHOWER_HEAD = BLOCKS.register("shower_head", ShowerHead::new);
+    public static final RegistrySupplier<Item> SHOWER_HEAD_ITEM = ITEMS.register("shower_head", () -> new BlockItemBase(ExpandedMod.SHOWER_HEAD.get(), 64));
+    public static final RegistrySupplier<BlockEntityType<ShowerHeadTileEntity>> SHOWER_HEAD_TE = TILES.register("shower_head", () -> BlockEntityType.Builder.of(ShowerHeadTileEntity::new, SHOWER_HEAD.get()).build(null));
+
+    public static final RegistrySupplier<Block> TOWEL_BAR = BLOCKS.register("towel_bar", TowelBar::new);
+    public static final RegistrySupplier<Item> TOWEL_BAR_ITEM = ITEMS.register("towel_bar", () -> new BlockItemBase(ExpandedMod.TOWEL_BAR.get(), 64));
+
+    public static final RegistrySupplier<Block> PAPER_HOLDER = BLOCKS.register("paper_holder", PaperHolder::new);
+    public static final RegistrySupplier<Item> PAPER_HOLDER_ITEM = ITEMS.register("paper_holder", () -> new BlockItemBase(ExpandedMod.PAPER_HOLDER.get(), 64));
+
+    public static final RegistrySupplier<Block> TRASH_CAN = BLOCKS.register("trash_can", TrashCan::new);
+    public static final RegistrySupplier<Item> TRASH_CAN_ITEM = ITEMS.register("trash_can", () -> new BlockItemBase(ExpandedMod.TRASH_CAN.get(), 64));
+    public static final RegistrySupplier<BlockEntityType<TrashCanTileEntity>> TRASH_CAN_TE = TILES.register("trash_can", () -> BlockEntityType.Builder.of(TrashCanTileEntity::new, TRASH_CAN.get()).build(null));
+
+    public static final RegistrySupplier<Block> MIRROR = BLOCKS.register("mirror", MirrorBlock::new);
+    public static final RegistrySupplier<Item> MIRROR_ITEM = ITEMS.register("mirror", () -> new BlockItemBase(ExpandedMod.MIRROR.get(), 64));
+
+
+    // [[ Blocks ]] Bedroom section
+    public static final RegistrySupplier<Block> ALARM_CLOCK = BLOCKS.register("alarm_clock", AlarmClock::new);
+    public static final RegistrySupplier<Item> ALARM_CLOCK_ITEM = ITEMS.register("alarm_clock", () -> new BlockItemBase(ExpandedMod.ALARM_CLOCK.get(), 64));
+    public static final RegistrySupplier<BlockEntityType<AlarmClockTileEntity>> ALARM_CLOCK_TE = TILES.register("alarm_clock", () -> BlockEntityType.Builder.of(AlarmClockTileEntity::new, ALARM_CLOCK.get()).build(null));
+
+    public static final RegistrySupplier<Block> MODERN_BED = BLOCKS.register("modern_bed", ModernBed::new);
+    public static final RegistrySupplier<Item> MODERN_BED_ITEM = ITEMS.register("modern_bed", () -> new BlockItemBase(ExpandedMod.MODERN_BED.get(), 64));
+    public static final RegistrySupplier<BlockEntityType<ModernBedTileEntity>> MODERN_BED_TE = TILES.register("modern_bed", () -> BlockEntityType.Builder.of(ModernBedTileEntity::new, MODERN_BED.get()).build(null));
+
+    public static final RegistrySupplier<Block> NIGHTSTAND = BLOCKS.register("nightstand", Nightstand::new);
+    public static final RegistrySupplier<Item> NIGHTSTAND_ITEM = ITEMS.register("nightstand", () -> new BlockItemBase(ExpandedMod.NIGHTSTAND.get(), 64));
+    public static final RegistrySupplier<BlockEntityType<NightstandTileEntity>> NIGHTSTAND_TE = TILES.register("nightstand", () -> BlockEntityType.Builder.of(NightstandTileEntity::new, NIGHTSTAND.get()).build(null));
+
+    public static final RegistrySupplier<Block> BEDSIDE_TABLE = BLOCKS.register("bedside_table", BedsideTable::new);
+    public static final RegistrySupplier<Item> BEDSIDE_TABLE_ITEM = ITEMS.register("bedside_table", () -> new BlockItemBase(ExpandedMod.BEDSIDE_TABLE.get(), 64));
+
+    // [[ Blocks ]] Living Room section
+
+
+    // [[ Blocks ]] Kitchen
+
+
+    // [[ Blocks ]] Office section
+    public static final RegistrySupplier<Block> FILE_CABINET = BLOCKS.register("file_cabinet", FileCabinet::new);
+    public static final RegistrySupplier<Item> FILE_CABINET_ITEM = ITEMS.register("file_cabinet", () -> new BlockItemBase(ExpandedMod.FILE_CABINET.get(), 64));
+    public static final RegistrySupplier<BlockEntityType<FileCabinetTileEntity>> FILE_CABINET_TE = TILES.register("file_cabinet", () -> BlockEntityType.Builder.of(FileCabinetTileEntity::new, FILE_CABINET.get()).build(null));
+
+
+    // [[ Blocks ]] Others
+    public static final RegistrySupplier<Block> CARDBOX = BLOCKS.register("cardbox", Cardbox::new);
+    public static final RegistrySupplier<Item> CARDBOX_ITEM = ITEMS.register("cardbox", () -> new ItemCardbox(ExpandedMod.CARDBOX.get()));
+    public static final RegistrySupplier<BlockEntityType<CardboxTileEntity>> CARDBOX_TE = TILES.register("cardbox", () -> BlockEntityType.Builder.of(CardboxTileEntity::new, CARDBOX.get()).build(null));
+
+    public static final RegistrySupplier<Block> CLOCK_SIGN = BLOCKS.register("clock_sign", ClockSign::new);
+    public static final RegistrySupplier<Item> CLOCK_SIGN_ITEM = ITEMS.register("clock_sign", () -> new BlockItemBase(ExpandedMod.CLOCK_SIGN.get(), 64));
+    public static final RegistrySupplier<BlockEntityType<ClockSignTileEntity>> CLOCK_SIGN_TE = TILES.register("clock_sign", () -> BlockEntityType.Builder.of(ClockSignTileEntity::new, CLOCK_SIGN.get()).build(null));
+
+
     // Bedsheets
+    public static final RegistrySupplier<ItemBase> BEDSHEET_TEMPLATE = ITEMS.register("bedsheet_template", () -> new ItemBase(64));
+
     public static final RegistrySupplier<ItemBedsheet> BEDSHEET_BAMBOO_WHITE = ITEMS.register("bedsheet_bamboo_white", () -> new ItemBedsheet(64, BedsheetPatterns.BAMBOO, DyeColor.WHITE, ChatFormatting.WHITE));
     public static final RegistrySupplier<ItemBedsheet> BEDSHEET_BAMBOO_ORANGE = ITEMS.register("bedsheet_bamboo_orange", () -> new ItemBedsheet(64, BedsheetPatterns.BAMBOO, DyeColor.ORANGE, ChatFormatting.GOLD));
     public static final RegistrySupplier<ItemBedsheet> BEDSHEET_BAMBOO_MAGENTA = ITEMS.register("bedsheet_bamboo_magenta", () -> new ItemBedsheet(64, BedsheetPatterns.BAMBOO, DyeColor.MAGENTA, ChatFormatting.LIGHT_PURPLE));
@@ -133,79 +208,6 @@ public class ExpandedMod {
     public static final RegistrySupplier<ItemBedsheet> BEDSHEET_EXTRA1_MAGMA = ITEMS.register("bedsheet_extra1_magma", () -> new ItemBedsheet(64, BedsheetPatterns.EXTRA1, DyeColor.GRAY, ChatFormatting.RED));
     public static final RegistrySupplier<ItemBedsheet> BEDSHEET_EXTRA1_STRIPPED_ACACIA_LOG = ITEMS.register("bedsheet_extra1_stripped_acacia_log", () -> new ItemBedsheet(64, BedsheetPatterns.EXTRA1, DyeColor.LIGHT_GRAY, ChatFormatting.GOLD));
     public static final RegistrySupplier<ItemBedsheet> BEDSHEET_EXTRA1_WARPED_STEM = ITEMS.register("bedsheet_extra1_warped_stem", () -> new ItemBedsheet(64, BedsheetPatterns.EXTRA1, DyeColor.CYAN, ChatFormatting.DARK_AQUA));
-
-
-    // Crafting Items
-    public static final RegistrySupplier<ItemBase> BEDSHEET_TEMPLATE = ITEMS.register("bedsheet_template", () -> new ItemBase(64));
-    public static final RegistrySupplier<ItemBase> SAWDUST = ITEMS.register("sawdust",  () -> new ItemBase(64));
-
-
-    // [[ Blocks ]] Bathroom section
-    public static final RegistrySupplier<Block> TOILET = BLOCKS.register("toilet", Toilet::new);
-    public static final RegistrySupplier<Item> TOILET_ITEM = ITEMS.register("toilet", () -> new BlockItemBase(ExpandedMod.TOILET.get(), 64));
-
-    public static final RegistrySupplier<Block> BATHROOM_SINK = BLOCKS.register("bathroom_sink", BathroomSink::new);
-    public static final RegistrySupplier<Item> BATHROOM_SINK_ITEM = ITEMS.register("bathroom_sink", () -> new BlockItemBase(ExpandedMod.BATHROOM_SINK.get(), 64));
-
-    public static final RegistrySupplier<Block> BATHTUB = BLOCKS.register("bathtub", BathTub::new);
-    public static final RegistrySupplier<Item> BATHTUB_ITEM = ITEMS.register("bathtub", () -> new BlockItemBase(ExpandedMod.BATHTUB.get(), 64));
-
-    public static final RegistrySupplier<Block> SHOWER_BOX = BLOCKS.register("shower_box", ShowerBox::new);
-    public static final RegistrySupplier<Item> SHOWER_BOX_ITEM = ITEMS.register("shower_box", () -> new BlockItemBase(ExpandedMod.SHOWER_BOX.get(), 64));
-
-    public static final RegistrySupplier<Block> SHOWER_HEAD = BLOCKS.register("shower_head", ShowerHead::new);
-    public static final RegistrySupplier<Item> SHOWER_HEAD_ITEM = ITEMS.register("shower_head", () -> new BlockItemBase(ExpandedMod.SHOWER_HEAD.get(), 64));
-    public static final RegistrySupplier<BlockEntityType<ShowerHeadTileEntity>> SHOWER_HEAD_TE = TILES.register("shower_head", () -> BlockEntityType.Builder.of(ShowerHeadTileEntity::new, SHOWER_HEAD.get()).build(null));
-
-    public static final RegistrySupplier<Block> TOWEL_BAR = BLOCKS.register("towel_bar", TowelBar::new);
-    public static final RegistrySupplier<Item> TOWEL_BAR_ITEM = ITEMS.register("towel_bar", () -> new BlockItemBase(ExpandedMod.TOWEL_BAR.get(), 64));
-
-    public static final RegistrySupplier<Block> PAPER_HOLDER = BLOCKS.register("paper_holder", PaperHolder::new);
-    public static final RegistrySupplier<Item> PAPER_HOLDER_ITEM = ITEMS.register("paper_holder", () -> new BlockItemBase(ExpandedMod.PAPER_HOLDER.get(), 64));
-
-    public static final RegistrySupplier<Block> TRASH_CAN = BLOCKS.register("trash_can", TrashCan::new);
-    public static final RegistrySupplier<Item> TRASH_CAN_ITEM = ITEMS.register("trash_can", () -> new BlockItemBase(ExpandedMod.TRASH_CAN.get(), 64));
-    public static final RegistrySupplier<BlockEntityType<TrashCanTileEntity>> TRASH_CAN_TE = TILES.register("trash_can", () -> BlockEntityType.Builder.of(TrashCanTileEntity::new, TRASH_CAN.get()).build(null));
-
-    public static final RegistrySupplier<Block> MIRROR = BLOCKS.register("mirror", MirrorBlock::new);
-    public static final RegistrySupplier<Item> MIRROR_ITEM = ITEMS.register("mirror", () -> new BlockItemBase(ExpandedMod.MIRROR.get(), 64));
-
-
-    // [[ Blocks ]] Bedroom section
-    public static final RegistrySupplier<Block> ALARM_CLOCK = BLOCKS.register("alarm_clock", AlarmClock::new);
-    public static final RegistrySupplier<Item> ALARM_CLOCK_ITEM = ITEMS.register("alarm_clock", () -> new BlockItemBase(ExpandedMod.ALARM_CLOCK.get(), 64));
-    public static final RegistrySupplier<BlockEntityType<AlarmClockTileEntity>> ALARM_CLOCK_TE = TILES.register("alarm_clock", () -> BlockEntityType.Builder.of(AlarmClockTileEntity::new, ALARM_CLOCK.get()).build(null));
-
-    public static final RegistrySupplier<Block> MODERN_BED = BLOCKS.register("modern_bed", ModernBed::new);
-    public static final RegistrySupplier<Item> MODERN_BED_ITEM = ITEMS.register("modern_bed", () -> new BlockItemBase(ExpandedMod.MODERN_BED.get(), 64));
-
-    public static final RegistrySupplier<Block> NIGHTSTAND = BLOCKS.register("nightstand", Nightstand::new);
-    public static final RegistrySupplier<Item> NIGHTSTAND_ITEM = ITEMS.register("nightstand", () -> new BlockItemBase(ExpandedMod.NIGHTSTAND.get(), 64));
-    public static final RegistrySupplier<BlockEntityType<NightstandTileEntity>> NIGHTSTAND_TE = TILES.register("nightstand", () -> BlockEntityType.Builder.of(NightstandTileEntity::new, NIGHTSTAND.get()).build(null));
-
-    public static final RegistrySupplier<Block> BEDSIDE_TABLE = BLOCKS.register("bedside_table", BedsideTable::new);
-    public static final RegistrySupplier<Item> BEDSIDE_TABLE_ITEM = ITEMS.register("bedside_table", () -> new BlockItemBase(ExpandedMod.BEDSIDE_TABLE.get(), 64));
-
-    // [[ Blocks ]] Living Room section
-
-
-    // [[ Blocks ]] Kitchen
-
-
-    // [[ Blocks ]] Office section
-    public static final RegistrySupplier<Block> FILE_CABINET = BLOCKS.register("file_cabinet", FileCabinet::new);
-    public static final RegistrySupplier<Item> FILE_CABINET_ITEM = ITEMS.register("file_cabinet", () -> new BlockItemBase(ExpandedMod.FILE_CABINET.get(), 64));
-    public static final RegistrySupplier<BlockEntityType<FileCabinetTileEntity>> FILE_CABINET_TE = TILES.register("file_cabinet", () -> BlockEntityType.Builder.of(FileCabinetTileEntity::new, FILE_CABINET.get()).build(null));
-
-
-    // [[ Blocks ]] Others
-    public static final RegistrySupplier<Block> CARDBOX = BLOCKS.register("cardbox", Cardbox::new);
-    public static final RegistrySupplier<Item> CARDBOX_ITEM = ITEMS.register("cardbox", () -> new ItemCardbox(ExpandedMod.CARDBOX.get()));
-    public static final RegistrySupplier<BlockEntityType<CardboxTileEntity>> CARDBOX_TE = TILES.register("cardbox", () -> BlockEntityType.Builder.of(CardboxTileEntity::new, CARDBOX.get()).build(null));
-
-    public static final RegistrySupplier<Block> CLOCK_SIGN = BLOCKS.register("clock_sign", ClockSign::new);
-    public static final RegistrySupplier<Item> CLOCK_SIGN_ITEM = ITEMS.register("clock_sign", () -> new BlockItemBase(ExpandedMod.CLOCK_SIGN.get(), 64));
-    public static final RegistrySupplier<BlockEntityType<ClockSignTileEntity>> CLOCK_SIGN_TE = TILES.register("clock_sign", () -> BlockEntityType.Builder.of(ClockSignTileEntity::new, CLOCK_SIGN.get()).build(null));
 
 
     /**
